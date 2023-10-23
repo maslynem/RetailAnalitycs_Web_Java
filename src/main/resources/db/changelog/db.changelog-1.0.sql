@@ -26,7 +26,7 @@ CREATE TABLE IF NOT EXISTS transactions
 (
     Transaction_ID       INT PRIMARY KEY,
     Customer_Card_ID     INT  NOT NULL REFERENCES cards (Customer_Card_ID),
-    Transaction_Summ     REAL NOT NULL,
+    Transaction_Summ     NUMERIC NOT NULL,
     Transaction_DateTime timestamp WITHOUT TIME ZONE,
     Transaction_Store_ID INT
 );
@@ -52,8 +52,8 @@ CREATE TABLE stores
 (
     Transaction_Store_ID INT,
     SKU_ID               INT  NOT NULL REFERENCES sku (SKU_ID),
-    SKU_Purchase_Price   REAL NOT NULL,
-    SKU_Retail_Price     REAL NOT NULL,
+    SKU_Purchase_Price   NUMERIC NOT NULL,
+    SKU_Retail_Price     NUMERIC NOT NULL,
     PRIMARY KEY (Transaction_Store_ID, SKU_ID)
 );
 
@@ -70,7 +70,7 @@ CREATE TABLE IF NOT EXISTS checks
 
 CREATE TABLE Date_Of_Analysis_Formation
 (
-    Analysis_Formation TIMESTAMP WITHOUT TIME ZONE
+    Analysis_Formation TIMESTAMP WITHOUT TIME ZONE PRIMARY KEY
 );
 
 SET datestyle = 'european';
