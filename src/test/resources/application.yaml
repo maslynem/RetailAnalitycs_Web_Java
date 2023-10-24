@@ -1,9 +1,9 @@
 spring:
+  liquibase:
+    contexts: test
   datasource:
-    url: jdbc:h2:mem:test
-    username:
-    password:
-    driver-class-name: org.h2.Driver
+    username: test
+    password: test
 
   jpa:
     properties:

@@ -1,12 +1,12 @@
 databaseChangeLog:
   - changeSet:
-      context: dev
+      context: test
       id: import-table-personal_data
       author: maslynem
       changes:
         - loadData:
             tableName: personal_data
-            file: db/changelog/csv/Personal_Data.tsv
+            file: db/changelog/csv/Personal_Data_Mini.tsv
             separator: '\t'
             columns:
               - column:
@@ -30,13 +30,13 @@ databaseChangeLog:
                   name: customer_primary_phone
                   type: TEXT
   - changeSet:
-      context: dev
+      context: test
       id: import-table-cards
       author: maslynem
       changes:
         - loadData:
             tableName: cards
-            file: db/changelog/csv/Cards.tsv
+            file: db/changelog/csv/Cards_Mini.tsv
             separator: '\t'
             columns:
               - column:
@@ -48,13 +48,13 @@ databaseChangeLog:
                   name: customer_id
                   type: INT
   - changeSet:
-      context: dev
+      context: test
       id: import-table-transactions
       author: maslynem
       changes:
         - loadData:
             tableName: transactions
-            file: db/changelog/csv/Transactions.tsv
+            file: db/changelog/csv/Transactions_Mini.tsv
             separator: '\t'
             columns:
               - column:
@@ -78,13 +78,13 @@ databaseChangeLog:
                   name: transaction_store_id
                   type: INT
   - changeSet:
-      context: dev
+      context: test
       id: import-table-groupsku
       author: maslynem
       changes:
         - loadData:
             tableName: groups_sku
-            file: db/changelog/csv/Groups_SKU.tsv
+            file: db/changelog/csv/Groups_SKU_Mini.tsv
             separator: '\t'
             columns:
               - column:
@@ -96,13 +96,13 @@ databaseChangeLog:
                   name: group_name
                   type: TEXT
   - changeSet:
-      context: dev
+      context: test
       id: import-table-sku
       author: maslynem
       changes:
         - loadData:
             tableName: sku
-            file: db/changelog/csv/SKU.tsv
+            file: db/changelog/csv/SKU_Mini.tsv
             separator: '\t'
             columns:
               - column:
@@ -118,13 +118,13 @@ databaseChangeLog:
                   name: group_id
                   type: INT
   - changeSet:
-      context: dev
+      context: test
       id: import-table-stores
       author: maslynem
       changes:
         - loadData:
             tableName: stores
-            file: db/changelog/csv/Stores.tsv
+            file: db/changelog/csv/Stores_Mini.tsv
             separator: '\t'
             columns:
               - column:
@@ -144,13 +144,13 @@ databaseChangeLog:
                   name: sku_retail_price
                   type: DOUBLE PRECISION
   - changeSet:
-      context: dev
+      context: test
       id: import-table-checks
       author: maslynem
       changes:
         - loadData:
             tableName: checks
-            file: db/changelog/csv/Checks.tsv
+            file: db/changelog/csv/Checks_Mini.tsv
             separator: '\t'
             columns:
               - column:
@@ -178,13 +178,13 @@ databaseChangeLog:
                   name: sku_discount
                   type: DOUBLE PRECISION
   - changeSet:
-      context: dev
+      context: test
       id: import-table-DateOfAnalysisFormation
       author: maslynem
       changes:
         - loadData:
             tableName: date_of_analysis_formation
-            file: db/changelog/csv/Date_Of_Analysis_Formation.tsv
+            file: db/changelog/csv/Date_Of_Analysis_Formation_Mini.tsv
             separator: '\t'
             columns:
               - column:
