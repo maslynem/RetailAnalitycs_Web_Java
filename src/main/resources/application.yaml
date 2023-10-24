@@ -1,4 +1,6 @@
 spring:
+  liquibase:
+    enabled: true
   datasource:
     url: ${URL_DB:jdbc:postgresql://localhost:5432/postgres}
     username: ${USERNAME_DB:postgres}
@@ -8,7 +10,7 @@ spring:
     properties:
       hibernate:
         hbm2ddl:
-          auto: none
+          auto: validate
         format_sql: true
         show_sql: true
 

@@ -30,12 +30,8 @@ public abstract class BaseService<E, K> {
         return repository.findById(id);
     }
 
-    public boolean deleteById(K id) {
-        return repository.findById(id)
-                .map(entity -> {
-                    repository.delete(entity);
-                    return true;
-                }).orElse(false);
+    public void deleteById(K id) {
+        repository.deleteById(id);
     }
 
     public List<E> findAll() {

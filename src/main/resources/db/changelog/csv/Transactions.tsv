@@ -1,3 +1,4 @@
+transaction_id	customer_card_id	transaction_summ	transaction_datetime	transaction_store_id
 1	568	9860.098724	08.12.2019 9:00:08	18
 2	428	11475.05557	02.12.2020 5:38:14	17
 3	83	11894.08379	12.10.2021 0:48:05	20

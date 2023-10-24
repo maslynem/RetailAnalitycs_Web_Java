@@ -1,0 +1,185 @@
+databaseChangeLog:
+    - changeSet:
+          id: import-table-personal_data
+          author: maslynem
+          changes:
+              - loadData:
+                    tableName: personal_data
+                    file: db/changelog/csv/Personal_Data.tsv
+                    separator: '\t'
+                    columns:
+                        - column:
+                              header: customer_id
+                              name: customer_id
+                              type: INT
+                        - column:
+                              header: customer_name
+                              name: customer_name
+                              type: TEXT
+                        - column:
+                              header: customer_surname
+                              name: customer_surname
+                              type: TEXT
+                        - column:
+                              header: customer_primary_email
+                              name: customer_primary_email
+                              type: TEXT
+                        - column:
+                              header: customer_primary_phone
+                              name: customer_primary_phone
+                              type: TEXT
+    - changeSet:
+          id: import-table-cards
+          author: maslynem
+          changes:
+              - loadData:
+                    tableName: cards
+                    file: db/changelog/csv/Cards.tsv
+                    separator: '\t'
+                    columns:
+                        - column:
+                              header: customer_card_id
+                              name: customer_card_id
+                              type: INT
+                        - column:
+                              header: customer_id
+                              name: customer_id
+                              type: INT
+    - changeSet:
+          id: import-table-transactions
+          author: maslynem
+          changes:
+              - loadData:
+                    tableName: transactions
+                    file: db/changelog/csv/Transactions.tsv
+                    separator: '\t'
+                    columns:
+                        - column:
+                              header: transaction_id
+                              name: transaction_id
+                              type: INT
+                        - column:
+                              header: customer_card_id
+                              name: customer_card_id
+                              type: INT
+                        - column:
+                              header: transaction_summ
+                              name: transaction_summ
+                              type: DOUBLE PRECISION
+                        - column:
+                              header: transaction_datetime
+                              name: transaction_datetime
+                              type: timestamp
+                        - column:
+                              header: transaction_store_id
+                              name: transaction_store_id
+                              type: INT
+    - changeSet:
+          id: import-table-groupsku
+          author: maslynem
+          changes:
+              - loadData:
+                    tableName: groups_sku
+                    file: db/changelog/csv/Groups_SKU.tsv
+                    separator: '\t'
+                    columns:
+                        - column:
+                              header: group_id
+                              name: group_id
+                              type: INT
+                        - column:
+                              header: group_name
+                              name: group_name
+                              type: TEXT
+    - changeSet:
+          id: import-table-sku
+          author: maslynem
+          changes:
+              - loadData:
+                    tableName: sku
+                    file: db/changelog/csv/SKU.tsv
+                    separator: '\t'
+                    columns:
+                        - column:
+                              header: sku_id
+                              name: sku_id
+                              type: INT
+                        - column:
+                              header: sku_name
+                              name: sku_name
+                              type: TEXT
+                        - column:
+                              header: group_id
+                              name: group_id
+                              type: INT
+    - changeSet:
+          id: import-table-stores
+          author: maslynem
+          changes:
+              - loadData:
+                    tableName: stores
+                    file: db/changelog/csv/Stores.tsv
+                    separator: '\t'
+                    columns:
+                        - column:
+                              header: transaction_store_id
+                              name: transaction_store_id
+                              type: INT
+                        - column:
+                              header: sku_id
+                              name: sku_id
+                              type: INT
+                        - column:
+                              header: sku_purchase_price
+                              name: sku_purchase_price
+                              type: DOUBLE PRECISION
+                        - column:
+                              header: sku_retail_price
+                              name: sku_retail_price
+                              type: DOUBLE PRECISION
+    - changeSet:
+          id: import-table-checks
+          author: maslynem
+          changes:
+              - loadData:
+                    tableName: checks
+                    file: db/changelog/csv/Checks.tsv
+                    separator: '\t'
+                    columns:
+                        - column:
+                              header: transaction_id
+                              name: transaction_id
+                              type: INT
+                        - column:
+                              header: sku_id
+                              name: sku_id
+                              type: INT
+                        - column:
+                              header: sku_amount
+                              name: sku_amount
+                              type: DOUBLE PRECISION
+                        - column:
+                              header: sku_summ
+                              name: sku_summ
+                              type: DOUBLE PRECISION
+                        - column:
+                              header: sku_summ_paid
+                              name: sku_summ_paid
+                              type: DOUBLE PRECISION
+                        - column:
+                              header: sku_discount
+                              name: sku_discount
+                              type: DOUBLE PRECISION
+    - changeSet:
+          id: import-table-DateOfAnalysisFormation
+          author: maslynem
+          changes:
+              - loadData:
+                    tableName: date_of_analysis_formation
+                    file: db/changelog/csv/Date_Of_Analysis_Formation.tsv
+                    separator: '\t'
+                    columns:
+                        - column:
+                              header: analysis_formation
+                              name: analysis_formation
+                              type: TIMESTAMP

@@ -1,8 +1,11 @@
-package ru.school.retailanalitycs_web_java.controller;
+package ru.school.retailanalitycs_web_java.controllers;
 
 import lombok.SneakyThrows;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import ru.school.retailanalitycs_web_java.dto.CardDto;
 import ru.school.retailanalitycs_web_java.entities.tables.Card;
