@@ -7,7 +7,7 @@ import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.Instant;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -16,7 +16,7 @@ import java.time.Instant;
 public class DateOfAnalysisFormation {
     @Id
     @Column(name = "analysis_formation", nullable = false)
-    private Instant id;
+    private LocalDateTime id;
 
     //TODO [JPA Buddy] generate columns from DB
 }

@@ -21,7 +21,7 @@ public class CsvWriter<T> {
             strategy.setType(clazz);
             StatefulBeanToCsv<T> beanToCsv = new StatefulBeanToCsvBuilder<T>(writer)
                     .withQuotechar(ICSVWriter.NO_QUOTE_CHARACTER)
-                    .withSeparator(ICSVWriter.DEFAULT_SEPARATOR)
+                    .withSeparator('\t')
                     .withOrderedResults(true)
                     .withMappingStrategy(strategy)
                     .build();
