@@ -1,19 +1,23 @@
 databaseChangeLog:
   - include:
-      file: db\changelog\migrations\db.changelog-1.0-addTables.sql
+      file: db/changelog/migrations/db.changelog-1.0-addTables.sql
   - include:
-      file: db\changelog\migrations\db.changelog-2.0-addCustomerView.sql
+      file: db/changelog/migrations/db.changelog-3.0-addCustomerView.sql
   - include:
-      file: db\changelog\migrations\db.changelog-3.0-addPurchaseHistoryView.sql
+      file: db/changelog/migrations/db.changelog-4.0-addPeriodsView.sql
   - include:
-      file: db\changelog\migrations\db.changelog-4.0-addPeriodsView.sql
+      file: db/changelog/migrations/db.changelog-5.0-addPurchaseHistoryView.sql
   - include:
-      file: db\changelog\migrations\db.changelog-5.0-addGroupsView.sql
+      file: db/changelog/migrations/db.changelog-6.0-addGroupsView.sql
   - include:
-      file: db\changelog\migrations\db.changelog-6.0-addPersonalOfferProcedure.sql
+      file: db/changelog/migrations/db.changelog-7.0-addFrequencyOfVisitsProcedure.sql
   - include:
-      file: db\changelog\migrations\db.changelog-7.0-addFrequencyOfVisitsProcedure.sql
+      file: db/changelog/migrations/db.changelog-8.0-addPersonalOfferProcedure.sql
   - include:
-      file: db\changelog\migrations\db.changelog-8.0-addMarginGrowthOffersProcedure.sql
+      file: db/changelog/migrations/db.changelog-9.0-addMarginGrowthOffersProcedure.sql
   - include:
-      file: db\changelog\migrations\db.changelog-1.0-ImportsDataFromCsv.yaml
+      file: db/changelog/migrations/db.changelog-2.0-ImportsDataFromCsv.yaml
+  - include:
+      file: db/changelog/migrations/db.changelog-2.1-ImportsDataFromCsv-test.yaml
+  - include:
+      file: db/changelog/migrations/db.changelog-10.0-updateSequences.sql

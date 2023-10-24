@@ -1,9 +1,6 @@
 package ru.school.retailanalitycs_web_java.entities.tables;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -15,6 +12,8 @@ import lombok.ToString;
 @Table(name = "personal_data")
 public class Customer {
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "customer_id_generator")
+    @SequenceGenerator(name = "customer_id_generator", sequenceName = "personal_data_customer_id_seq", allocationSize = 1)
     @Column(name = "customer_id", nullable = false)
     private Integer id;
 

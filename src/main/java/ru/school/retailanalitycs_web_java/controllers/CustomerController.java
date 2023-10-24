@@ -36,8 +36,8 @@ public class CustomerController {
         return customerService.findAll().stream().map(customerMapper::toDto).toList();
     }
 
-    @GetMapping("all")
-    public Page<CustomerDto> findAllByPage(@RequestParam("page") int page,
+    @GetMapping(params = {"page", "size"})
+    public Page<CustomerDto> findAllCustomersByPage(@RequestParam("page") int page,
                                            @RequestParam("size") int size) {
         return customerService.findAllByPage(page, size).map(customerMapper::toDto);
     }
