@@ -5,6 +5,9 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.LinkedHashSet;
+import java.util.Set;
+
 @Getter
 @Setter
 @ToString
@@ -28,5 +31,9 @@ public class Customer {
 
     @Column(name = "customer_primary_phone")
     private String customerPrimaryPhone;
+
+    @OneToMany(mappedBy = "customer", orphanRemoval = true)
+    @ToString.Exclude
+    private Set<Card> cards = new LinkedHashSet<>();
 
 }

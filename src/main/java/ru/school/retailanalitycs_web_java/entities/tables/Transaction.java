@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -27,5 +29,8 @@ public class Transaction {
 
     @Column(name = "transaction_store_id")
     private Integer transactionStoreId;
+
+    @OneToMany(mappedBy = "transaction", orphanRemoval = true)
+    private Set<Check> checks = new LinkedHashSet<>();
 
 }

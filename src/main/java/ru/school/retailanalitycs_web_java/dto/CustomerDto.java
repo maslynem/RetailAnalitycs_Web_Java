@@ -9,10 +9,9 @@ import lombok.*;
 
 @Data
 @Builder
-@EqualsAndHashCode(callSuper = false)
 @AllArgsConstructor
 @NoArgsConstructor
-public class CustomerDto extends BaseDto<Integer> {
+public class CustomerDto {
 
     @CsvBindByName(column = "customer_id", required = true)
     @CsvBindByPosition(position = 0)

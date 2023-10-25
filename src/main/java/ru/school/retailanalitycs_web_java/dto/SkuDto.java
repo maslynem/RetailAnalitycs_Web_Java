@@ -1,13 +1,14 @@
 package ru.school.retailanalitycs_web_java.dto;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 import com.opencsv.bean.CsvBindByName;
 import com.opencsv.bean.CsvBindByPosition;
 
 @Data
-@EqualsAndHashCode(callSuper = false)
-public class SkuDto extends BaseDto<Integer> {
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+public class SkuDto {
     @CsvBindByName(column = "sku_id", required = true)
     @CsvBindByPosition(position = 0)
     private Integer id;

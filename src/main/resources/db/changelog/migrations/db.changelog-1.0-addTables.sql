@@ -59,7 +59,7 @@ CREATE TABLE stores
 
 CREATE TABLE IF NOT EXISTS checks
 (
-    Transaction_ID SERIAL NOT NULL REFERENCES transactions (Transaction_ID),
+    Transaction_ID INT NOT NULL REFERENCES transactions (Transaction_ID),
     SKU_ID         INT              NOT NULL REFERENCES sku (SKU_ID),
     SKU_Amount     DOUBLE PRECISION NOT NULL,
     SKU_Summ       DOUBLE PRECISION NOT NULL,

@@ -66,7 +66,6 @@ class CustomerControllerTest extends IntegrationTestBase {
     @Test
     void findCustomerById() throws Exception {
         CustomerDto customerDto = CustomerDto.builder().id(CUSTOMER_ID).customerName("Евгений").customerSurname("Варенников").customerPrimaryEmail("hdfavorgbdb700@gmail.com").customerPrimaryPhone("+74910382990").build();
-
         mockMvc.perform(get("/api/v1/customers/{CUSTOMER_ID}", CUSTOMER_ID))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(CUSTOMER_ID))

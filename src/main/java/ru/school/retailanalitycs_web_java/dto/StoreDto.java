@@ -2,12 +2,13 @@ package ru.school.retailanalitycs_web_java.dto;
 
 import com.opencsv.bean.CsvBindByName;
 import com.opencsv.bean.CsvBindByPosition;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 
 @Data
-@EqualsAndHashCode(callSuper = false)
-public class StoreDto extends BaseDto<Integer> {
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+public class StoreDto {
     @CsvBindByName(column = "store_id", required = true)
     @CsvBindByPosition(position = 0)
     private Integer id;

@@ -3,14 +3,18 @@ package ru.school.retailanalitycs_web_java.dto;
 import com.opencsv.bean.CsvBindByName;
 import com.opencsv.bean.CsvBindByPosition;
 import com.opencsv.bean.CsvDate;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
 @Data
-@EqualsAndHashCode(callSuper = false)
-public class TransactionDto extends BaseDto<Integer> {
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+public class TransactionDto {
     @CsvBindByName(column = "transaction_id", required = true)
     @CsvBindByPosition(position = 0)
     private Integer id;
