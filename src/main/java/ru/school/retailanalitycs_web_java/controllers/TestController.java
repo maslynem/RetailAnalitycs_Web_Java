@@ -12,12 +12,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
-
 @Controller
 
 public class TestController {
     private final RestTemplate restTemplate = new RestTemplate();
-
 
     @GetMapping
     public String getIndex() {

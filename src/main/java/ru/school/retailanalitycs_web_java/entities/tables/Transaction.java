@@ -14,6 +14,8 @@ import java.util.Set;
 @Table(name = "transactions")
 public class Transaction {
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "transaction_id_generator")
+    @SequenceGenerator(name = "transaction_id_generator", sequenceName = "transactions_transaction_id_seq", allocationSize = 1)
     @Column(name = "transaction_id", nullable = false)
     private Integer id;
 
@@ -24,7 +26,7 @@ public class Transaction {
     @Column(name = "transaction_summ", nullable = false)
     private Double transactionSum;
 
-    @Column(name = "transaction_datetime")
+    @Column(name = "transaction_datetime", columnDefinition = "TIMESTAMP")
     private LocalDateTime transactionDatetime;
 
     @Column(name = "transaction_store_id")

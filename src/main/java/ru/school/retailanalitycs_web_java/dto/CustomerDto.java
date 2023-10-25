@@ -5,7 +5,10 @@ import com.opencsv.bean.CsvBindByPosition;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @Builder
@@ -34,7 +37,7 @@ public class CustomerDto {
     private String customerPrimaryEmail;
 
     @NotBlank(message = "Phone number is mandatory")
-    @Pattern(regexp="^\\+7\\d{10}", message="Phone number should contains +7 and 10 Arabic numerals")
+    @Pattern(regexp = "^\\+7\\d{10}", message = "Phone number should contains +7 and 10 Arabic numerals")
     @CsvBindByName(column = "customer_primary_phone", required = true)
     @CsvBindByPosition(position = 4)
     private String customerPrimaryPhone;

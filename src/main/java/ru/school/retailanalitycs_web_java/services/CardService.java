@@ -5,7 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 import ru.school.retailanalitycs_web_java.entities.tables.Card;
 
-
 @Service
 public class CardService extends BaseService<Card, Integer> {
 

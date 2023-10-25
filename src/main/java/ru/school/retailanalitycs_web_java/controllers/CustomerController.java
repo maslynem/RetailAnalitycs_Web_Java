@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.school.retailanalitycs_web_java.dto.CustomerDto;
 import ru.school.retailanalitycs_web_java.entities.tables.Customer;
-import ru.school.retailanalitycs_web_java.exceptions.CustomerNotFoundException;
+import ru.school.retailanalitycs_web_java.exceptions.notFoundExceptions.CustomerNotFoundException;
 import ru.school.retailanalitycs_web_java.mapper.CustomerMapper;
 import ru.school.retailanalitycs_web_java.services.CustomerService;
 import ru.school.retailanalitycs_web_java.utils.CsvReader;

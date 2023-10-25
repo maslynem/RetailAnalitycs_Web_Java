@@ -112,7 +112,7 @@ class CardControllerTest extends IntegrationTestBase {
     }
 
     @Test
-    void deleteCustomer() throws Exception {
+    void deleteCard() throws Exception {
         mockMvc.perform(delete("/api/v1/cards/{CARD_ID}", CARD_ID))
                 .andExpect(status().isOk());
         mockMvc.perform(get("/api/v1/cards/{CARD_ID}", CARD_ID))

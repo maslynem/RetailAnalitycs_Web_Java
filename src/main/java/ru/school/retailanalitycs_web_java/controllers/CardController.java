@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.school.retailanalitycs_web_java.dto.CardDto;
 import ru.school.retailanalitycs_web_java.entities.tables.Card;
-import ru.school.retailanalitycs_web_java.exceptions.CardNotFoundException;
+import ru.school.retailanalitycs_web_java.exceptions.notFoundExceptions.CardNotFoundException;
 import ru.school.retailanalitycs_web_java.mapper.CardMapper;
 import ru.school.retailanalitycs_web_java.services.CardService;
 import ru.school.retailanalitycs_web_java.utils.CsvReader;

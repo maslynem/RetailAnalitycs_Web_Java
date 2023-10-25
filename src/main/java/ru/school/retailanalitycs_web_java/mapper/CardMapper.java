@@ -4,7 +4,7 @@ import org.mapstruct.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import ru.school.retailanalitycs_web_java.dto.CardDto;
 import ru.school.retailanalitycs_web_java.entities.tables.Card;
-import ru.school.retailanalitycs_web_java.exceptions.CardNotFoundException;
+import ru.school.retailanalitycs_web_java.exceptions.notFoundExceptions.CardNotFoundException;
 import ru.school.retailanalitycs_web_java.services.CardService;
 
 @Mapper(componentModel = "spring", uses = {CustomerMapper.class})

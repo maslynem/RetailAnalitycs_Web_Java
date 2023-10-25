@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import ru.school.retailanalitycs_web_java.dto.ErrorDto;
-import ru.school.retailanalitycs_web_java.exceptions.EntityNotFoundException;
+import ru.school.retailanalitycs_web_java.exceptions.notFoundExceptions.EntityNotFoundException;
 
 import java.util.stream.Collectors;
 

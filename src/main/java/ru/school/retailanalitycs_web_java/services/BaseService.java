@@ -26,7 +26,6 @@ public abstract class BaseService<E, K> {
         return repository.save(entity);
     }
 
-
     public Optional<E> findById(K id) {
         return repository.findById(id);
     }

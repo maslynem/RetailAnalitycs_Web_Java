@@ -4,7 +4,7 @@ import org.mapstruct.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import ru.school.retailanalitycs_web_java.dto.CustomerDto;
 import ru.school.retailanalitycs_web_java.entities.tables.Customer;
-import ru.school.retailanalitycs_web_java.exceptions.CustomerNotFoundException;
+import ru.school.retailanalitycs_web_java.exceptions.notFoundExceptions.CustomerNotFoundException;
 import ru.school.retailanalitycs_web_java.services.CustomerService;
 
 @Mapper(componentModel = "spring")
