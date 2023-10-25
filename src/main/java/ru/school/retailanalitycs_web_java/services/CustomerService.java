@@ -10,4 +10,5 @@ public class CustomerService extends BaseService<Customer, Integer> {
     protected CustomerService(JpaRepository<Customer, Integer> repository) {
         super(repository);
     }
+
 }

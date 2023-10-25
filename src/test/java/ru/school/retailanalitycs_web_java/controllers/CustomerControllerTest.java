@@ -70,18 +70,18 @@ class CustomerControllerTest extends IntegrationTestBase {
         mockMvc.perform(get("/api/v1/customers/{CUSTOMER_ID}", CUSTOMER_ID))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(CUSTOMER_ID))
-                .andExpect(jsonPath("$.customerName").value("Евгений"))
-                .andExpect(jsonPath("$.customerSurname").value("Варенников"))
-                .andExpect(jsonPath("$.customerPrimaryEmail").value("hdfavorgbdb700@gmail.com"))
-                .andExpect(jsonPath("$.customerPrimaryPhone").value("+74910382990"));
+                .andExpect(jsonPath("$.customerName").value(customerDto.getCustomerName()))
+                .andExpect(jsonPath("$.customerSurname").value(customerDto.getCustomerSurname()))
+                .andExpect(jsonPath("$.customerPrimaryEmail").value(customerDto.getCustomerPrimaryEmail()))
+                .andExpect(jsonPath("$.customerPrimaryPhone").value(customerDto.getCustomerPrimaryPhone()));
     }
-// todo
-//    @Test
-//    void findNotExistingCustomer() throws Exception {
-//        mockMvc.perform(get("/api/v1/customers/{NOT_EXISTING_ID}", NOT_EXISTING_ID))
-//                .andExpect(status().isNotFound())
-//                .andExpect(jsonPath("$.message").exists());
-//    }
+    @Test
+    void findNotExistingCustomer() throws Exception {
+        mockMvc.perform(get("/api/v1/customers/{NOT_EXISTING_ID}", NOT_EXISTING_ID))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.code").value("NOT_FOUND"))
+                .andExpect(jsonPath("$.message").exists());
+    }
 
     @Test
     void create() throws Exception {
@@ -98,80 +98,110 @@ class CustomerControllerTest extends IntegrationTestBase {
                 .andExpect(jsonPath("$.customerPrimaryEmail").value(customerDto.getCustomerPrimaryEmail()))
                 .andExpect(jsonPath("$.customerPrimaryPhone").value(customerDto.getCustomerPrimaryPhone()));
     }
+
+    @Test
+    void createWithMissingName_shouldReturnBadRequest() throws Exception {
+        CustomerDto customerDto = CustomerDto.builder().customerSurname("test").customerPrimaryEmail("test@mail.ru").customerPrimaryPhone("+74957609115").build();
+        String requestJson = objectMapper.writeValueAsString(customerDto);
+        mockMvc.perform(post("/api/v1/customers")
+                        .contentType(APPLICATION_JSON)
+                        .content(requestJson))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.code").value("ENTITY_IS_NOT_VALID"))
+                .andExpect(jsonPath("$.message").exists());
+    }
+
+    @Test
+    void createWithBlankName_shouldReturnBadRequest() throws Exception {
+        CustomerDto customerDto = CustomerDto.builder().customerName(" ").customerSurname("test").customerPrimaryEmail("test@mail.ru").customerPrimaryPhone("+74957609115").build();
+        String requestJson = objectMapper.writeValueAsString(customerDto);
+        mockMvc.perform(post("/api/v1/customers")
+                        .contentType(APPLICATION_JSON)
+                        .content(requestJson))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.code").value("ENTITY_IS_NOT_VALID"))
+                .andExpect(jsonPath("$.message").exists());
+    }
+    @Test
+    void createWithMissingSurname_shouldReturnBadRequest() throws Exception {
+        CustomerDto customerDto = CustomerDto.builder().customerName("test").customerPrimaryEmail("test@mail.ru").customerPrimaryPhone("+74957609115").build();
+        String requestJson = objectMapper.writeValueAsString(customerDto);
+        mockMvc.perform(post("/api/v1/customers")
+                        .contentType(APPLICATION_JSON)
+                        .content(requestJson))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.code").value("ENTITY_IS_NOT_VALID"))
+                .andExpect(jsonPath("$.message").exists());
+    }
+
+    @Test
+    void createWithBlankSurname_shouldReturnBadRequest() throws Exception {
+        CustomerDto customerDto = CustomerDto.builder().customerName("test").customerSurname(" ").customerPrimaryEmail("test@mail.ru").customerPrimaryPhone("+74957609115").build();
+        String requestJson = objectMapper.writeValueAsString(customerDto);
+        mockMvc.perform(post("/api/v1/customers")
+                        .contentType(APPLICATION_JSON)
+                        .content(requestJson))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.code").value("ENTITY_IS_NOT_VALID"))
+                .andExpect(jsonPath("$.message").exists());
+    }
+
+
+    @Test
+    void createWithMissingEmail_shouldReturnBadRequest() throws Exception {
+        CustomerDto customerDto = CustomerDto.builder().customerName("test").customerSurname("test").customerPrimaryPhone("+74957609115").build();
+        String requestJson = objectMapper.writeValueAsString(customerDto);
+        mockMvc.perform(post("/api/v1/customers")
+                        .contentType(APPLICATION_JSON)
+                        .content(requestJson))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.code").value("ENTITY_IS_NOT_VALID"))
+                .andExpect(jsonPath("$.message").exists());
+    }
+
+    @Test
+    void createWithMissingNotValidEmail_shouldReturnBadRequest() throws Exception {
+        CustomerDto customerDto = CustomerDto.builder().customerName("test").customerSurname("test").customerPrimaryEmail("NOT_VALID").customerPrimaryPhone("+74957609115").build();
+        String requestJson = objectMapper.writeValueAsString(customerDto);
+        mockMvc.perform(post("/api/v1/customers")
+                        .contentType(APPLICATION_JSON)
+                        .content(requestJson))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.code").value("ENTITY_IS_NOT_VALID"))
+                .andExpect(jsonPath("$.message").exists());
+    }
+    @Test
+    void createWithMissingPhone_shouldReturnBadRequest() throws Exception {
+        CustomerDto customerDto = CustomerDto.builder().customerName("test").customerSurname("test").customerPrimaryEmail("test@mail.ru").build();
+        String requestJson = objectMapper.writeValueAsString(customerDto);
+        mockMvc.perform(post("/api/v1/customers")
+                        .contentType(APPLICATION_JSON)
+                        .content(requestJson))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.code").value("ENTITY_IS_NOT_VALID"))
+                .andExpect(jsonPath("$.message").exists());
+    }
+
+    @Test
+    void createWithMissingNotValidPhone_shouldReturnBadRequest() throws Exception {
+        CustomerDto customerDto = CustomerDto.builder()
+                .customerName("test")
+                .customerSurname("test")
+                .customerPrimaryEmail("NOT_VALID")
+                .customerPrimaryEmail("test@mail.ru")
+                .customerPrimaryPhone("11111")
+                .build();
+        String requestJson = objectMapper.writeValueAsString(customerDto);
+        mockMvc.perform(post("/api/v1/customers")
+                        .contentType(APPLICATION_JSON)
+                        .content(requestJson))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.code").value("ENTITY_IS_NOT_VALID"))
+                .andExpect(jsonPath("$.message").exists());
+    }
+
+
 // todo
-//    @Test
-//    void createWithNotExistingCompany() throws Exception {
-//        CustomerCreateEditDto customerDto = CustomerCreateEditDto.builder()
-//                .name("test")
-//                .email("test@mail.ru")
-//                .age(19)
-//                .companyName("error")
-//                .build();
-//        String requestJson = objectMapper.writeValueAsString(customerDto);
-//        mockMvc.perform(post("/api/v1/customers")
-//                        .contentType(APPLICATION_JSON)
-//                        .content(requestJson))
-//                .andExpect(status().isNotFound())
-//                .andExpect(jsonPath("$.message").exists());
-//    }
-//
-//    @Test
-//    void createWithMissingName() throws Exception {
-//        CustomerCreateEditDto customerDto = CustomerCreateEditDto.builder()
-//                .email("test@mail.ru")
-//                .age(19)
-//                .build();
-//        String requestJson = objectMapper.writeValueAsString(customerDto);
-//        mockMvc.perform(post("/api/v1/customers")
-//                        .contentType(APPLICATION_JSON)
-//                        .content(requestJson))
-//                .andExpect(status().isBadRequest())
-//                .andExpect(jsonPath("$.message").exists());
-//    }
-//
-//    @Test
-//    void createWithMissingEmail() throws Exception {
-//        CustomerCreateEditDto customerDto = CustomerCreateEditDto.builder()
-//                .name("test")
-//                .age(19)
-//                .build();
-//        String requestJson = objectMapper.writeValueAsString(customerDto);
-//        mockMvc.perform(post("/api/v1/customers")
-//                        .contentType(APPLICATION_JSON)
-//                        .content(requestJson))
-//                .andExpect(status().isBadRequest())
-//                .andExpect(jsonPath("$.message").exists());
-//    }
-//
-//    @Test
-//    void createWithMissingAge() throws Exception {
-//        CustomerCreateEditDto customerDto = CustomerCreateEditDto.builder()
-//                .name("test")
-//                .email("test@mail.ru")
-//                .build();
-//        String requestJson = objectMapper.writeValueAsString(customerDto);
-//        mockMvc.perform(post("/api/v1/customers")
-//                        .contentType(APPLICATION_JSON)
-//                        .content(requestJson))
-//                .andExpect(status().isBadRequest())
-//                .andExpect(jsonPath("$.message").exists());
-//    }
-//
-//    @Test
-//    void createWithIncorrectEmail() throws Exception {
-//        CustomerCreateEditDto customerDto = CustomerCreateEditDto.builder()
-//                .name("test")
-//                .email("incorrect email")
-//                .age(19)
-//                .build();
-//        String requestJson = objectMapper.writeValueAsString(customerDto);
-//        mockMvc.perform(post("/api/v1/customers")
-//                        .contentType(APPLICATION_JSON)
-//                        .content(requestJson))
-//                .andExpect(status().isBadRequest())
-//                .andExpect(jsonPath("$.message").exists());
-//    }
-//
 //    @Test
 //    void update() throws Exception {
 //        CustomerCreateEditDto customerDto = CustomerCreateEditDto.builder()
@@ -190,7 +220,7 @@ class CustomerControllerTest extends IntegrationTestBase {
 //                .andExpect(jsonPath("$.email").value("test@mail.ru"))
 //                .andExpect(jsonPath("$.age").value(19));
 //    }
-//
+// todo
 //    @Test
 //    void updateNotExistingCustomer() throws Exception {
 //        CustomerCreateEditDto customerDto = CustomerCreateEditDto.builder()
@@ -205,10 +235,12 @@ class CustomerControllerTest extends IntegrationTestBase {
 //                .andExpect(status().isNotFound())
 //                .andExpect(jsonPath("$.message").exists());
 //    }
-//
-//    @Test
-//    void deleteCustomer() throws Exception {
-//        mockMvc.perform(delete("/api/v1/customers/{CUSTOMER_ID}", CUSTOMER_ID))
-//                .andExpect(status().isOk());
-//    }
+
+    @Test
+    void deleteCustomer() throws Exception {
+        mockMvc.perform(delete("/api/v1/customers/{CUSTOMER_ID}", CUSTOMER_ID))
+                .andExpect(status().isOk());
+        mockMvc.perform(get("/api/v1/customers/{CUSTOMER_ID}", CUSTOMER_ID))
+                .andExpect(status().isNotFound());
+    }
 }

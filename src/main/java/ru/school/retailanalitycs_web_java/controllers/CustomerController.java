@@ -1,5 +1,6 @@
 package ru.school.retailanalitycs_web_java.controllers;
 
+import jakarta.validation.Valid;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -38,7 +39,7 @@ public class CustomerController {
 
     @GetMapping(params = {"page", "size"})
     public Page<CustomerDto> findAllCustomersByPage(@RequestParam("page") int page,
-                                           @RequestParam("size") int size) {
+                                                    @RequestParam("size") int size) {
         return customerService.findAllByPage(page, size).map(customerMapper::toDto);
     }
 
@@ -49,12 +50,18 @@ public class CustomerController {
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public CustomerDto create(@RequestBody CustomerDto customerDto) {
+    public CustomerDto create(@Valid @RequestBody CustomerDto customerDto) {
         Customer customer = customerMapper.toEntity(customerDto);
         Customer save = customerService.save(customer);
         customerDto.setId(save.getId());
         return customerDto;
     }
+
+// todo
+//    @PostMapping(value = "/${id}", consumes = MediaType.APPLICATION_JSON_VALUE)
+//    public CustomerDto update(@PathVariable Integer id, @RequestBody CustomerDto customerDto) {
+//        return customerDto;
+//    }
 
     @DeleteMapping("/{id}")
     public void delete(@PathVariable("id") Integer id) {
