@@ -32,26 +32,26 @@ public class SkuController {
     }
 
     @GetMapping
-    public List<SkuReadDto> findAllCustomers() {
+    public List<SkuReadDto> findAllSkus() {
         return skuService.findAll().stream().map(skuMapper::toDto).toList();
     }
 
     @GetMapping(params = {"page", "size"})
-    public Page<SkuReadDto> findAllCustomersByPage(@RequestParam("page") int page,
-                                                   @RequestParam("size") int size) {
+    public Page<SkuReadDto> findAllSkusByPage(@RequestParam("page") int page,
+                                              @RequestParam("size") int size) {
         return skuService.findAllByPage(page, size).map(skuMapper::toDto);
     }
 
     @GetMapping("/{id}")
-    public SkuReadDto findCustomerById(@PathVariable Integer id) {
+    public SkuReadDto findSkuById(@PathVariable Integer id) {
         return skuService.findById(id).map(skuMapper::toDto).orElseThrow(() -> new SkuNotFoundException(id));
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public SkuReadDto create(@Valid @RequestBody SkuCreateDto customerDto) {
-        Sku customer = skuMapper.toEntity(customerDto);
-        Sku save = skuService.save(customer);
+    public SkuReadDto create(@Valid @RequestBody SkuCreateDto skuDto) {
+        Sku sku = skuMapper.toEntity(skuDto);
+        Sku save = skuService.save(sku);
         return skuMapper.toDto(save);
     }
 

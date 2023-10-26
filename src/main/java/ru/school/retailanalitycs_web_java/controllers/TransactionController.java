@@ -43,7 +43,7 @@ public class TransactionController {
     }
 
     @GetMapping("/{id}")
-    public TransactionReadDto findtransactionById(@PathVariable Integer id) {
+    public TransactionReadDto findTransactionById(@PathVariable Integer id) {
         return transactionService.findById(id).map(transactionMapper::toDto).orElseThrow(() -> new TransactionNotFoundException(id));
     }
 

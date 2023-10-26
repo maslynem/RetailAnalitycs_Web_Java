@@ -32,26 +32,26 @@ public class CardController {
     }
 
     @GetMapping
-    public List<CardReadDto> findAllCustomers() {
+    public List<CardReadDto> findAllCards() {
         return cardService.findAll().stream().map(cardMapper::toDto).toList();
     }
 
     @GetMapping(params = {"page", "size"})
-    public Page<CardReadDto> findAllCustomersByPage(@RequestParam("page") int page,
-                                                    @RequestParam("size") int size) {
+    public Page<CardReadDto> findAllCardsByPage(@RequestParam("page") int page,
+                                                @RequestParam("size") int size) {
         return cardService.findAllByPage(page, size).map(cardMapper::toDto);
     }
 
     @GetMapping("/{id}")
-    public CardReadDto findCustomerById(@PathVariable Integer id) {
+    public CardReadDto findCardById(@PathVariable Integer id) {
         return cardService.findById(id).map(cardMapper::toDto).orElseThrow(() -> new CardNotFoundException(id));
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public CardReadDto create(@Valid @RequestBody CardCreateDto customerDto) {
-        Card customer = cardMapper.toEntity(customerDto);
-        Card save = cardService.save(customer);
+    public CardReadDto create(@Valid @RequestBody CardCreateDto cardDto) {
+        Card card = cardMapper.toEntity(cardDto);
+        Card save = cardService.save(card);
         return cardMapper.toDto(save);
     }
 

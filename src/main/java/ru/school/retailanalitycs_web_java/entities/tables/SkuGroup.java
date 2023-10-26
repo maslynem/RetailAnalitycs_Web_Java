@@ -4,6 +4,9 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.LinkedHashSet;
+import java.util.Set;
+
 @Getter
 @Setter
 @Entity
@@ -16,5 +19,8 @@ public class SkuGroup {
 
     @Column(name = "group_name", length = Integer.MAX_VALUE, unique = true)
     private String groupName;
+
+    @OneToMany(mappedBy = "skuGroup", orphanRemoval = true)
+    private Set<Sku> skus = new LinkedHashSet<>();
 
 }

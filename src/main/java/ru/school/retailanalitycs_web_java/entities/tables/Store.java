@@ -13,7 +13,7 @@ public class Store {
     private StoreId id;
 
     @MapsId("skuId")
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "sku_id", nullable = false)
     private Sku sku;
 

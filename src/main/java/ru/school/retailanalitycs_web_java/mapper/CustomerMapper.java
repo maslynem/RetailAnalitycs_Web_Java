@@ -13,7 +13,7 @@ public abstract class CustomerMapper {
     @Autowired
     private CustomerService customerService;
 
-    public abstract CustomerDto toDto(Customer customer);
+    public abstract CustomerDto toDto(Customer entity);
 
     @Mapping(target = "cards", ignore = true)
     public abstract Customer toEntity(CustomerDto dto);
