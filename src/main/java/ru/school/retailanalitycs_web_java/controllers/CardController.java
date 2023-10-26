@@ -7,7 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import ru.school.retailanalitycs_web_java.dto.CardDto;
+import ru.school.retailanalitycs_web_java.dto.cardDto.CardCreateDto;
+import ru.school.retailanalitycs_web_java.dto.cardDto.CardReadDto;
 import ru.school.retailanalitycs_web_java.entities.tables.Card;
 import ru.school.retailanalitycs_web_java.exceptions.notFoundExceptions.CardNotFoundException;
 import ru.school.retailanalitycs_web_java.mapper.CardMapper;
@@ -22,37 +23,36 @@ import java.util.List;
 public class CardController {
     private final CardService cardService;
     private final CardMapper cardMapper;
-    private final CsvReader<CardDto> csvReader;
+    private final CsvReader<CardCreateDto> csvReader;
 
-    public CardController(CardService cardService, CardMapper cardMapper, CsvReader<CardDto> csvReader) {
+    public CardController(CardService cardService, CardMapper cardMapper, CsvReader<CardCreateDto> csvReader) {
         this.cardService = cardService;
         this.cardMapper = cardMapper;
         this.csvReader = csvReader;
     }
 
     @GetMapping
-    public List<CardDto> findAllCustomers() {
-        return cardService.findAll().stream().map(cardMapper::toDto).toList();
+    public List<CardReadDto> findAllCustomers() {
+        return cardService.findAll().stream().map(cardMapper::toReadDto).toList();
     }
 
     @GetMapping(params = {"page", "size"})
-    public Page<CardDto> findAllCustomersByPage(@RequestParam("page") int page,
-                                                @RequestParam("size") int size) {
-        return cardService.findAllByPage(page, size).map(cardMapper::toDto);
+    public Page<CardReadDto> findAllCustomersByPage(@RequestParam("page") int page,
+                                                    @RequestParam("size") int size) {
+        return cardService.findAllByPage(page, size).map(cardMapper::toReadDto);
     }
 
     @GetMapping("/{id}")
-    public CardDto findCustomerById(@PathVariable Integer id) {
-        return cardService.findById(id).map(cardMapper::toDto).orElseThrow(() -> new CardNotFoundException(id));
+    public CardReadDto findCustomerById(@PathVariable Integer id) {
+        return cardService.findById(id).map(cardMapper::toReadDto).orElseThrow(() -> new CardNotFoundException(id));
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public CardDto create(@Valid @RequestBody CardDto customerDto) {
+    public CardReadDto create(@Valid @RequestBody CardCreateDto customerDto) {
         Card customer = cardMapper.toEntity(customerDto);
         Card save = cardService.save(customer);
-        customerDto.setId(save.getId());
-        return customerDto;
+        return cardMapper.toReadDto(save);
     }
 
     @DeleteMapping("/{id}")
@@ -64,7 +64,7 @@ public class CardController {
     @SneakyThrows
     public void importFromCsv(@RequestPart MultipartFile multipartFile) {
         InputStream inputStream = multipartFile.getInputStream();
-        List<Card> cards = csvReader.importCsv(inputStream, CardDto.class).stream().map(cardMapper::toEntity).toList();
+        List<Card> cards = csvReader.importCsv(inputStream, CardCreateDto.class).stream().map(cardMapper::toEntity).toList();
         cardService.save(cards);
     }
 }

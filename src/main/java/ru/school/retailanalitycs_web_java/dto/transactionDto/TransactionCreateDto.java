@@ -1,4 +1,4 @@
-package ru.school.retailanalitycs_web_java.dto;
+package ru.school.retailanalitycs_web_java.dto.transactionDto;
 
 import com.opencsv.bean.CsvBindByName;
 import com.opencsv.bean.CsvBindByPosition;
@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class TransactionDto {
+public class TransactionCreateDto {
     @CsvBindByName(column = "transaction_id", required = true)
     @CsvBindByPosition(position = 0)
     private Integer id;

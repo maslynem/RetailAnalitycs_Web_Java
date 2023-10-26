@@ -7,7 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import ru.school.retailanalitycs_web_java.dto.TransactionDto;
+import ru.school.retailanalitycs_web_java.dto.transactionDto.TransactionCreateDto;
+import ru.school.retailanalitycs_web_java.dto.transactionDto.TransactionReadDto;
 import ru.school.retailanalitycs_web_java.entities.tables.Transaction;
 import ru.school.retailanalitycs_web_java.exceptions.notFoundExceptions.TransactionNotFoundException;
 import ru.school.retailanalitycs_web_java.mapper.TransactionMapper;
@@ -22,37 +23,36 @@ import java.util.List;
 public class TransactionController {
     private final TransactionService transactionService;
     private final TransactionMapper transactionMapper;
-    private final CsvReader<TransactionDto> csvReader;
+    private final CsvReader<TransactionCreateDto> csvReader;
 
-    public TransactionController(TransactionService transactionService, TransactionMapper transactionMapper, CsvReader<TransactionDto> csvReader) {
+    public TransactionController(TransactionService transactionService, TransactionMapper transactionMapper, CsvReader<TransactionCreateDto> csvReader) {
         this.transactionService = transactionService;
         this.transactionMapper = transactionMapper;
         this.csvReader = csvReader;
     }
 
     @GetMapping
-    public List<TransactionDto> findAllTransactions() {
+    public List<TransactionReadDto> findAllTransactions() {
         return transactionService.findAll().stream().map(transactionMapper::toDto).toList();
     }
 
     @GetMapping(params = {"page", "size"})
-    public Page<TransactionDto> findAlltransactionsByPage(@RequestParam("page") int page,
+    public Page<TransactionReadDto> findAlltransactionsByPage(@RequestParam("page") int page,
                                                           @RequestParam("size") int size) {
         return transactionService.findAllByPage(page, size).map(transactionMapper::toDto);
     }
 
     @GetMapping("/{id}")
-    public TransactionDto findtransactionById(@PathVariable Integer id) {
+    public TransactionReadDto findtransactionById(@PathVariable Integer id) {
         return transactionService.findById(id).map(transactionMapper::toDto).orElseThrow(() -> new TransactionNotFoundException(id));
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public TransactionDto create(@Valid @RequestBody TransactionDto transactionDto) {
+    public TransactionReadDto create(@Valid @RequestBody TransactionCreateDto transactionDto) {
         Transaction transaction = transactionMapper.toEntity(transactionDto);
         Transaction save = transactionService.save(transaction);
-        transactionDto.setId(save.getId());
-        return transactionDto;
+        return transactionMapper.toDto(save);
     }
 
     @DeleteMapping("/{id}")
@@ -64,7 +64,7 @@ public class TransactionController {
     @SneakyThrows
     public void importFromCsv(@RequestPart MultipartFile file) {
         InputStream inputStream = file.getInputStream();
-        List<Transaction> cards = csvReader.importCsv(inputStream, TransactionDto.class).stream().map(transactionMapper::toEntity).toList();
+        List<Transaction> cards = csvReader.importCsv(inputStream, TransactionCreateDto.class).stream().map(transactionMapper::toEntity).toList();
         transactionService.save(cards);
     }
 }

@@ -15,8 +15,9 @@ import java.util.Set;
 @Table(name = "personal_data")
 public class Customer {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "customer_id_generator")
-    @SequenceGenerator(name = "customer_id_generator", sequenceName = "personal_data_customer_id_seq", allocationSize = 1)
+//    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "customer_id_generator")
+//    @SequenceGenerator(name = "customer_id_generator", sequenceName = "personal_data_customer_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "customer_id", nullable = false)
     private Integer id;
 
@@ -32,7 +33,7 @@ public class Customer {
     @Column(name = "customer_primary_phone")
     private String customerPrimaryPhone;
 
-    @OneToMany(mappedBy = "customer", orphanRemoval = true)
+    @OneToMany(mappedBy = "customer", orphanRemoval = true, fetch = FetchType.LAZY)
     @ToString.Exclude
     private Set<Card> cards = new LinkedHashSet<>();
 
