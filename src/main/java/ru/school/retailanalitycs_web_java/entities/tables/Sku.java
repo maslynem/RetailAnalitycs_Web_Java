@@ -10,14 +10,15 @@ import lombok.Setter;
 @Table(name = "sku")
 public class Sku {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "sku_id", nullable = false)
     private Integer id;
 
     @Column(name = "sku_name", length = Integer.MAX_VALUE)
     private String skuName;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "group_id", nullable = false)
-    private SkuGroup group;
+    private SkuGroup skuGroup;
 
 }
