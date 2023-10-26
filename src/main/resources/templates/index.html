@@ -6,11 +6,68 @@
 </head>
 <body>
 
-<form id="fileuploadForm" action="/test/import" method="POST" enctype="multipart/form-data">
-    <label for="file">File</label>
-    <input id="file" name="file" type="file"/>
+<form action="/test/import/customers" enctype="multipart/form-data" id="fileuploadFormCustomer" method="POST">
+    <label for="fileCustomer">customers</label>
+    <input id="fileCustomer" name="file" type="file"/>
     <p>
-        <button class="btn btn-primary btn-sm mb-3" type="submit">Import from CSV</button>
+        <button class="btn btn-primary btn-sm mb-3" type="submit">Import from CSV to Customers</button>
+    </p>
+</form>
+
+<form action="/test/import/cards" enctype="multipart/form-data" id="fileuploadFormCards" method="POST">
+    <label for="fileCards">cards</label>
+    <input id="fileCards" name="file" type="file"/>
+    <p>
+        <button class="btn btn-primary btn-sm mb-3" type="submit">Import from CSV to cards</button>
+    </p>
+</form>
+
+<form action="/test/import/transactions" enctype="multipart/form-data" id="fileuploadFormTransactions" method="POST">
+    <label for="fileTransactions">transactions</label>
+    <input id="fileTransactions" name="file" type="file"/>
+    <p>
+        <button class="btn btn-primary btn-sm mb-3" type="submit">Import from CSV to Transactions</button>
+    </p>
+</form>
+
+<form action="/test/import/sku-groups" enctype="multipart/form-data" id="fileuploadFormGroups_SKU" method="POST">
+    <label for="fileGroups_SKU">sku-groups</label>
+    <input id="fileGroups_SKU" name="file" type="file"/>
+    <p>
+        <button class="btn btn-primary btn-sm mb-3" type="submit">Import from CSV to Groups_SKU</button>
+    </p>
+</form>
+
+<form action="/test/import/skus" enctype="multipart/form-data" id="fileuploadFormSKU" method="POST">
+    <label for="fileSKU">skus</label>
+    <input id="fileSKU" name="file" type="file"/>
+    <p>
+        <button class="btn btn-primary btn-sm mb-3" type="submit">Import from CSV to SKU</button>
+    </p>
+</form>
+
+<form action="/test/import/stores" enctype="multipart/form-data" id="fileuploadFormStores" method="POST">
+    <label for="fileStores">File</label>
+    <input id="fileStores" name="file" type="file"/>
+    <p>
+        <button class="btn btn-primary btn-sm mb-3" type="submit">Import from CSV to Stores</button>
+    </p>
+</form>
+
+<form action="/test/import/checks" enctype="multipart/form-data" id="fileuploadFormChecks" method="POST">
+    <label for="fileChecks">checks</label>
+    <input id="fileChecks" name="file" type="file"/>
+    <p>
+        <button class="btn btn-primary btn-sm mb-3" type="submit">Import from CSV to Checks</button>
+    </p>
+</form>
+
+<form action="/test/import/date-of-analysis-formation" enctype="multipart/form-data" id="fileuploadFormDate_Of_Analysis_Formation"
+      method="POST">
+    <label for="fileDate_Of_Analysis_Formation">date-of-analysis-formation</label>
+    <input id="fileDate_Of_Analysis_Formation" name="file" type="file"/>
+    <p>
+        <button class="btn btn-primary btn-sm mb-3" type="submit">Import from CSV to Date_Of_Analysis_Formation</button>
     </p>
 </form>
 

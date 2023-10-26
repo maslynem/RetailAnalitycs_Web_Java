@@ -7,6 +7,7 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
@@ -22,8 +23,8 @@ public class TestController {
         return "index";
     }
 
-    @PostMapping("test/import")
-    public String importFromCSV(@RequestParam MultipartFile file) {
+    @PostMapping("test/import/{path}")
+    public String importFromCSV(@RequestParam MultipartFile file, @PathVariable String path) {
 
         Resource invoicesResource = file.getResource();
         LinkedMultiValueMap<String, Object> parts = new LinkedMultiValueMap<>();
@@ -31,8 +32,8 @@ public class TestController {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(MediaType.MULTIPART_FORM_DATA);
         HttpEntity<LinkedMultiValueMap<String, Object>> httpEntity = new HttpEntity<>(parts, httpHeaders);
-        String url = "http://localhost:8080/api/v1/transactions/import";
+        String url = "http://localhost:8080/api/v1/" + path + "/import";
         restTemplate.postForEntity(url, httpEntity, Object.class);
-        return "redirect:index";
+        return "index";
     }
 }
