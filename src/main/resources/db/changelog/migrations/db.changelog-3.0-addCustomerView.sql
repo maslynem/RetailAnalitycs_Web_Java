@@ -2,39 +2,39 @@
 
 --changeset maslynem:1 splitStatements:false
 CREATE FUNCTION get_total_segment(segment1 VARCHAR,
-                                             segment2 VARCHAR,
-                                             segment3 VARCHAR) RETURNS INT AS
+                                  segment2 VARCHAR,
+                                  segment3 VARCHAR) RETURNS INT AS
 $$
 DECLARE
     "check"   INT;
-frequency INT;
-churn     INT;
+    frequency INT;
+    churn     INT;
 BEGIN
     IF segment1 = 'Low' THEN
         "check" := 0;
-ELSIF segment1 = 'Medium' THEN
+    ELSIF segment1 = 'Medium' THEN
         "check" := 9;
-ELSIF segment1 = 'High' THEN
+    ELSIF segment1 = 'High' THEN
         "check" := 18;
-END IF;
+    END IF;
 
-IF segment2 = 'Rarely' THEN
+    IF segment2 = 'Rarely' THEN
         frequency := 0;
-ELSIF segment2 = 'Occasionally' THEN
+    ELSIF segment2 = 'Occasionally' THEN
         frequency := 3;
-ELSIF segment2 = 'Often' THEN
+    ELSIF segment2 = 'Often' THEN
         frequency := 6;
-END IF;
+    END IF;
 
-IF segment3 = 'Low' THEN
+    IF segment3 = 'Low' THEN
         churn := 1;
-ELSIF segment3 = 'Medium' THEN
+    ELSIF segment3 = 'Medium' THEN
         churn := 2;
-ELSIF segment3 = 'High' THEN
+    ELSIF segment3 = 'High' THEN
         churn := 3;
-END IF;
+    END IF;
 
-RETURN churn + frequency + "check";
+    RETURN churn + frequency + "check";
 END;
 $$
     LANGUAGE plpgsql;
@@ -69,8 +69,9 @@ WITH customer_avg_check AS (SELECT p.customer_id,
                                                                        (max(transaction_datetime) - min(transaction_datetime)) /
                                                                        count(transaction_id)) /
                                                                86400) AS freq_counter,
-                                        EXTRACT(EPOCH FROM (SELECT max(analysis_formation) FROM date_of_analysis_formation) - max(transaction_datetime)) /
-                                        86400                              AS Customer_Inactive_Period
+                                   EXTRACT(EPOCH FROM (SELECT max(analysis_formation) FROM date_of_analysis_formation) -
+                                                      max(transaction_datetime)) /
+                                   86400 AS Customer_Inactive_Period
                             FROM personal_data p
                                      LEFT JOIN cards c ON p.customer_id = c.customer_id
                                      LEFT JOIN transactions t on c.customer_card_id = t.customer_card_id
@@ -92,7 +93,7 @@ WITH customer_avg_check AS (SELECT p.customer_id,
                                                  WHEN c.Customer_Frequency = 0
                                                      THEN NULL
                                                  ELSE
-                                                         c.Customer_Inactive_Period / c.Customer_Frequency END AS Customer_Churn_Rate,
+                                                     c.Customer_Inactive_Period / c.Customer_Frequency END AS Customer_Churn_Rate,
                                              CASE
                                                  WHEN c.Customer_Frequency = 0
                                                      THEN NULL
@@ -129,7 +130,7 @@ WITH customer_avg_check AS (SELECT p.customer_id,
                                        td.transaction_datetime,
                                        td.transaction_store_id,
                                        row_number()
-                                           over (partition by pd.customer_id ORDER BY td.transaction_datetime DESC) AS flag
+                                       over (partition by pd.customer_id ORDER BY td.transaction_datetime DESC) AS flag
                                 FROM personal_data pd
                                          LEFT JOIN cards cd ON pd.customer_id = cd.customer_id
                                          LEFT JOIN transactions td on cd.customer_card_id = td.customer_card_id
@@ -143,7 +144,7 @@ WITH customer_avg_check AS (SELECT p.customer_id,
      main_store_case2 AS (SELECT t.customer_id, t.transaction_store_id AS Customer_Primary_Store
                           FROM (SELECT *,
                                        row_number()
-                                           over (partition by customer_id ORDER BY transaction_count DESC, last_tr DESC) AS flag
+                                       over (partition by customer_id ORDER BY transaction_count DESC, last_tr DESC) AS flag
                                 FROM customers_shop) AS t
                           WHERE t.flag = 1),
      -- Получаем данные из main_store_case2 за исключением клиентов указанных в main_store_case1 и добавляем клиентов из main_store_case1

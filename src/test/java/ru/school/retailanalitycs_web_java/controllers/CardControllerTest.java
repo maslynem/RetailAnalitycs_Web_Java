@@ -9,14 +9,16 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 import ru.school.retailanalitycs_web_java.IntegrationTestBase;
 import ru.school.retailanalitycs_web_java.IntegrationsTestConfiguration;
-import ru.school.retailanalitycs_web_java.dto.CustomerDto;
 import ru.school.retailanalitycs_web_java.dto.cardDto.CardCreateDto;
 import ru.school.retailanalitycs_web_java.dto.cardDto.CardReadDto;
+import ru.school.retailanalitycs_web_java.dto.customerDto.CustomerDto;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static ru.school.retailanalitycs_web_java.exceptions.ExceptionCode.ENTITY_IS_NOT_VALID;
+import static ru.school.retailanalitycs_web_java.exceptions.ExceptionCode.NOT_FOUND;
 
 @SpringBootTest(classes = IntegrationsTestConfiguration.class)
 @AutoConfigureMockMvc
@@ -72,7 +74,7 @@ class CardControllerTest extends IntegrationTestBase {
     void findNotExistingCustomer() throws Exception {
         mockMvc.perform(get("/api/v1/cards/{NOT_EXISTING_CARD_ID}", NOT_EXISTING_CARD_ID))
                 .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$.code").value("NOT_FOUND"))
+                .andExpect(jsonPath("$.code").value(NOT_FOUND.name()))
                 .andExpect(jsonPath("$.message").exists());
     }
 
@@ -97,7 +99,7 @@ class CardControllerTest extends IntegrationTestBase {
                         .contentType(APPLICATION_JSON)
                         .content(requestJson))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.code").value("ENTITY_IS_NOT_VALID"))
+                .andExpect(jsonPath("$.code").value(ENTITY_IS_NOT_VALID.name()))
                 .andExpect(jsonPath("$.message").exists());
     }
 
@@ -109,7 +111,7 @@ class CardControllerTest extends IntegrationTestBase {
                         .contentType(APPLICATION_JSON)
                         .content(requestJson))
                 .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$.code").value("NOT_FOUND"))
+                .andExpect(jsonPath("$.code").value(NOT_FOUND.name()))
                 .andExpect(jsonPath("$.message").exists());
     }
 
@@ -119,7 +121,7 @@ class CardControllerTest extends IntegrationTestBase {
                 .andExpect(status().isOk());
         mockMvc.perform(get("/api/v1/cards/{CARD_ID}", CARD_ID))
                 .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$.code").value("NOT_FOUND"))
+                .andExpect(jsonPath("$.code").value(NOT_FOUND.name()))
                 .andExpect(jsonPath("$.message").exists());
     }
 

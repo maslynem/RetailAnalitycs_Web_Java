@@ -7,7 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.school.retailanalitycs_web_java.dto.CustomerDto;
+import ru.school.retailanalitycs_web_java.dto.customerDto.CustomerDto;
 
 @Data
 @Builder

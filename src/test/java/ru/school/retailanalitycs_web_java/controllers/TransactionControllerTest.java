@@ -22,6 +22,8 @@ import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static ru.school.retailanalitycs_web_java.exceptions.ExceptionCode.ENTITY_IS_NOT_VALID;
+import static ru.school.retailanalitycs_web_java.exceptions.ExceptionCode.NOT_FOUND;
 
 @SpringBootTest(classes = IntegrationsTestConfiguration.class)
 @AutoConfigureMockMvc
@@ -101,7 +103,7 @@ class TransactionControllerTest extends IntegrationTestBase {
     void findNotExistingTransaction() throws Exception {
         mockMvc.perform(get("/api/v1/transactions/{NOT_EXISTING_TRANSACTION_ID}", NOT_EXISTING_TRANSACTION_ID))
                 .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$.code").value("NOT_FOUND"))
+                .andExpect(jsonPath("$.code").value(NOT_FOUND.name()))
                 .andExpect(jsonPath("$.message").exists());
     }
 
@@ -138,7 +140,7 @@ class TransactionControllerTest extends IntegrationTestBase {
                         .contentType(APPLICATION_JSON)
                         .content(requestJson))
                 .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$.code").value("NOT_FOUND"))
+                .andExpect(jsonPath("$.code").value(NOT_FOUND.name()))
                 .andExpect(jsonPath("$.message").exists());
     }
 
@@ -154,7 +156,7 @@ class TransactionControllerTest extends IntegrationTestBase {
                         .contentType(APPLICATION_JSON)
                         .content(requestJson))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.code").value("ENTITY_IS_NOT_VALID"))
+                .andExpect(jsonPath("$.code").value(ENTITY_IS_NOT_VALID.name()))
                 .andExpect(jsonPath("$.message").exists());
     }
 
@@ -170,7 +172,7 @@ class TransactionControllerTest extends IntegrationTestBase {
                         .contentType(APPLICATION_JSON)
                         .content(requestJson))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.code").value("ENTITY_IS_NOT_VALID"))
+                .andExpect(jsonPath("$.code").value(ENTITY_IS_NOT_VALID.name()))
                 .andExpect(jsonPath("$.message").exists());
     }
 
@@ -186,7 +188,7 @@ class TransactionControllerTest extends IntegrationTestBase {
                         .contentType(APPLICATION_JSON)
                         .content(requestJson))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.code").value("ENTITY_IS_NOT_VALID"))
+                .andExpect(jsonPath("$.code").value(ENTITY_IS_NOT_VALID.name()))
                 .andExpect(jsonPath("$.message").exists());
     }
 
@@ -203,7 +205,7 @@ class TransactionControllerTest extends IntegrationTestBase {
                         .contentType(APPLICATION_JSON)
                         .content(requestJson))
                 .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$.code").value("NOT_FOUND"))
+                .andExpect(jsonPath("$.code").value(NOT_FOUND.name()))
                 .andExpect(jsonPath("$.message").exists());
     }
 
@@ -213,7 +215,7 @@ class TransactionControllerTest extends IntegrationTestBase {
                 .andExpect(status().isOk());
         mockMvc.perform(get("/api/v1/cards/{TRANSACTION_ID}", TRANSACTION_ID))
                 .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$.code").value("NOT_FOUND"))
+                .andExpect(jsonPath("$.code").value(NOT_FOUND.name()))
                 .andExpect(jsonPath("$.message").exists());
     }
 

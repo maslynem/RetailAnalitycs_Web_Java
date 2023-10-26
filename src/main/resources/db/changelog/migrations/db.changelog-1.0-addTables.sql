@@ -33,8 +33,8 @@ CREATE TABLE IF NOT EXISTS transactions
 
 CREATE TABLE groups_sku
 (
-    Group_ID SERIAL PRIMARY KEY,
-    Group_Name TEXT,
+    Group_ID   SERIAL PRIMARY KEY,
+    Group_Name TEXT UNIQUE,
     CONSTRAINT proper_name CHECK (Group_Name ~ '^[a-zA-Zа-яА-Я0-9\s\-\_\.,:;!@#$%^&*()+=?"''<>\/\\\[\]\{\}\|]{1,}$')
 );
 

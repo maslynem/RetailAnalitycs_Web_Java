@@ -2,14 +2,14 @@
 
 --changeset maslynem:1 splitStatements:false
 CREATE FUNCTION get_reward(max_churn_index NUMERIC,
-                                      max_share_of_transactions_with_a_discount INT,
-                                      allowable_share_of_margin INT)
+                           max_share_of_transactions_with_a_discount INT,
+                           allowable_share_of_margin INT)
     RETURNS TABLE
-(
-    customer_id          INT,
-    group_name           TEXT,
-    offer_discount_depth NUMERIC
-)
+            (
+                customer_id          INT,
+                group_name           TEXT,
+                offer_discount_depth NUMERIC
+            )
 AS
 $$
 BEGIN
@@ -59,12 +59,12 @@ CREATE FUNCTION get_personal_offer_growth_of_the_average_check(
     max_share_of_transactions_with_a_discount INT,
     allowable_share_of_margin INT)
     RETURNS TABLE
-(
-    customer_id            INT,
-    required_check_measure NUMERIC,
-    group_name             TEXT,
-    offer_discount_depth   NUMERIC
-)
+            (
+                customer_id            INT,
+                required_check_measure NUMERIC,
+                group_name             TEXT,
+                offer_discount_depth   NUMERIC
+            )
 AS
 $$
 BEGIN
@@ -73,27 +73,27 @@ BEGIN
             OR first_date < (SELECT min(transaction_datetime) FROM transactions)
             OR first_date > last_date THEN
             first_date = (SELECT min(transaction_datetime) FROM transactions);
-END IF;
+        END IF;
 
-IF last_date IS NULL
+        IF last_date IS NULL
             OR last_date > (SELECT max(transaction_datetime) FROM transactions)
             OR last_date < first_date THEN
             last_date = (SELECT max(transaction_datetime) FROM transactions);
-END IF;
+        END IF;
 
-RETURN QUERY
-WITH required_check_measure AS (SELECT p.customer_id,
-                                       CAST(avg(transaction_summ) * coefficient_of_average_check_increase AS NUMERIC) AS required_check_measure
-                                FROM personal_data AS p
-                                         LEFT JOIN cards c on p.customer_id = c.customer_id
-                                         LEFT OUTER JOIN transactions t on c.customer_card_id = t.customer_card_id
-                                WHERE transaction_datetime BETWEEN first_date AND last_date
-                                GROUP BY p.customer_id)
-SELECT c.customer_id, c.required_check_measure, r.group_name, r.offer_discount_depth
-FROM required_check_measure AS c
-         JOIN get_reward(max_churn_index, max_share_of_transactions_with_a_discount,
-    allowable_share_of_margin) AS r ON c.customer_id = r.customer_id;
-END IF;
+        RETURN QUERY
+            WITH required_check_measure AS (SELECT p.customer_id,
+                                                   CAST(avg(transaction_summ) * coefficient_of_average_check_increase AS NUMERIC) AS required_check_measure
+                                            FROM personal_data AS p
+                                                     LEFT JOIN cards c on p.customer_id = c.customer_id
+                                                     LEFT OUTER JOIN transactions t on c.customer_card_id = t.customer_card_id
+                                            WHERE transaction_datetime BETWEEN first_date AND last_date
+                                            GROUP BY p.customer_id)
+            SELECT c.customer_id, c.required_check_measure, r.group_name, r.offer_discount_depth
+            FROM required_check_measure AS c
+                     JOIN get_reward(max_churn_index, max_share_of_transactions_with_a_discount,
+                                     allowable_share_of_margin) AS r ON c.customer_id = r.customer_id;
+    END IF;
 END;
 $$ LANGUAGE plpgsql;
 
@@ -105,36 +105,36 @@ CREATE FUNCTION get_personal_offer_growth_of_the_average_check(
     max_share_of_transactions_with_a_discount INT,
     allowable_share_of_margin INT)
     RETURNS TABLE
-(
-    customer_id            INT,
-    required_check_measure NUMERIC,
-    group_name             TEXT,
-    offer_discount_depth   NUMERIC
-)
+            (
+                customer_id            INT,
+                required_check_measure NUMERIC,
+                group_name             TEXT,
+                offer_discount_depth   NUMERIC
+            )
 AS
 $$
 BEGIN
     IF average_check_calculation_method = 2 THEN
         RETURN QUERY
-WITH all_tr AS (SELECT p.customer_id,
-                       transaction_summ,
-                       transaction_datetime,
-                       row_number()
-                           OVER (PARTITION BY p.customer_id ORDER BY transaction_datetime DESC ) AS flag
-                FROM personal_data AS p
-                         LEFT JOIN cards c on p.customer_id = c.customer_id
-                         LEFT OUTER JOIN transactions t on c.customer_card_id = t.customer_card_id
-                WHERE transaction_summ IS NOT NULL),
-     required_check_measure AS (SELECT t.customer_id,
-                                       CAST(avg(transaction_summ) * coefficient_of_average_check_increase AS NUMERIC) AS required_check_measure
-                                FROM all_tr AS t
-                                WHERE t.flag <= number_of_transactions
-                                GROUP BY t.customer_id)
-SELECT c.customer_id, c.required_check_measure, r.group_name, r.offer_discount_depth
-FROM required_check_measure AS c
-         JOIN get_reward(max_churn_index, max_share_of_transactions_with_a_discount,
-    allowable_share_of_margin) AS r ON c.customer_id = r.customer_id;
-END IF;
+            WITH all_tr AS (SELECT p.customer_id,
+                                   transaction_summ,
+                                   transaction_datetime,
+                                   row_number()
+                                   OVER (PARTITION BY p.customer_id ORDER BY transaction_datetime DESC ) AS flag
+                            FROM personal_data AS p
+                                     LEFT JOIN cards c on p.customer_id = c.customer_id
+                                     LEFT OUTER JOIN transactions t on c.customer_card_id = t.customer_card_id
+                            WHERE transaction_summ IS NOT NULL),
+                 required_check_measure AS (SELECT t.customer_id,
+                                                   CAST(avg(transaction_summ) * coefficient_of_average_check_increase AS NUMERIC) AS required_check_measure
+                                            FROM all_tr AS t
+                                            WHERE t.flag <= number_of_transactions
+                                            GROUP BY t.customer_id)
+            SELECT c.customer_id, c.required_check_measure, r.group_name, r.offer_discount_depth
+            FROM required_check_measure AS c
+                     JOIN get_reward(max_churn_index, max_share_of_transactions_with_a_discount,
+                                     allowable_share_of_margin) AS r ON c.customer_id = r.customer_id;
+    END IF;
 END;
 $$ LANGUAGE plpgsql;
 

@@ -3,15 +3,15 @@
 --changeset maslynem:1 splitStatements:false
 CREATE FUNCTION get_margin(method VARCHAR DEFAULT 'default ', count INT DEFAULT 0)
     RETURNS TABLE
-(
-    Customer_ID  INT,
-    Group_ID     INT,
-    Group_Margin NUMERIC
-)
+            (
+                Customer_ID  INT,
+                Group_ID     INT,
+                Group_Margin NUMERIC
+            )
 AS
 $$
 DECLARE
-date TIMESTAMP;
+    date TIMESTAMP;
 BEGIN
     IF method = 'default' THEN
         RETURN QUERY SELECT "Customer_ID",
@@ -19,15 +19,15 @@ BEGIN
                             CAST(sum("Group_Summ_Paid" - "Group_Cost") AS NUMERIC) AS "Group_Margin"
                      FROM purchase_history
                      GROUP BY 1, 2;
-ELSIF method = 'period' THEN
+    ELSIF method = 'period' THEN
         date := (SELECT analysis_formation FROM date_of_analysis_formation)::date - count;
-RETURN QUERY SELECT "Customer_ID",
-                    "Group_ID",
-                    CAST(sum("Group_Summ_Paid" - "Group_Cost") AS NUMERIC) AS "Group_Margin"
-             FROM purchase_history
-             WHERE "Transaction_DateTime" >= date
-             GROUP BY 1, 2;
-ELSIF method = 'number of transactions' THEN
+        RETURN QUERY SELECT "Customer_ID",
+                            "Group_ID",
+                            CAST(sum("Group_Summ_Paid" - "Group_Cost") AS NUMERIC) AS "Group_Margin"
+                     FROM purchase_history
+                     WHERE "Transaction_DateTime" >= date
+                     GROUP BY 1, 2;
+    ELSIF method = 'number of transactions' THEN
         RETURN QUERY SELECT t."Customer_ID",
                             "Group_ID",
                             CAST(sum("Group_Summ_Paid" - "Group_Cost") AS NUMERIC) AS "Group_Margin"
@@ -39,7 +39,7 @@ ELSIF method = 'number of transactions' THEN
                            ORDER BY "Transaction_DateTime" DESC
                            LIMIT count) AS t
                      GROUP BY 1, 2;
-END IF;
+    END IF;
 END;
 $$ LANGUAGE plpgsql;
 
@@ -70,7 +70,7 @@ WITH new_purchase_history AS (SELECT cards.Customer_ID                 AS "Custo
                            "Transaction_ID",
                            "Transaction_DateTime",
                            EXTRACT(EPOCH FROM ("Transaction_DateTime" - lag("Transaction_DateTime", 1)
-                               OVER (PARTITION BY "Customer_ID", "Group_ID" ORDER BY "Transaction_DateTime"))) /
+                                                                        OVER (PARTITION BY "Customer_ID", "Group_ID" ORDER BY "Transaction_DateTime"))) /
                            86400::int AS diff
                     FROM new_purchase_history
                     ORDER BY 1, 2, 4) AS tmp
@@ -107,7 +107,7 @@ SELECT p."Customer_ID",
        (SELECT EXTRACT(epoch FROM (SELECT max(analysis_formation) FROM date_of_analysis_formation) -
                                   p."Last_Group_Purchase_Date")) / 86400::int /
        p."Group_Frequency"                                                  AS "Group_Churn_Rate",
-        "Group_Stability_Index",
+       "Group_Stability_Index",
        gm.Group_Margin                                                      AS "Group_Margin",
        "Group_Discount_Share",
        CASE WHEN p."Group_Min_Discount" > 0 THEN p."Group_Min_Discount" END AS "Group_Minimum_Discount",
@@ -119,5 +119,5 @@ FROM periods p
          LEFT JOIN dshare ON p."Customer_ID" = dshare.customer_id AND p."Group_ID" = dshare.group_id
          LEFT JOIN avgd ON p."Customer_ID" = avgd."Customer_ID" AND p."Group_ID" = avgd."Group_ID"
          LEFT JOIN get_margin(method := 'default', count := null) AS gm
-ON p."Customer_ID" = gm.Customer_ID AND p."Group_ID" = gm.Group_ID;
+                   ON p."Customer_ID" = gm.Customer_ID AND p."Group_ID" = gm.Group_ID;
 

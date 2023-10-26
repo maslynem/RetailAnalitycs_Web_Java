@@ -38,7 +38,7 @@ public class TransactionController {
 
     @GetMapping(params = {"page", "size"})
     public Page<TransactionReadDto> findAlltransactionsByPage(@RequestParam("page") int page,
-                                                          @RequestParam("size") int size) {
+                                                              @RequestParam("size") int size) {
         return transactionService.findAllByPage(page, size).map(transactionMapper::toDto);
     }
 

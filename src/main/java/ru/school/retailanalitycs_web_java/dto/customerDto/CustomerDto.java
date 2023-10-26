@@ -1,4 +1,4 @@
-package ru.school.retailanalitycs_web_java.dto;
+package ru.school.retailanalitycs_web_java.dto.customerDto;
 
 import com.opencsv.bean.CsvBindByName;
 import com.opencsv.bean.CsvBindByPosition;

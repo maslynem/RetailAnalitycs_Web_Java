@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import ru.school.retailanalitycs_web_java.dto.ErrorDto;
+import ru.school.retailanalitycs_web_java.exceptions.duplicateValue.DuplicateValueException;
 import ru.school.retailanalitycs_web_java.exceptions.notFoundExceptions.EntityNotFoundException;
 
 import java.util.stream.Collectors;
@@ -20,6 +21,16 @@ public class CommonExceptionHandler {
     @ExceptionHandler(EntityNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     protected ErrorDto entityNotFoundExceptionHandler(EntityNotFoundException ex) {
+        log.warn("{}", ex.getMessage());
+        return ErrorDto.builder()
+                .code(ex.getCode())
+                .message(ex.getMessage())
+                .build();
+    }
+
+    @ExceptionHandler(DuplicateValueException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    protected ErrorDto duplicateValueExceptionHandler(DuplicateValueException ex) {
         log.warn("{}", ex.getMessage());
         return ErrorDto.builder()
                 .code(ex.getCode())
