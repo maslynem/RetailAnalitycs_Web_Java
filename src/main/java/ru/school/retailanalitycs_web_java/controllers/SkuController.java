@@ -62,8 +62,8 @@ public class SkuController {
 
     @PostMapping(value = "import", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @SneakyThrows
-    public void importFromCsv(@RequestPart MultipartFile multipartFile) {
-        InputStream inputStream = multipartFile.getInputStream();
+    public void importFromCsv(@RequestPart MultipartFile file) {
+        InputStream inputStream = file.getInputStream();
         List<Sku> skus = csvReader.importCsv(inputStream, SkuCreateDto.class).stream().map(skuMapper::toEntity).toList();
         skuService.save(skus);
     }

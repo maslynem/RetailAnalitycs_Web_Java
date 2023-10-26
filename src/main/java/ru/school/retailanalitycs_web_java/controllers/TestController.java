@@ -31,8 +31,8 @@ public class TestController {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(MediaType.MULTIPART_FORM_DATA);
         HttpEntity<LinkedMultiValueMap<String, Object>> httpEntity = new HttpEntity<>(parts, httpHeaders);
-        String url = "http://localhost:8080/api/v1/customer/import";
+        String url = "http://localhost:8080/api/v1/transactions/import";
         restTemplate.postForEntity(url, httpEntity, Object.class);
-        return "index";
+        return "redirect:index";
     }
 }

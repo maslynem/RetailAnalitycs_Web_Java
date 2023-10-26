@@ -35,7 +35,7 @@ public class TransactionCreateDto {
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     @CsvBindByName(column = "transaction_datetime", required = true)
     @CsvBindByPosition(position = 3)
-    @CsvDate(value = "yyyy-MM-dd HH:mm:ss")
+    @CsvDate(value = "dd.MM.yyyy H:mm:ss")
     private LocalDateTime transactionDatetime;
 
     @NotNull(message = "Transaction store id is mandatory")

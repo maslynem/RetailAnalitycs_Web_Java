@@ -19,6 +19,7 @@ public class CsvReader<T> {
             strategy.setType(clazz);
 
             return new CsvToBeanBuilder<T>(reader)
+                    .withSkipLines(1)
                     .withMappingStrategy(strategy)
                     .withSeparator('\t')
                     .withType(clazz)
