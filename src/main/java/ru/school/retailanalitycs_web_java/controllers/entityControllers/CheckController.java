@@ -44,8 +44,8 @@ public class CheckController {
     }
 
     @GetMapping("/{trId}/{skuId}")
-    public CheckReadDto findCheckById(@PathVariable Integer trId,
-                                      @PathVariable Integer skuId) {
+    public CheckReadDto findCheckById(@PathVariable Long trId,
+                                      @PathVariable Long skuId) {
         CheckId checkId = getId(trId, skuId);
         return checkService.findById(checkId).map(checkMapper::toDto).orElseThrow(() -> new CheckNotFoundException(checkId));
     }
@@ -59,8 +59,8 @@ public class CheckController {
     }
 
     @DeleteMapping("/{trId}/{skuId}")
-    public void delete(@PathVariable Integer trId,
-                       @PathVariable Integer skuId) {
+    public void delete(@PathVariable Long trId,
+                       @PathVariable Long skuId) {
         checkService.deleteById(getId(trId, skuId));
     }
 
@@ -72,7 +72,7 @@ public class CheckController {
         checkService.save(checks);
     }
 
-    private CheckId getId(Integer trId, Integer skuId) {
+    private CheckId getId(Long trId, Long skuId) {
         return new CheckId(trId, skuId);
     }
 }

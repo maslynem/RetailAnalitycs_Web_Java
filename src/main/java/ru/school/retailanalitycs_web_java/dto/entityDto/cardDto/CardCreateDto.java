@@ -16,10 +16,10 @@ public class CardCreateDto {
 
     @CsvBindByName(column = "customer_card_id", required = true)
     @CsvBindByPosition(position = 0)
-    private Integer id;
+    private Long id;
 
     @NotNull(message = "Customer is mandatory")
     @CsvBindByName(column = "customer_id", required = true)
     @CsvBindByPosition(position = 1)
-    private Integer customer;
+    private Long customer;
 }

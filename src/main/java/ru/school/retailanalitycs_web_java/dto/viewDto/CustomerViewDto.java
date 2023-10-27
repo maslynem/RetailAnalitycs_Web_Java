@@ -4,8 +4,6 @@ import lombok.Builder;
 import lombok.Data;
 import ru.school.retailanalitycs_web_java.dto.entityDto.customerDto.CustomerDto;
 
-import java.io.Serializable;
-
 @Data
 @Builder
 public class CustomerViewDto {
@@ -18,5 +16,5 @@ public class CustomerViewDto {
     private Double customerChurnRate;
     private String customerChurnSegment;
     private Integer customerSegment;
-    private Integer customerPrimaryStore;
+    private Long customerPrimaryStore;
 }

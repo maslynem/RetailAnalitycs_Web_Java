@@ -44,8 +44,8 @@ public class StoreController {
     }
 
     @GetMapping("/{trStoreId}/{skuId}")
-    public StoreReadDto findStoreById(@PathVariable Integer trStoreId,
-                                      @PathVariable Integer skuId) {
+    public StoreReadDto findStoreById(@PathVariable Long trStoreId,
+                                      @PathVariable Long skuId) {
         StoreId storeId = getId(trStoreId, skuId);
         return storeService.findById(storeId).map(storeMapper::toDto).orElseThrow(() -> new StoreNotFoundException(storeId));
     }
@@ -59,8 +59,8 @@ public class StoreController {
     }
 
     @DeleteMapping("/{trStoreId}/{skuId}")
-    public void delete(@PathVariable Integer trStoreId,
-                       @PathVariable Integer skuId) {
+    public void delete(@PathVariable Long trStoreId,
+                       @PathVariable Long skuId) {
         storeService.deleteById(getId(trStoreId, skuId));
     }
 
@@ -72,7 +72,7 @@ public class StoreController {
         storeService.save(stores);
     }
 
-    private StoreId getId(Integer trStoreId, Integer skuId) {
+    private StoreId getId(Long trStoreId, Long skuId) {
         return new StoreId(trStoreId, skuId);
     }
 }

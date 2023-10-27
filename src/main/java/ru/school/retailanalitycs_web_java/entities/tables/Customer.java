@@ -15,11 +15,9 @@ import java.util.Set;
 @Table(name = "personal_data")
 public class Customer {
     @Id
-//    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "customer_id_generator")
-//    @SequenceGenerator(name = "customer_id_generator", sequenceName = "personal_data_customer_id_seq", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "customer_id", nullable = false)
-    private Integer id;
+    private Long id;
 
     @Column(name = "customer_name")
     private String customerName;

@@ -44,7 +44,7 @@ public class CustomerController {
     }
 
     @GetMapping("/{id}")
-    public CustomerDto findCustomerById(@PathVariable Integer id) {
+    public CustomerDto findCustomerById(@PathVariable Long id) {
         return customerService.findById(id).map(customerMapper::toDto).orElseThrow(() -> new CustomerNotFoundException(id));
     }
 
@@ -64,7 +64,7 @@ public class CustomerController {
 //    }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable("id") Integer id) {
+    public void delete(@PathVariable("id") Long id) {
         customerService.deleteById(id);
     }
 

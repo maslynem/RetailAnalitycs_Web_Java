@@ -8,7 +8,7 @@ public class StoreNotFoundException extends EntityNotFoundException {
                 storeId.getTransactionStoreId(), storeId.getSkuId()));
     }
 
-    public StoreNotFoundException(Integer transactionStoreId) {
+    public StoreNotFoundException(Long transactionStoreId) {
         super(String.format("Store with transaction store id {%d} not found",
                 transactionStoreId));
     }

@@ -25,10 +25,10 @@ import static ru.school.retailanalitycs_web_java.exceptions.ExceptionCode.NOT_FO
 @Transactional
 class CardControllerTest extends IntegrationTestBase {
 
-    private static final Integer CARD_ID = 1;
-    private static final Integer CUSTOMER_ID = 1;
-    private static final Integer NOT_EXISTING_CARD_ID = 1000;
-    private static final Integer NOT_EXISTING_CUSTOMER_ID = 1000;
+    private static final Long CARD_ID = 1L;
+    private static final Long CUSTOMER_ID = 1L;
+    private static final Long NOT_EXISTING_CARD_ID = 1000L;
+    private static final Long NOT_EXISTING_CUSTOMER_ID = 1000L;
 
     @Autowired
     private MockMvc mockMvc;
@@ -44,9 +44,9 @@ class CardControllerTest extends IntegrationTestBase {
 
     @Test
     void findCardsBy_page_1_size_3() throws Exception {
-        CardReadDto first = CardReadDto.builder().id(4).customer(getDtoWithId(5)).build();
-        CardReadDto second = CardReadDto.builder().id(5).customer(getDtoWithId(5)).build();
-        CardReadDto third = CardReadDto.builder().id(6).customer(getDtoWithId(6)).build();
+        CardReadDto first = CardReadDto.builder().id(4L).customer(getDtoWithId(5L)).build();
+        CardReadDto second = CardReadDto.builder().id(5L).customer(getDtoWithId(5L)).build();
+        CardReadDto third = CardReadDto.builder().id(6L).customer(getDtoWithId(6L)).build();
         mockMvc.perform(get("/api/v1/cards?page=1&size=3"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("content[0].id").value(first.getId()))
@@ -63,7 +63,7 @@ class CardControllerTest extends IntegrationTestBase {
 
     @Test
     void findCustomerById() throws Exception {
-        CardReadDto cardDto = CardReadDto.builder().id(CARD_ID).customer(getDtoWithId(19)).build();
+        CardReadDto cardDto = CardReadDto.builder().id(CARD_ID).customer(getDtoWithId(19L)).build();
         mockMvc.perform(get("/api/v1/cards/{CARD_ID}", CARD_ID))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(cardDto.getId()))
@@ -125,7 +125,7 @@ class CardControllerTest extends IntegrationTestBase {
                 .andExpect(jsonPath("$.message").exists());
     }
 
-    private CustomerDto getDtoWithId(int id) {
+    private CustomerDto getDtoWithId(Long id) {
         return CustomerDto.builder().id(id).build();
     }
 

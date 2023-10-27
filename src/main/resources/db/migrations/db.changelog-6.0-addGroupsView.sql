@@ -6,7 +6,7 @@ CREATE FUNCTION get_margin(method VARCHAR DEFAULT 'default ', count INT DEFAULT 
             (
                 Customer_ID  INT,
                 Group_ID     INT,
-                Group_Margin NUMERIC
+                Group_Margin DOUBLE PRECISION
             )
 AS
 $$
@@ -16,21 +16,21 @@ BEGIN
     IF method = 'default' THEN
         RETURN QUERY SELECT customer_id,
                             group_id,
-                            CAST(sum(Group_Summ_Paid - Group_Cost) AS NUMERIC) AS group_margin
+                            CAST(sum(Group_Summ_Paid - Group_Cost) AS DOUBLE PRECISION) AS group_margin
                      FROM purchase_history
                      GROUP BY 1, 2;
     ELSIF method = 'period' THEN
         date := (SELECT analysis_formation FROM date_of_analysis_formation)::date - count;
         RETURN QUERY SELECT customer_id,
                             group_id,
-                            CAST(sum(Group_Summ_Paid - Group_Cost) AS NUMERIC) AS group_margin
+                            CAST(sum(Group_Summ_Paid - Group_Cost) AS DOUBLE PRECISION) AS group_margin
                      FROM purchase_history
                      WHERE transaction_datetime >= date
                      GROUP BY 1, 2;
     ELSIF method = 'number of transactions' THEN
         RETURN QUERY SELECT t.customer_id,
                             group_id,
-                            CAST(sum(Group_Summ_Paid - Group_Cost) AS NUMERIC) AS group_margin
+                            CAST(sum(Group_Summ_Paid - Group_Cost) AS DOUBLE PRECISION) AS group_margin
                      FROM (SELECT customer_id,
                                   group_id,
                                   Group_Summ_Paid,
@@ -79,7 +79,7 @@ WITH new_purchase_history AS (SELECT cards.Customer_ID                 AS custom
               GROUP BY 1, 2),
      dshare AS (SELECT customer_id,
                        sku.group_id,
-                       CAST(count(CASE WHEN sku_discount <> 0 THEN t.transaction_id END) AS NUMERIC) /
+                       CAST(count(CASE WHEN sku_discount <> 0 THEN t.transaction_id END) AS DOUBLE PRECISION) /
                        count(t.transaction_id)
                            AS Group_Discount_Share
                 FROM cards c

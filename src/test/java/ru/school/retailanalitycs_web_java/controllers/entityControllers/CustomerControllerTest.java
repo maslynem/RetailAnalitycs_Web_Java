@@ -22,8 +22,8 @@ import static ru.school.retailanalitycs_web_java.exceptions.ExceptionCode.NOT_FO
 @AutoConfigureMockMvc
 @Transactional
 class CustomerControllerTest extends IntegrationTestBase {
-    private static final Integer CUSTOMER_ID = 1;
-    private static final Integer NOT_EXISTING_ID = 1000;
+    private static final Long CUSTOMER_ID = 1L;
+    private static final Long NOT_EXISTING_ID = 1000L;
 
     @Autowired
     private MockMvc mockMvc;
@@ -39,9 +39,9 @@ class CustomerControllerTest extends IntegrationTestBase {
 
     @Test
     void findCustomersBy_page_1_size_3() throws Exception {
-        CustomerDto first = CustomerDto.builder().id(4).customerName("Александр").customerSurname("Палкин").customerPrimaryEmail("dddca0jokerifia@gmail.com").customerPrimaryPhone("+74957609115").build();
-        CustomerDto second = CustomerDto.builder().id(5).customerName("Лев").customerSurname("Шменин").customerPrimaryEmail("634mexicaneb01@gmail.com").customerPrimaryPhone("+79003272088").build();
-        CustomerDto third = CustomerDto.builder().id(6).customerName("Войцех").customerSurname("Палкин").customerPrimaryEmail("68lodochnikecafa@ya.ru").customerPrimaryPhone("+79000680819").build();
+        CustomerDto first = CustomerDto.builder().id(4L).customerName("Александр").customerSurname("Палкин").customerPrimaryEmail("dddca0jokerifia@gmail.com").customerPrimaryPhone("+74957609115").build();
+        CustomerDto second = CustomerDto.builder().id(5L).customerName("Лев").customerSurname("Шменин").customerPrimaryEmail("634mexicaneb01@gmail.com").customerPrimaryPhone("+79003272088").build();
+        CustomerDto third = CustomerDto.builder().id(6L).customerName("Войцех").customerSurname("Палкин").customerPrimaryEmail("68lodochnikecafa@ya.ru").customerPrimaryPhone("+79000680819").build();
         mockMvc.perform(get("/api/v1/customers?page=1&size=3"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("content[0].id").value(first.getId()))

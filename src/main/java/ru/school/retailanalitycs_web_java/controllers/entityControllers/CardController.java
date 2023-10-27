@@ -43,7 +43,7 @@ public class CardController {
     }
 
     @GetMapping("/{id}")
-    public CardReadDto findCardById(@PathVariable Integer id) {
+    public CardReadDto findCardById(@PathVariable Long id) {
         return cardService.findById(id).map(cardMapper::toDto).orElseThrow(() -> new CardNotFoundException(id));
     }
 
@@ -56,7 +56,7 @@ public class CardController {
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable("id") Integer id) {
+    public void delete(@PathVariable("id") Long id) {
         cardService.deleteById(id);
     }
 

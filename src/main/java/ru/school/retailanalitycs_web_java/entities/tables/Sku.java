@@ -15,7 +15,7 @@ public class Sku {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "sku_id", nullable = false)
-    private Integer id;
+    private Long id;
 
     @Column(name = "sku_name", length = Integer.MAX_VALUE)
     private String skuName;

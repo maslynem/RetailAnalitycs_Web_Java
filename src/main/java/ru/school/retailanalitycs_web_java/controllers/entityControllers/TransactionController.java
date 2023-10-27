@@ -43,7 +43,7 @@ public class TransactionController {
     }
 
     @GetMapping("/{id}")
-    public TransactionReadDto findTransactionById(@PathVariable Integer id) {
+    public TransactionReadDto findTransactionById(@PathVariable Long id) {
         return transactionService.findById(id).map(transactionMapper::toDto).orElseThrow(() -> new TransactionNotFoundException(id));
     }
 
@@ -56,7 +56,7 @@ public class TransactionController {
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable("id") Integer id) {
+    public void delete(@PathVariable("id") Long id) {
         transactionService.deleteById(id);
     }
 

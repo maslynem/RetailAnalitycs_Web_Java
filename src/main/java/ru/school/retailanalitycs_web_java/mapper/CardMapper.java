@@ -19,7 +19,7 @@ public abstract class CardMapper {
     @Mapping(target = "transactions", ignore = true)
     public abstract Card toEntity(CardCreateDto dto);
 
-    public Card toDtoById(Integer cardID) {
+    public Card toDtoById(Long cardID) {
         return cardService.findById(cardID).orElseThrow(() -> new CardNotFoundException(cardID));
     }
 }

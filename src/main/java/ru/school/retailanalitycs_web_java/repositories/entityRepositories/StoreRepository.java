@@ -7,6 +7,6 @@ import ru.school.retailanalitycs_web_java.entities.tables.StoreId;
 
 public interface StoreRepository extends JpaRepository<Store, StoreId> {
     @Query("select (count(s) > 0) from Store s where s.id.transactionStoreId = ?1")
-    boolean existsByTransactionStoreId(Integer transactionStoreId);
+    boolean existsByTransactionStoreId(Long transactionStoreId);
 
 }

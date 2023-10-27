@@ -43,7 +43,7 @@ public class SkuController {
     }
 
     @GetMapping("/{id}")
-    public SkuReadDto findSkuById(@PathVariable Integer id) {
+    public SkuReadDto findSkuById(@PathVariable Long id) {
         return skuService.findById(id).map(skuMapper::toDto).orElseThrow(() -> new SkuNotFoundException(id));
     }
 
@@ -56,7 +56,7 @@ public class SkuController {
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable("id") Integer id) {
+    public void delete(@PathVariable("id") Long id) {
         skuService.deleteById(id);
     }
 

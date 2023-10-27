@@ -25,15 +25,15 @@ class CustomerViewControllerTest extends IntegrationTestBase {
     private MockMvc mockMvc;
 
     @Test
-    void findAllCustomers() throws Exception {
-        mockMvc.perform(get("api/v1/views/customers"))
+    void findAllCustomerViews() throws Exception {
+        mockMvc.perform(get("/api/v1/views/customers"))
                 .andExpect(status().isOk());
     }
 
     @Test
-    void findCustomersBy_page_1_size_2() throws Exception {
+    void findCustomerViewsBy_page_1_size_2() throws Exception {
         CustomerViewDto first = CustomerViewDto.builder()
-                .customer(getCustomerDtoWithId(6))
+                .customer(getCustomerDtoWithId(6L))
                 .customerAverageCheck(1054.7548476968293)
                 .customerAverageCheckSegment("Medium")
                 .customerFrequency(38.32937923440972)
@@ -42,9 +42,9 @@ class CustomerViewControllerTest extends IntegrationTestBase {
                 .customerChurnRate(2.6382585504859484)
                 .customerChurnSegment("Medium")
                 .customerSegment(17)
-                .customerPrimaryStore(2).build();
+                .customerPrimaryStore(2L).build();
         CustomerViewDto second = CustomerViewDto.builder()
-                .customer(getCustomerDtoWithId(19))
+                .customer(getCustomerDtoWithId(19L))
                 .customerAverageCheck(928.802104954375)
                 .customerAverageCheckSegment("Medium")
                 .customerFrequency(83.65048972800926)
@@ -53,9 +53,9 @@ class CustomerViewControllerTest extends IntegrationTestBase {
                 .customerChurnRate(0.527120510976813)
                 .customerChurnSegment("Low")
                 .customerSegment(10)
-                .customerPrimaryStore(4).build();
+                .customerPrimaryStore(4L).build();
 
-        mockMvc.perform(get("/api/v1/customers?page=1&size=2"))
+        mockMvc.perform(get("/api/v1/views/customers?page=1&size=2"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("content[0].customer.id").value(first.getCustomer().getId()))
                 .andExpect(jsonPath("content[0].customerAverageCheck").value(first.getCustomerAverageCheck()))
@@ -85,9 +85,9 @@ class CustomerViewControllerTest extends IntegrationTestBase {
     }
 
     @Test
-    void findCustomerById() throws Exception {
+    void findCustomerViewById() throws Exception {
         CustomerViewDto customerViewDto = CustomerViewDto.builder()
-                .customer(getCustomerDtoWithId(1))
+                .customer(getCustomerDtoWithId(1L))
                 .customerAverageCheck(919.2208705121053)
                 .customerAverageCheckSegment("Low")
                 .customerFrequency(76.7075456871412)
@@ -96,30 +96,30 @@ class CustomerViewControllerTest extends IntegrationTestBase {
                 .customerChurnRate(2.2332168471667035)
                 .customerChurnSegment("Medium")
                 .customerSegment(5)
-                .customerPrimaryStore(1).build();
-        mockMvc.perform(get("/api/v1/customers/{CUSTOMER_ID}", CUSTOMER_ID))
+                .customerPrimaryStore(1L).build();
+        mockMvc.perform(get("/api/v1/views/customers/{CUSTOMER_ID}", CUSTOMER_ID))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("content[0].customer.id").value(CUSTOMER_ID))
-                .andExpect(jsonPath("content[0].customerAverageCheck").value(customerViewDto.getCustomerAverageCheck()))
-                .andExpect(jsonPath("content[0].customerAverageCheckSegment").value(customerViewDto.getCustomerAverageCheckSegment()))
-                .andExpect(jsonPath("content[0].customerFrequency").value(customerViewDto.getCustomerFrequency()))
-                .andExpect(jsonPath("content[0].customerFrequencySegment").value(customerViewDto.getCustomerFrequencySegment()))
-                .andExpect(jsonPath("content[0].customerInactivePeriod").value(customerViewDto.getCustomerInactivePeriod()))
-                .andExpect(jsonPath("content[0].customerChurnRate").value(customerViewDto.getCustomerChurnRate()))
-                .andExpect(jsonPath("content[0].customerChurnSegment").value(customerViewDto.getCustomerChurnSegment()))
-                .andExpect(jsonPath("content[0].customerSegment").value(customerViewDto.getCustomerSegment()))
-                .andExpect(jsonPath("content[0].customerPrimaryStore").value(customerViewDto.getCustomerPrimaryStore()));
+                .andExpect(jsonPath("$.customer.id").value(CUSTOMER_ID))
+                .andExpect(jsonPath("$.customerAverageCheck").value(customerViewDto.getCustomerAverageCheck()))
+                .andExpect(jsonPath("$.customerAverageCheckSegment").value(customerViewDto.getCustomerAverageCheckSegment()))
+                .andExpect(jsonPath("$.customerFrequency").value(customerViewDto.getCustomerFrequency()))
+                .andExpect(jsonPath("$.customerFrequencySegment").value(customerViewDto.getCustomerFrequencySegment()))
+                .andExpect(jsonPath("$.customerInactivePeriod").value(customerViewDto.getCustomerInactivePeriod()))
+                .andExpect(jsonPath("$.customerChurnRate").value(customerViewDto.getCustomerChurnRate()))
+                .andExpect(jsonPath("$.customerChurnSegment").value(customerViewDto.getCustomerChurnSegment()))
+                .andExpect(jsonPath("$.customerSegment").value(customerViewDto.getCustomerSegment()))
+                .andExpect(jsonPath("$.customerPrimaryStore").value(customerViewDto.getCustomerPrimaryStore()));
     }
 
     @Test
-    void findNotExistingCustomer() throws Exception {
-        mockMvc.perform(get("/api/v1/customers/{NOT_EXISTING_ID}", NOT_EXISTING_ID))
+    void findNotExistingCustomerView() throws Exception {
+        mockMvc.perform(get("/api/v1/views/customers/{NOT_EXISTING_ID}", NOT_EXISTING_ID))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.code").value(NOT_FOUND.name()))
                 .andExpect(jsonPath("$.message").exists());
     }
 
-    private CustomerDto getCustomerDtoWithId(int id) {
+    private CustomerDto getCustomerDtoWithId(Long id) {
         return CustomerDto.builder().id(id).build();
     }
 }

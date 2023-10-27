@@ -15,7 +15,7 @@ public class StoreService extends BaseService<Store, StoreId> {
         super(repository);
     }
 
-    public boolean existsByTransactionalStoreId(Integer transactionalStoreId) {
+    public boolean existsByTransactionalStoreId(Long transactionalStoreId) {
         return ((StoreRepository) repository).existsByTransactionStoreId(transactionalStoreId);
     }
 

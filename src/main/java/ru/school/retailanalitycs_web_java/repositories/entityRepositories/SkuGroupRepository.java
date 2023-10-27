@@ -5,6 +5,6 @@ import ru.school.retailanalitycs_web_java.entities.tables.SkuGroup;
 
 import java.util.Optional;
 
-public interface SkuGroupRepository extends JpaRepository<SkuGroup, Integer> {
+public interface SkuGroupRepository extends JpaRepository<SkuGroup, Long> {
     Optional<SkuGroup> findByGroupName(String groupName);
 }

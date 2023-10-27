@@ -25,10 +25,10 @@ import static ru.school.retailanalitycs_web_java.exceptions.ExceptionCode.NOT_FO
 @Transactional
 class SkuControllerTest extends IntegrationTestBase {
 
-    private static final Integer SKU_ID = 1;
-    private static final Integer CUSTOMER_ID = 1;
-    private static final Integer NOT_EXISTING_SKU_ID = 1000;
-    private static final Integer NOT_EXISTING_SKU_GROUP_ID = 1000;
+    private static final Long SKU_ID = 1L;
+    private static final Long CUSTOMER_ID = 1L;
+    private static final Long NOT_EXISTING_SKU_ID = 1000L;
+    private static final Long NOT_EXISTING_SKU_GROUP_ID = 1000L;
 
     @Autowired
     private MockMvc mockMvc;
@@ -44,9 +44,9 @@ class SkuControllerTest extends IntegrationTestBase {
 
     @Test
     void findSkusBy_page_1_size_3() throws Exception {
-        SkuReadDto first = SkuReadDto.builder().id(4).skuName("ВНИИ Агропром Лимонад Байкал Red Line").skuGroup(getDtoWithId(6)).build();
-        SkuReadDto second = SkuReadDto.builder().id(5).skuName("ООО Леторг Яблоки Антоновка Ревалон").skuGroup(getDtoWithId(5)).build();
-        SkuReadDto third = SkuReadDto.builder().id(6).skuName("Kerton Яблоки Антоновка Поездка").skuGroup(getDtoWithId(2)).build();
+        SkuReadDto first = SkuReadDto.builder().id(4L).skuName("ВНИИ Агропром Лимонад Байкал Red Line").skuGroup(getDtoWithId(6L)).build();
+        SkuReadDto second = SkuReadDto.builder().id(5L).skuName("ООО Леторг Яблоки Антоновка Ревалон").skuGroup(getDtoWithId(5L)).build();
+        SkuReadDto third = SkuReadDto.builder().id(6L).skuName("Kerton Яблоки Антоновка Поездка").skuGroup(getDtoWithId(2L)).build();
         mockMvc.perform(get("/api/v1/skus?page=1&size=3"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("content[0].id").value(first.getId()))
@@ -66,7 +66,7 @@ class SkuControllerTest extends IntegrationTestBase {
 
     @Test
     void findSkuById() throws Exception {
-        SkuReadDto skuDto = SkuReadDto.builder().id(SKU_ID).skuName("Kerton Бензин АИ-95 Поездка").skuGroup(getDtoWithId(4)).build();
+        SkuReadDto skuDto = SkuReadDto.builder().id(SKU_ID).skuName("Kerton Бензин АИ-95 Поездка").skuGroup(getDtoWithId(4L)).build();
         mockMvc.perform(get("/api/v1/skus/{SKU_ID}", SKU_ID))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(skuDto.getId()))
@@ -84,7 +84,7 @@ class SkuControllerTest extends IntegrationTestBase {
 
     @Test
     void create() throws Exception {
-        SkuCreateDto skuDto = SkuCreateDto.builder().skuName("test").skuGroup(1).build();
+        SkuCreateDto skuDto = SkuCreateDto.builder().skuName("test").skuGroup(1L).build();
 
         String requestJson = objectMapper.writeValueAsString(skuDto);
         mockMvc.perform(post("/api/v1/skus")
@@ -98,7 +98,7 @@ class SkuControllerTest extends IntegrationTestBase {
 
     @Test
     void createWithMissingSkuName_shouldReturnBadRequest() throws Exception {
-        SkuCreateDto skuDto = SkuCreateDto.builder().skuGroup(1).build();
+        SkuCreateDto skuDto = SkuCreateDto.builder().skuGroup(1L).build();
         String requestJson = objectMapper.writeValueAsString(skuDto);
         mockMvc.perform(post("/api/v1/skus")
                         .contentType(APPLICATION_JSON)
@@ -142,7 +142,7 @@ class SkuControllerTest extends IntegrationTestBase {
                 .andExpect(jsonPath("$.message").exists());
     }
 
-    private SkuGroupDto getDtoWithId(int id) {
+    private SkuGroupDto getDtoWithId(Long id) {
         return SkuGroupDto.builder().id(id).build();
     }
 

@@ -44,7 +44,7 @@ public class SkuGroupController {
     }
 
     @GetMapping("/{id}")
-    public SkuGroupDto findSkuGroupById(@PathVariable Integer id) {
+    public SkuGroupDto findSkuGroupById(@PathVariable Long id) {
         return skuGroupService.findById(id).map(skuGroupMapper::toDto).orElseThrow(() -> new SkuGroupNotFoundException(id));
     }
 
@@ -58,7 +58,7 @@ public class SkuGroupController {
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable("id") Integer id) {
+    public void delete(@PathVariable("id") Long id) {
         skuGroupService.deleteById(id);
     }
 

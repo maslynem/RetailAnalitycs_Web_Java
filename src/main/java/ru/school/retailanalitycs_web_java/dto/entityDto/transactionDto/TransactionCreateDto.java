@@ -19,12 +19,12 @@ import java.time.LocalDateTime;
 public class TransactionCreateDto {
     @CsvBindByName(column = "transaction_id", required = true)
     @CsvBindByPosition(position = 0)
-    private Integer id;
+    private Long id;
 
     @NotNull(message = "Customer card is mandatory")
     @CsvBindByName(column = "customer_card_id", required = true)
     @CsvBindByPosition(position = 1)
-    private Integer customerCard;
+    private Long customerCard;
 
     @NotNull(message = "Transaction sum is mandatory")
     @CsvBindByName(column = "transaction_summ", required = true)
@@ -41,5 +41,5 @@ public class TransactionCreateDto {
     @NotNull(message = "Transaction store id is mandatory")
     @CsvBindByName(column = "transaction_store_id", required = true)
     @CsvBindByPosition(position = 4)
-    private Integer transactionStoreId;
+    private Long transactionStoreId;
 }

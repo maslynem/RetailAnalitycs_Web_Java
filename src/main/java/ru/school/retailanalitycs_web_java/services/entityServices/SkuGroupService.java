@@ -7,7 +7,7 @@ import ru.school.retailanalitycs_web_java.exceptions.duplicateValue.SkuGroupDupl
 import ru.school.retailanalitycs_web_java.repositories.entityRepositories.SkuGroupRepository;
 
 @Service
-public class SkuGroupService extends BaseService<SkuGroup, Integer> {
+public class SkuGroupService extends BaseService<SkuGroup, Long> {
 
     private final SkuGroupRepository skuGroupRepository;
 

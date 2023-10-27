@@ -16,7 +16,7 @@ import org.hibernate.annotations.Immutable;
 public class CustomerView {
     @Id
     @Column(name = "customer_id")
-    private Integer customerId;
+    private Long customerId;
 
     @Column(name = "customer_average_check")
     private Double customerAverageCheck;
@@ -43,6 +43,6 @@ public class CustomerView {
     private Integer customerSegment;
 
     @Column(name = "customer_primary_store")
-    private Integer customerPrimaryStore;
+    private Long customerPrimaryStore;
 
 }

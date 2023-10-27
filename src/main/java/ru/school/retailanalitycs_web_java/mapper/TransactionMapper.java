@@ -20,7 +20,7 @@ public abstract class TransactionMapper {
     @Mapping(target = "checks", ignore = true)
     public abstract Transaction toEntity(TransactionCreateDto transactionDto);
 
-    public Transaction toDtoById(Integer id) {
+    public Transaction toDtoById(Long id) {
         return transactionService.findById(id).orElseThrow(() -> new TransactionNotFoundException(id));
     }
 }

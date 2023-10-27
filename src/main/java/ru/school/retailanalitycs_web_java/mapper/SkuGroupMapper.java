@@ -18,7 +18,7 @@ public abstract class SkuGroupMapper {
     @Mapping(target = "skus", ignore = true)
     public abstract SkuGroup toEntity(SkuGroupDto dto);
 
-    public SkuGroup toDtoById(Integer skuGroupId) {
+    public SkuGroup toDtoById(Long skuGroupId) {
         return skuGroupService.findById(skuGroupId).orElseThrow(() -> new SkuGroupNotFoundException(skuGroupId));
     }
 }

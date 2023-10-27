@@ -1,4 +1,4 @@
-package ru.school.retailanalitycs_web_java.entities.tables;
+package ru.school.retailanalitycs_web_java.entities.views;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
@@ -14,31 +14,31 @@ import java.util.Objects;
 
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Embeddable
-public class CheckId implements Serializable {
+public class PeriodViewId implements Serializable {
     @Serial
-    private static final long serialVersionUID = -5623599323863520535L;
+    private static final long serialVersionUID = -2908880119812198498L;
 
-    @Column(name = "transaction_id", nullable = false)
-    private Long transactionId;
+    @Column(name = "customer_id")
+    private Long customerId;
 
-    @Column(name = "sku_id", nullable = false)
-    private Long skuId;
+    @Column(name = "group_id")
+    private Long groupId;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        CheckId entity = (CheckId) o;
-        return Objects.equals(this.transactionId, entity.transactionId) &&
-                Objects.equals(this.skuId, entity.skuId);
+        PeriodViewId entity = (PeriodViewId) o;
+        return Objects.equals(this.groupId, entity.groupId) &&
+                Objects.equals(this.customerId, entity.customerId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(transactionId, skuId);
+        return Objects.hash(groupId, customerId);
     }
 
 }

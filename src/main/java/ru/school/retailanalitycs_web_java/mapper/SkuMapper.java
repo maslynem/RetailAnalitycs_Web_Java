@@ -17,7 +17,7 @@ public abstract class SkuMapper {
 
     public abstract Sku toEntity(SkuCreateDto dto);
 
-    public Sku toDtoById(Integer id) {
+    public Sku toDtoById(Long id) {
         return skuService.findById(id).orElseThrow(() -> new SkuNotFoundException(id));
     }
 }

@@ -11,7 +11,7 @@ import ru.school.retailanalitycs_web_java.dto.entityDto.skuGroupDto.SkuGroupDto;
 @AllArgsConstructor
 @NoArgsConstructor
 public class SkuReadDto {
-    private Integer id;
+    private Long id;
     private String skuName;
     private SkuGroupDto skuGroup;
 }

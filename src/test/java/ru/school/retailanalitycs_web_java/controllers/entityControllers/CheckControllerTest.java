@@ -26,12 +26,12 @@ import static ru.school.retailanalitycs_web_java.exceptions.ExceptionCode.*;
 @Transactional
 class CheckControllerTest extends IntegrationTestBase {
 
-    private static final CheckId CHECK_ID = new CheckId(1, 2);
-    private static final Integer TRANSACTION_ID = 1;
-    private static final Integer SKU_ID = 1;
-    private static final Integer NOT_EXISTING_SKU_ID = Integer.MAX_VALUE;
-    private static final Integer NOT_EXISTING_TRANSACTION_ID = Integer.MAX_VALUE;
-    private static final CheckId NOT_EXISTING_CHECK_ID = new CheckId(Integer.MAX_VALUE, Integer.MAX_VALUE);
+    private static final CheckId CHECK_ID = new CheckId(1L, 2L);
+    private static final Long TRANSACTION_ID = 1L;
+    private static final Long SKU_ID = 1L;
+    private static final Long NOT_EXISTING_SKU_ID = Long.MAX_VALUE;
+    private static final Long NOT_EXISTING_TRANSACTION_ID = Long.MAX_VALUE;
+    private static final CheckId NOT_EXISTING_CHECK_ID = new CheckId(Long.MAX_VALUE, Long.MAX_VALUE);
 
     @Autowired
     private MockMvc mockMvc;
@@ -48,16 +48,16 @@ class CheckControllerTest extends IntegrationTestBase {
     @Test
     void findChecksBy_page_1_size_2() throws Exception {
         CheckReadDto first = CheckReadDto.builder()
-                .transaction(getTransactionDtoWithId(3))
-                .sku(getSkuDtoWithId(15))
+                .transaction(getTransactionDtoWithId(3L))
+                .sku(getSkuDtoWithId(15L))
                 .skuAmount(4.155730297)
                 .skuSum(294.7881466)
                 .skuSumPaid(294.7881466)
                 .skuDiscount(0.0)
                 .build();
         CheckReadDto second = CheckReadDto.builder()
-                .transaction(getTransactionDtoWithId(4))
-                .sku(getSkuDtoWithId(3))
+                .transaction(getTransactionDtoWithId(4L))
+                .sku(getSkuDtoWithId(3L))
                 .skuAmount(2.15546012)
                 .skuSum(79.97275934)
                 .skuSumPaid(63.14871001)
@@ -135,6 +135,7 @@ class CheckControllerTest extends IntegrationTestBase {
                 .andExpect(jsonPath("$.skuSumPaid").value(checkDto.getSkuSumPaid()))
                 .andExpect(jsonPath("$.skuDiscount").value(checkDto.getSkuDiscount()));
     }
+
     @Test
     void createWithDuplicatedCheckId_shouldReturnBadRequest() throws Exception {
         CheckCreateDto checkDto = CheckCreateDto.builder()
@@ -226,6 +227,7 @@ class CheckControllerTest extends IntegrationTestBase {
                 .andExpect(jsonPath("$.code").value(ENTITY_IS_NOT_VALID.name()))
                 .andExpect(jsonPath("$.message").exists());
     }
+
     @Test
     void createWithMissingSkuSumPaid_shouldReturnBadRequest() throws Exception {
         CheckCreateDto checkDto = CheckCreateDto.builder()
@@ -243,6 +245,7 @@ class CheckControllerTest extends IntegrationTestBase {
                 .andExpect(jsonPath("$.code").value(ENTITY_IS_NOT_VALID.name()))
                 .andExpect(jsonPath("$.message").exists());
     }
+
     @Test
     void createWithMissingSkuDiscount_shouldReturnBadRequest() throws Exception {
         CheckCreateDto checkDto = CheckCreateDto.builder()
@@ -279,6 +282,7 @@ class CheckControllerTest extends IntegrationTestBase {
                 .andExpect(jsonPath("$.code").value(NOT_FOUND.name()))
                 .andExpect(jsonPath("$.message").exists());
     }
+
     @Test
     void createWithNotExistingSkuId_shouldReturnNotFound() throws Exception {
         CheckCreateDto checkDto = CheckCreateDto.builder()
@@ -308,11 +312,11 @@ class CheckControllerTest extends IntegrationTestBase {
                 .andExpect(jsonPath("$.message").exists());
     }
 
-    private SkuReadDto getSkuDtoWithId(int id) {
+    private SkuReadDto getSkuDtoWithId(Long id) {
         return SkuReadDto.builder().id(id).build();
     }
 
-    private TransactionReadDto getTransactionDtoWithId(int id) {
+    private TransactionReadDto getTransactionDtoWithId(Long id) {
         return TransactionReadDto.builder().id(id).build();
     }
 

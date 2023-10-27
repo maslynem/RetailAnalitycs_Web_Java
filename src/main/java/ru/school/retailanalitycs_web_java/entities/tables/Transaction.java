@@ -20,11 +20,9 @@ import java.util.Set;
 @Table(name = "transactions")
 public class Transaction {
     @Id
-//    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "transaction_id_generator")
-//    @SequenceGenerator(name = "transaction_id_generator", sequenceName = "transactions_transaction_id_seq", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "transaction_id", nullable = false)
-    private Integer id;
+    private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "customer_card_id", nullable = false)
@@ -38,7 +36,7 @@ public class Transaction {
     private LocalDateTime transactionDatetime;
 
     @Column(name = "transaction_store_id")
-    private Integer transactionStoreId;
+    private Long transactionStoreId;
 
     @OneToMany(mappedBy = "transaction", orphanRemoval = true)
     @ToString.Exclude

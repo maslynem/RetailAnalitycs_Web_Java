@@ -1,0 +1,15 @@
+package ru.school.retailanalitycs_web_java.mapper;
+
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import ru.school.retailanalitycs_web_java.dto.viewDto.PeriodViewDto;
+import ru.school.retailanalitycs_web_java.entities.views.PeriodView;
+
+@Mapper(componentModel = "spring", uses = {CustomerMapper.class, SkuGroupMapper.class})
+public abstract class PeriodViewMapper {
+
+    @Mapping(target = "group", source = "id.groupId")
+    @Mapping(target = "customer", source = "id.customerId")
+    public abstract PeriodViewDto toDto(PeriodView periodView);
+
+}

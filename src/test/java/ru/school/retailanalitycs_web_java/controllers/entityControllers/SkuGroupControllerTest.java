@@ -21,9 +21,9 @@ import static ru.school.retailanalitycs_web_java.exceptions.ExceptionCode.*;
 @AutoConfigureMockMvc
 @Transactional
 class SkuGroupControllerTest extends IntegrationTestBase {
-    private static final Integer SKU_GROUP_ID = 1;
+    private static final Long SKU_GROUP_ID = 1L;
     private static final String EXISTING_GROUP_NAME = "Чипсы";
-    private static final Integer NOT_EXISTING_SKU_GROUP_ID = 1000;
+    private static final Long NOT_EXISTING_SKU_GROUP_ID = 1000L;
 
     @Autowired
     private MockMvc mockMvc;
@@ -39,9 +39,9 @@ class SkuGroupControllerTest extends IntegrationTestBase {
 
     @Test
     void findSkuGroupsBy_page_1_size_3() throws Exception {
-        SkuGroupDto first = SkuGroupDto.builder().id(4).groupName("Автомобили").build();
-        SkuGroupDto second = SkuGroupDto.builder().id(5).groupName("Зарядки").build();
-        SkuGroupDto third = SkuGroupDto.builder().id(6).groupName("Сухари").build();
+        SkuGroupDto first = SkuGroupDto.builder().id(4L).groupName("Автомобили").build();
+        SkuGroupDto second = SkuGroupDto.builder().id(5L).groupName("Зарядки").build();
+        SkuGroupDto third = SkuGroupDto.builder().id(6L).groupName("Сухари").build();
         mockMvc.perform(get("/api/v1/sku-groups?page=1&size=3"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("content[0].id").value(first.getId()))

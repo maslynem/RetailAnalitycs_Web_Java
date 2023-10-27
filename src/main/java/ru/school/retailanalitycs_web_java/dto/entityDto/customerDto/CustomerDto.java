@@ -18,7 +18,7 @@ public class CustomerDto {
 
     @CsvBindByName(column = "customer_id", required = true)
     @CsvBindByPosition(position = 0)
-    private Integer id;
+    private Long id;
 
     @NotBlank(message = "Name is mandatory")
     @CsvBindByName(column = "customer_name", required = true)

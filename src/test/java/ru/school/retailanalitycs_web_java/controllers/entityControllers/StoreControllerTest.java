@@ -25,11 +25,11 @@ import static ru.school.retailanalitycs_web_java.exceptions.ExceptionCode.*;
 @Transactional
 class StoreControllerTest extends IntegrationTestBase {
 
-    private static final StoreId STORE_ID = new StoreId(1, 2);
-    private static final Integer TRANSACTION_STORE_ID = 1;
-    private static final Integer SKU_ID = 1;
-    private static final Integer NOT_EXISTING_SKU_ID = Integer.MAX_VALUE;
-    private static final StoreId NOT_EXISTING_STORE_ID = new StoreId(Integer.MAX_VALUE, Integer.MAX_VALUE);
+    private static final StoreId STORE_ID = new StoreId(1L, 2L);
+    private static final Long TRANSACTION_STORE_ID = 1L;
+    private static final Long SKU_ID = 1L;
+    private static final Long NOT_EXISTING_SKU_ID = Long.MAX_VALUE;
+    private static final StoreId NOT_EXISTING_STORE_ID = new StoreId(Long.MAX_VALUE, Long.MAX_VALUE);
 
     @Autowired
     private MockMvc mockMvc;
@@ -46,13 +46,13 @@ class StoreControllerTest extends IntegrationTestBase {
     @Test
     void findStoresBy_page_1_size_2() throws Exception {
         StoreReadDto first = StoreReadDto.builder()
-                .transactionStoreId(1)
-                .sku(getSkuDtoWithId(3))
+                .transactionStoreId(1L)
+                .sku(getSkuDtoWithId(3L))
                 .skuPurchasePrice(41.3234384410658)
                 .skuRetailPrice(55.9188140878772).build();
         StoreReadDto second = StoreReadDto.builder()
-                .transactionStoreId(2)
-                .sku(getSkuDtoWithId(15))
+                .transactionStoreId(2L)
+                .sku(getSkuDtoWithId(15L))
                 .skuPurchasePrice(17.3098081747581)
                 .skuRetailPrice(26.4077416772713).build();
         mockMvc.perform(get("/api/v1/stores?page=1&size=2"))
@@ -216,7 +216,7 @@ class StoreControllerTest extends IntegrationTestBase {
                 .andExpect(jsonPath("$.message").exists());
     }
 
-    private SkuReadDto getSkuDtoWithId(int id) {
+    private SkuReadDto getSkuDtoWithId(Long id) {
         return SkuReadDto.builder().id(id).build();
     }
 

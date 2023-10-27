@@ -12,7 +12,7 @@ import ru.school.retailanalitycs_web_java.dto.entityDto.customerDto.CustomerDto;
 @NoArgsConstructor
 public class CardReadDto {
 
-    private Integer id;
+    private Long id;
 
     private CustomerDto customer;
 }

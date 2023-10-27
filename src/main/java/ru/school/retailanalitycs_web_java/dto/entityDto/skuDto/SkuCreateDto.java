@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 public class SkuCreateDto {
     @CsvBindByName(column = "sku_id", required = true)
     @CsvBindByPosition(position = 0)
-    private Integer id;
+    private Long id;
 
     @NotBlank(message = "Sku name is mandatory")
     @CsvBindByName(column = "sku_name", required = true)
@@ -26,5 +26,5 @@ public class SkuCreateDto {
     @NotNull(message = "Sku group is mandatory")
     @CsvBindByName(column = "group_id", required = true)
     @CsvBindByPosition(position = 2)
-    private Integer skuGroup;
+    private Long skuGroup;
 }

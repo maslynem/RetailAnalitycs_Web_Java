@@ -13,11 +13,9 @@ import java.util.Set;
 @Table(name = "cards")
 public class Card {
     @Id
-//    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "customer_card_id_generator")
-//    @SequenceGenerator(name = "customer_card_id_generator", sequenceName = "cards_customer_card_id_seq", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "customer_card_id", nullable = false)
-    private Integer id;
+    private Long id;
 
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "customer_id", nullable = false)

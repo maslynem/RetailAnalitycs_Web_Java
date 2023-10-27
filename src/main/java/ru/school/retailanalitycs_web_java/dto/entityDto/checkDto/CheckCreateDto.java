@@ -19,13 +19,13 @@ public class CheckCreateDto {
     @Min(value = 0, message = "Transaction Id must be greater 0")
     @CsvBindByName(column = "transaction_id", required = true)
     @CsvBindByPosition(position = 1)
-    private Integer transactionId;
+    private Long transactionId;
 
     @NotNull(message = "Sku Id is mandatory")
     @Min(value = 0, message = "Sku Id must be greater 0")
     @CsvBindByName(column = "sku_id", required = true)
     @CsvBindByPosition(position = 2)
-    private Integer skuId;
+    private Long skuId;
 
     @NotNull(message = "Sku Amount is mandatory")
     @Min(value = 0, message = "Sku Amount must be greater 0")

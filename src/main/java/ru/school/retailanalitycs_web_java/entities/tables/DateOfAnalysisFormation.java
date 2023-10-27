@@ -17,6 +17,4 @@ public class DateOfAnalysisFormation {
     @Id
     @Column(name = "analysis_formation", nullable = false)
     private LocalDateTime id;
-
-    //TODO [JPA Buddy] generate columns from DB
 }

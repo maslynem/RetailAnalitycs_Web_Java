@@ -18,7 +18,7 @@ public abstract class CustomerMapper {
     @Mapping(target = "cards", ignore = true)
     public abstract Customer toEntity(CustomerDto dto);
 
-    public Customer toDtoById(Integer customerID) {
+    public Customer toDtoById(Long customerID) {
         return customerService.findById(customerID).orElseThrow(() -> new CustomerNotFoundException(customerID));
     }
 }

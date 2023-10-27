@@ -32,7 +32,7 @@ public class CustomerViewController {
     }
 
     @GetMapping("/{id}")
-    public CustomerViewDto findCustomerById(@PathVariable Integer id) {
+    public CustomerViewDto findCustomerById(@PathVariable Long id) {
         return customerViewService.findById(id).map(customerViewMapper::toDto).orElseThrow(() -> new CustomerViewNotFoundException(id));
     }
 

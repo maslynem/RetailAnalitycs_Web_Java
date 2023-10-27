@@ -20,10 +20,10 @@ public class StoreId implements Serializable {
     private static final long serialVersionUID = 5820011983712050015L;
 
     @Column(name = "transaction_store_id", nullable = false)
-    private Integer transactionStoreId;
+    private Long transactionStoreId;
 
     @Column(name = "sku_id", nullable = false)
-    private Integer skuId;
+    private Long skuId;
 
     @Override
     public boolean equals(Object o) {

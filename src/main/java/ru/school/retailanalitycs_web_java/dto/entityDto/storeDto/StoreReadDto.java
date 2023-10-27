@@ -11,7 +11,7 @@ import ru.school.retailanalitycs_web_java.dto.entityDto.skuDto.SkuReadDto;
 @AllArgsConstructor
 @NoArgsConstructor
 public class StoreReadDto {
-    private Integer transactionStoreId;
+    private Long transactionStoreId;
 
     private SkuReadDto sku;
 

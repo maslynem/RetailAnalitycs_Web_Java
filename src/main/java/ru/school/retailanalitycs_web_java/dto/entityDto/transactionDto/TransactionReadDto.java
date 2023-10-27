@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class TransactionReadDto {
-    private Integer id;
+    private Long id;
 
     private CardReadDto customerCard;
 
@@ -21,5 +21,5 @@ public class TransactionReadDto {
 
     private LocalDateTime transactionDatetime;
 
-    private Integer transactionStoreId;
+    private Long transactionStoreId;
 }

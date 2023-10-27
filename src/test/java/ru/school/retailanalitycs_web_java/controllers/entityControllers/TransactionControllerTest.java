@@ -29,10 +29,10 @@ import static ru.school.retailanalitycs_web_java.exceptions.ExceptionCode.NOT_FO
 @AutoConfigureMockMvc
 @Transactional
 class TransactionControllerTest extends IntegrationTestBase {
-    private static final Integer TRANSACTION_ID = 4;
-    private static final Integer NOT_EXISTING_TRANSACTION_ID = 1000;
-    private static final Integer NOT_EXISTING_CARD_ID = 1000;
-    private static final Integer NOT_EXISTING_STORE_ID = 1000;
+    private static final Long TRANSACTION_ID = 4L;
+    private static final Long NOT_EXISTING_TRANSACTION_ID = 1000L;
+    private static final Long NOT_EXISTING_CARD_ID = 1000L;
+    private static final Long NOT_EXISTING_STORE_ID = 1000L;
 
     @Autowired
     private MockMvc mockMvc;
@@ -50,18 +50,18 @@ class TransactionControllerTest extends IntegrationTestBase {
     void findTransactionsBy_page_1_size_2() throws Exception {
 
         TransactionReadDto first = TransactionReadDto.builder()
-                .id(3)
-                .customerCard(getCardReadDtoWithId(17))
+                .id(3L)
+                .customerCard(getCardReadDtoWithId(17L))
                 .transactionSum(294.7881466)
                 .transactionDatetime(LocalDateTime.of(LocalDate.of(2019, SEPTEMBER, 25), LocalTime.of(9, 52, 52)))
-                .transactionStoreId(1)
+                .transactionStoreId(1L)
                 .build();
         TransactionReadDto second = TransactionReadDto.builder()
-                .id(4)
-                .customerCard(getCardReadDtoWithId(13))
+                .id(4L)
+                .customerCard(getCardReadDtoWithId(13L))
                 .transactionSum(79.97275934)
                 .transactionDatetime(LocalDateTime.of(LocalDate.of(2021, SEPTEMBER, 15), LocalTime.of(15, 52, 53)))
-                .transactionStoreId(2)
+                .transactionStoreId(2L)
                 .build();
         mockMvc.perform(get("/api/v1/transactions?page=1&size=2"))
                 .andExpect(status().isOk())
@@ -85,10 +85,10 @@ class TransactionControllerTest extends IntegrationTestBase {
     @Test
     void findTransactionById() throws Exception {
         TransactionReadDto transactionDto = TransactionReadDto.builder()
-                .customerCard(getCardReadDtoWithId(13))
+                .customerCard(getCardReadDtoWithId(13L))
                 .transactionSum(79.97275934)
                 .transactionDatetime(LocalDateTime.of(LocalDate.of(2021, SEPTEMBER, 15), LocalTime.of(15, 52, 53)))
-                .transactionStoreId(2)
+                .transactionStoreId(2L)
                 .build();
         mockMvc.perform(get("/api/v1/transactions/{TRANSACTION_ID}", TRANSACTION_ID))
                 .andExpect(status().isOk())
@@ -110,10 +110,10 @@ class TransactionControllerTest extends IntegrationTestBase {
     @Test
     void create() throws Exception {
         TransactionCreateDto transactionDto = TransactionCreateDto.builder()
-                .customerCard(13)
+                .customerCard(13L)
                 .transactionSum(79.97275934)
                 .transactionDatetime(LocalDateTime.of(LocalDate.of(2021, SEPTEMBER, 15), LocalTime.of(15, 52, 53)))
-                .transactionStoreId(2)
+                .transactionStoreId(2L)
                 .build();
         String requestJson = objectMapper.writeValueAsString(transactionDto);
         mockMvc.perform(post("/api/v1/transactions")
@@ -130,7 +130,7 @@ class TransactionControllerTest extends IntegrationTestBase {
     @Test
     void createWithNotExistingStoreID_shouldReturnNotFound() throws Exception {
         TransactionCreateDto transactionDto = TransactionCreateDto.builder()
-                .customerCard(13)
+                .customerCard(13L)
                 .transactionSum(79.97275934)
                 .transactionDatetime(LocalDateTime.of(LocalDate.of(2021, SEPTEMBER, 15), LocalTime.of(15, 52, 53)))
                 .transactionStoreId(NOT_EXISTING_STORE_ID)
@@ -147,7 +147,7 @@ class TransactionControllerTest extends IntegrationTestBase {
     @Test
     void createWithMissingTransactionStoreId_shouldReturnBadRequest() throws Exception {
         TransactionCreateDto transactionDto = TransactionCreateDto.builder()
-                .customerCard(13)
+                .customerCard(13L)
                 .transactionSum(79.97275934)
                 .transactionDatetime(LocalDateTime.of(LocalDate.of(2021, SEPTEMBER, 15), LocalTime.of(15, 52, 53)))
                 .build();
@@ -163,9 +163,9 @@ class TransactionControllerTest extends IntegrationTestBase {
     @Test
     void createWithMissingTransactionDatetime_shouldReturnBadRequest() throws Exception {
         TransactionCreateDto transactionDto = TransactionCreateDto.builder()
-                .customerCard(13)
+                .customerCard(13L)
                 .transactionSum(79.97275934)
-                .transactionStoreId(2)
+                .transactionStoreId(2L)
                 .build();
         String requestJson = objectMapper.writeValueAsString(transactionDto);
         mockMvc.perform(post("/api/v1/transactions")
@@ -179,9 +179,9 @@ class TransactionControllerTest extends IntegrationTestBase {
     @Test
     void createWithMissingTransactionSum_shouldReturnBadRequest() throws Exception {
         TransactionCreateDto transactionDto = TransactionCreateDto.builder()
-                .customerCard(13)
+                .customerCard(13L)
                 .transactionDatetime(LocalDateTime.of(LocalDate.of(2021, SEPTEMBER, 15), LocalTime.of(15, 52, 53)))
-                .transactionStoreId(2)
+                .transactionStoreId(2L)
                 .build();
         String requestJson = objectMapper.writeValueAsString(transactionDto);
         mockMvc.perform(post("/api/v1/transactions")
@@ -198,7 +198,7 @@ class TransactionControllerTest extends IntegrationTestBase {
                 .customerCard(NOT_EXISTING_CARD_ID)
                 .transactionSum(79.97275934)
                 .transactionDatetime(LocalDateTime.of(LocalDate.of(2021, SEPTEMBER, 15), LocalTime.of(15, 52, 53)))
-                .transactionStoreId(2)
+                .transactionStoreId(2L)
                 .build();
         String requestJson = objectMapper.writeValueAsString(transactionDto);
         mockMvc.perform(post("/api/v1/transactions")
@@ -219,7 +219,7 @@ class TransactionControllerTest extends IntegrationTestBase {
                 .andExpect(jsonPath("$.message").exists());
     }
 
-    private CardReadDto getCardReadDtoWithId(int id) {
+    private CardReadDto getCardReadDtoWithId(Long id) {
         return CardReadDto.builder().id(id).build();
     }
 }
