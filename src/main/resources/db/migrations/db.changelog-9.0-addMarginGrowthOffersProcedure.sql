@@ -31,55 +31,55 @@ CREATE OR REPLACE FUNCTION margin_growth_offers(groups_number INT,
                                                 allowable_margin_share NUMERIC)
     RETURNS TABLE
             (
-                "Customer_ID"          INT,
-                "SKU_Name"             TEXT,
-                "Offer_Discount_Depth" NUMERIC
+                Customer_ID          INT,
+                SKU_Name             TEXT,
+                Offer_Discount_Depth NUMERIC
             )
 AS
 $$
 BEGIN
     RETURN QUERY
-        SELECT tmp1."Customer_ID", tmp1."SKU_Name", Min_discount_round AS "Offer_Discount_Depth"
+        SELECT tmp1.Customer_ID, tmp1.SKU_Name, Min_discount_round AS Offer_Discount_Depth
         FROM (WITH top_affin_groups AS
-                       (SELECT aff."Customer_ID", "Group_ID"
-                        FROM (SELECT g."Customer_ID",
-                                     g."Group_ID",
-                                     g."Group_Affinity_Index",
+                       (SELECT aff.Customer_ID, Group_ID
+                        FROM (SELECT g.Customer_ID,
+                                     g.Group_ID,
+                                     g.Group_Affinity_Index,
                                      rank()
-                                     OVER (PARTITION BY g."Customer_ID" ORDER BY "Group_Affinity_Index" DESC ) AS rk
+                                     OVER (PARTITION BY g.Customer_ID ORDER BY Group_Affinity_Index DESC ) AS rk
                               FROM groups g) AS aff
                         WHERE rk <= groups_number),
 
-                   margin_sku AS (SELECT tmp."Customer_ID", tmp."Group_ID", tmp."SKU_Name"
-                                  FROM (SELECT g."Customer_ID",
-                                               g."Group_ID",
-                                               sku.sku_name                                               AS "SKU_Name",
+                   margin_sku AS (SELECT tmp.Customer_ID, tmp.Group_ID, tmp.SKU_Name
+                                  FROM (SELECT g.Customer_ID,
+                                               g.Group_ID,
+                                               sku.sku_name                                               AS SKU_Name,
                                                SKU_Retail_Price - SKU_Purchase_Price                      AS mar,
                                                rank()
-                                               OVER (PARTITION BY g."Customer_ID", g."Group_ID"
+                                               OVER (PARTITION BY g.Customer_ID, g.Group_ID
                                                    ORDER BY (SKU_Retail_Price - SKU_Purchase_Price) DESC) AS rk
                                         FROM groups g
-                                                 JOIN sku ON g."Group_ID" = sku.group_id
-                                                 JOIN customers c ON c.customer_id = g."Customer_ID"
+                                                 JOIN sku ON g.Group_ID = sku.group_id
+                                                 JOIN customers c ON c.customer_id = g.Customer_ID
                                                  JOIN stores s ON s.transaction_store_id = c.customer_primary_store AND
                                                                   sku.sku_id = s.sku_id) AS tmp
                                   WHERE rk <= 1)
 
-              SELECT g."Customer_ID",
-                     sku.sku_name                              AS "SKU_Name",
+              SELECT g.Customer_ID,
+                     sku.sku_name                              AS SKU_Name,
                      (s.SKU_Retail_Price - s.SKU_Purchase_Price) * allowable_margin_share /
                      SKU_Retail_Price                          AS acceptable,
-                     ceil(g."Group_Minimum_Discount" * 20) * 5 AS Min_discount_round
+                     ceil(g.Group_Minimum_Discount * 20) * 5 AS Min_discount_round
               FROM groups g
-                       JOIN sku ON g."Group_ID" = sku.group_id
-                       JOIN customers c ON c.customer_id = g."Customer_ID"
+                       JOIN sku ON g.Group_ID = sku.group_id
+                       JOIN customers c ON c.customer_id = g.Customer_ID
                        JOIN stores s ON s.transaction_store_id = c.customer_primary_store AND sku.sku_id = s.sku_id
-                       JOIN top_affin_groups ag ON ag."Customer_ID" = g."Customer_ID" AND ag."Group_ID" = g."Group_ID"
-                       JOIN margin_sku ms ON g."Customer_ID" = ms."Customer_ID" AND g."Group_ID" = ms."Group_ID" AND
-                                             sku.sku_name = ms."SKU_Name"
-              WHERE "Group_Churn_Rate" <= max_churn_index
-                AND "Group_Stability_Index" < max_stability_index
-                AND sku_share_in_group(g."Customer_ID", g."Group_ID", s.sku_id) <=
+                       JOIN top_affin_groups ag ON ag.Customer_ID = g.Customer_ID AND ag.Group_ID = g.Group_ID
+                       JOIN margin_sku ms ON g.Customer_ID = ms.Customer_ID AND g.Group_ID = ms.Group_ID AND
+                                             sku.sku_name = ms.SKU_Name
+              WHERE Group_Churn_Rate <= max_churn_index
+                AND Group_Stability_Index < max_stability_index
+                AND sku_share_in_group(g.Customer_ID, g.Group_ID, s.sku_id) <=
                     max_sku_share) tmp1
         WHERE Min_discount_round < tmp1.acceptable;
 END;

@@ -2,8 +2,8 @@ package ru.school.retailanalitycs_web_java.mapper;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import ru.school.retailanalitycs_web_java.dto.storeDto.StoreCreateDto;
-import ru.school.retailanalitycs_web_java.dto.storeDto.StoreReadDto;
+import ru.school.retailanalitycs_web_java.dto.entityDto.storeDto.StoreCreateDto;
+import ru.school.retailanalitycs_web_java.dto.entityDto.storeDto.StoreReadDto;
 import ru.school.retailanalitycs_web_java.entities.tables.Store;
 import ru.school.retailanalitycs_web_java.entities.tables.StoreId;
 

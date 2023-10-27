@@ -13,7 +13,7 @@ CREATE INDEX IF NOT EXISTS average_margin_idx ON average_margin USING btree (gro
 CREATE MATERIALIZED VIEW groups_sorted_by_affinity_index AS
 SELECT *
 FROM groups
-ORDER BY "Customer_ID", "Group_Affinity_Index" DESC;
+ORDER BY Customer_ID, Group_Affinity_Index DESC;
 
 SELECT *
 FROM groups_sorted_by_affinity_index;
@@ -38,20 +38,20 @@ BEGIN
     END IF;
 
     RETURN QUERY
-        SELECT DISTINCT groups."Customer_ID",
+        SELECT DISTINCT groups.Customer_ID,
                         first_date,
                         last_date,
                         round((abs(EXTRACT(EPOCH FROM first_date - last_date) / 86400)) /
                               (SELECT customer_frequency
                                FROM customers
-                               WHERE customers.customer_id = groups."Customer_ID")) + added_transactions,
+                               WHERE customers.customer_id = groups.Customer_ID)) + added_transactions,
                         groups_sku.group_name,
-                        ceil(groups."Group_Minimum_Discount" * 20) * 5
+                        ceil(groups.Group_Minimum_Discount * 20) * 5
         FROM groups
-                 JOIN groups_sku ON groups_sku.group_id = groups."Group_ID"
-            AND groups."Group_Churn_Rate" <= maximum_churn_index
-            AND groups."Group_Discount_Share" * 100 < maximum_share_of_transactions
-            AND ceil(groups."Group_Minimum_Discount" * 20) * 5
+                 JOIN groups_sku ON groups_sku.group_id = groups.Group_ID
+            AND groups.Group_Churn_Rate <= maximum_churn_index
+            AND groups.Group_Discount_Share * 100 < maximum_share_of_transactions
+            AND ceil(groups.Group_Minimum_Discount * 20) * 5
                                         <
                 ((SELECT avg_margin FROM average_margin WHERE average_margin.group_id = groups_sku.group_id) *
                  allowable_margin_share);

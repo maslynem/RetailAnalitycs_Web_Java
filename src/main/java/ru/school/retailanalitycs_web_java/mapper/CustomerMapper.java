@@ -3,10 +3,10 @@ package ru.school.retailanalitycs_web_java.mapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.springframework.beans.factory.annotation.Autowired;
-import ru.school.retailanalitycs_web_java.dto.customerDto.CustomerDto;
+import ru.school.retailanalitycs_web_java.dto.entityDto.customerDto.CustomerDto;
 import ru.school.retailanalitycs_web_java.entities.tables.Customer;
 import ru.school.retailanalitycs_web_java.exceptions.notFoundExceptions.CustomerNotFoundException;
-import ru.school.retailanalitycs_web_java.services.CustomerService;
+import ru.school.retailanalitycs_web_java.services.entityServices.CustomerService;
 
 @Mapper(componentModel = "spring")
 public abstract class CustomerMapper {

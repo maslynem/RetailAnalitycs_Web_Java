@@ -8,11 +8,6 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.Immutable;
 
-import java.math.BigDecimal;
-
-/**
- * Mapping for DB view
- */
 @Getter
 @Setter
 @Entity
@@ -30,16 +25,16 @@ public class CustomerView {
     private String customerAverageCheckSegment;
 
     @Column(name = "customer_frequency")
-    private BigDecimal customerFrequency;
+    private Double customerFrequency;
 
     @Column(name = "customer_frequency_segment")
     private String customerFrequencySegment;
 
     @Column(name = "customer_inactive_period")
-    private BigDecimal customerInactivePeriod;
+    private Double customerInactivePeriod;
 
     @Column(name = "customer_churn_rate")
-    private BigDecimal customerChurnRate;
+    private Double customerChurnRate;
 
     @Column(name = "customer_churn_segment")
     private String customerChurnSegment;

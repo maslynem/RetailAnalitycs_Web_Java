@@ -3,11 +3,11 @@ package ru.school.retailanalitycs_web_java.mapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.springframework.beans.factory.annotation.Autowired;
-import ru.school.retailanalitycs_web_java.dto.cardDto.CardCreateDto;
-import ru.school.retailanalitycs_web_java.dto.cardDto.CardReadDto;
+import ru.school.retailanalitycs_web_java.dto.entityDto.cardDto.CardCreateDto;
+import ru.school.retailanalitycs_web_java.dto.entityDto.cardDto.CardReadDto;
 import ru.school.retailanalitycs_web_java.entities.tables.Card;
 import ru.school.retailanalitycs_web_java.exceptions.notFoundExceptions.CardNotFoundException;
-import ru.school.retailanalitycs_web_java.services.CardService;
+import ru.school.retailanalitycs_web_java.services.entityServices.CardService;
 
 @Mapper(componentModel = "spring", uses = {CustomerMapper.class})
 public abstract class CardMapper {

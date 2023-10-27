@@ -11,5 +11,3 @@ SELECT setval('sku_sku_id_seq', count(*))
 FROM sku;
 SELECT setval('transactions_transaction_id_seq', count(*))
 FROM transactions;
--- SELECT setval('stores_store_id_seq', count(*)) FROM stores;
--- SELECT setval('checks_checks_id_seq', count(*)) FROM checks;
