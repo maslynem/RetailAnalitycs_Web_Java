@@ -10,7 +10,7 @@ import ru.school.retailanalitycs_web_java.IntegrationsTestConfiguration;
 import ru.school.retailanalitycs_web_java.dto.entityDto.customerDto.CustomerDto;
 import ru.school.retailanalitycs_web_java.dto.entityDto.skuGroupDto.SkuGroupDto;
 import ru.school.retailanalitycs_web_java.dto.viewDto.PeriodViewDto;
-import ru.school.retailanalitycs_web_java.entities.views.PeriodViewId;
+import ru.school.retailanalitycs_web_java.entities.views.periodView.PeriodViewId;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -36,7 +36,7 @@ class PeriodViewControllerTest extends IntegrationTestBase {
     void findPeriodsBy_page_1_size_2() throws Exception {
         PeriodViewDto first = PeriodViewDto.builder()
                 .customer(getCustomerDtoWithId(1L))
-                .group(getSkuGroupDtoWithId(3L))
+                .skuGroup(getSkuGroupDtoWithId(3L))
                 .groupPurchase(5L)
                 .groupFrequency(171.54100694444443)
                 .groupMinDiscount(0.30488100929709167)
@@ -44,7 +44,7 @@ class PeriodViewControllerTest extends IntegrationTestBase {
 
         PeriodViewDto second = PeriodViewDto.builder()
                 .customer(getCustomerDtoWithId(1L))
-                .group(getSkuGroupDtoWithId(5L))
+                .skuGroup(getSkuGroupDtoWithId(5L))
                 .groupPurchase(2L)
                 .groupFrequency(371.9934490740741)
                 .groupMinDiscount(0.12205489263006249)
@@ -53,14 +53,14 @@ class PeriodViewControllerTest extends IntegrationTestBase {
         mockMvc.perform(get("/api/v1/views/periods?page=1&size=2"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("content[0].customer.id").value(first.getCustomer().getId()))
-                .andExpect(jsonPath("content[0].group.id").value(first.getGroup().getId()))
+                .andExpect(jsonPath("content[0].group.id").value(first.getSkuGroup().getId()))
                 .andExpect(jsonPath("content[0].firstGroupPurchaseDate").exists())
                 .andExpect(jsonPath("content[0].lastGroupPurchaseDate").exists())
                 .andExpect(jsonPath("content[0].groupPurchase").value(first.getGroupPurchase()))
                 .andExpect(jsonPath("content[0].groupFrequency").value(first.getGroupFrequency()))
                 .andExpect(jsonPath("content[0].groupMinDiscount").value(first.getGroupMinDiscount()))
                 .andExpect(jsonPath("content[1].customer.id").value(second.getCustomer().getId()))
-                .andExpect(jsonPath("content[1].group.id").value(second.getGroup().getId()))
+                .andExpect(jsonPath("content[1].group.id").value(second.getSkuGroup().getId()))
                 .andExpect(jsonPath("content[1].firstGroupPurchaseDate").exists())
                 .andExpect(jsonPath("content[1].lastGroupPurchaseDate").exists())
                 .andExpect(jsonPath("content[1].groupPurchase").value(second.getGroupPurchase()))
@@ -77,16 +77,16 @@ class PeriodViewControllerTest extends IntegrationTestBase {
     void findPeriodById() throws Exception {
         PeriodViewDto first = PeriodViewDto.builder()
                 .customer(getCustomerDtoWithId(PERIOD_VIEW_ID.getCustomerId()))
-                .group(getSkuGroupDtoWithId(PERIOD_VIEW_ID.getGroupId()))
+                .skuGroup(getSkuGroupDtoWithId(PERIOD_VIEW_ID.getSkuGroupId()))
                 .groupPurchase(1L)
                 .groupFrequency(1.0)
                 .groupMinDiscount(0.4335659145964605)
                 .build();
 
-        mockMvc.perform(get("/api/v1/views/periods/{customer_id}/{group_id}", PERIOD_VIEW_ID.getCustomerId(), PERIOD_VIEW_ID.getGroupId()))
+        mockMvc.perform(get("/api/v1/views/periods/{customer_id}/{group_id}", PERIOD_VIEW_ID.getCustomerId(), PERIOD_VIEW_ID.getSkuGroupId()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.customer.id").value(first.getCustomer().getId()))
-                .andExpect(jsonPath("$.group.id").value(first.getGroup().getId()))
+                .andExpect(jsonPath("$.group.id").value(first.getSkuGroup().getId()))
                 .andExpect(jsonPath("$.firstGroupPurchaseDate").exists())
                 .andExpect(jsonPath("$.lastGroupPurchaseDate").exists())
                 .andExpect(jsonPath("$.groupPurchase").value(first.getGroupPurchase()))
@@ -96,7 +96,8 @@ class PeriodViewControllerTest extends IntegrationTestBase {
 
     @Test
     void findNotExistingPeriod() throws Exception {
-        mockMvc.perform(get("/api/v1/views/periods/{customer_id}/{group_id}", NOT_EXISTING_PERIOD_VIEW_ID.getCustomerId(), NOT_EXISTING_PERIOD_VIEW_ID.getGroupId()))
+        mockMvc.perform(get("/api/v1/views/periods/{customer_id}/{group_id}",
+                        NOT_EXISTING_PERIOD_VIEW_ID.getCustomerId(), NOT_EXISTING_PERIOD_VIEW_ID.getSkuGroupId()))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.code").value(NOT_FOUND.name()))
                 .andExpect(jsonPath("$.message").exists());

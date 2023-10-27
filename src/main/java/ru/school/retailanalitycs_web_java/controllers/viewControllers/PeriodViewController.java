@@ -3,7 +3,7 @@ package ru.school.retailanalitycs_web_java.controllers.viewControllers;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 import ru.school.retailanalitycs_web_java.dto.viewDto.PeriodViewDto;
-import ru.school.retailanalitycs_web_java.entities.views.PeriodViewId;
+import ru.school.retailanalitycs_web_java.entities.views.periodView.PeriodViewId;
 import ru.school.retailanalitycs_web_java.exceptions.notFoundExceptions.PeriodViewNotFoundException;
 import ru.school.retailanalitycs_web_java.mapper.PeriodViewMapper;
 import ru.school.retailanalitycs_web_java.services.viewServices.PeriodViewService;

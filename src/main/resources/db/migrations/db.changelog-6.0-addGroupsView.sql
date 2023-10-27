@@ -1,11 +1,11 @@
 --liquibase formatted sql
 
 --changeset maslynem:1 splitStatements:false
-CREATE FUNCTION get_margin(method VARCHAR DEFAULT 'default ', count INT DEFAULT 0)
+CREATE FUNCTION get_margin(method VARCHAR DEFAULT 'default ', count BIGINT DEFAULT 0)
     RETURNS TABLE
             (
-                Customer_ID  INT,
-                Group_ID     INT,
+                "Customer_ID"  BIGINT,
+                "Group_ID"     BIGINT,
                 Group_Margin DOUBLE PRECISION
             )
 AS
@@ -119,5 +119,8 @@ FROM periods p
          LEFT JOIN dshare ON p.customer_id = dshare.customer_id AND p.group_id = dshare.group_id
          LEFT JOIN avgd ON p.customer_id = avgd.customer_id AND p.group_id = avgd.group_id
          LEFT JOIN get_margin(method := 'default', count := null) AS gm
-                   ON p.customer_id = gm.Customer_ID AND p.group_id = gm.Group_ID;
+                   ON p.customer_id = gm."Customer_ID" AND p.group_id = gm."Group_ID";
 
+
+
+SELECT * FROM groups;

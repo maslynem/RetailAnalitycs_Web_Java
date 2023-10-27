@@ -5,16 +5,16 @@ import lombok.Data;
 import ru.school.retailanalitycs_web_java.dto.entityDto.customerDto.CustomerDto;
 import ru.school.retailanalitycs_web_java.dto.entityDto.skuGroupDto.SkuGroupDto;
 
-import java.time.LocalDateTime;
-
 @Data
 @Builder
-public class PeriodViewDto {
+public class GroupViewDto {
     private CustomerDto customer;
     private SkuGroupDto skuGroup;
-    private LocalDateTime firstGroupPurchaseDate;
-    private LocalDateTime lastGroupPurchaseDate;
-    private Long groupPurchase;
-    private Double groupFrequency;
-    private Double groupMinDiscount;
+    private Double groupAffinityIndex;
+    private Double groupChurnRate;
+    private Double groupStabilityIndex;
+    private Double groupMargin;
+    private Double groupDiscountShare;
+    private Double groupMinimumDiscount;
+    private Double groupAverageDiscount;
 }

@@ -1,4 +1,4 @@
-package ru.school.retailanalitycs_web_java.entities.views;
+package ru.school.retailanalitycs_web_java.entities.views.periodView;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.EmbeddedId;

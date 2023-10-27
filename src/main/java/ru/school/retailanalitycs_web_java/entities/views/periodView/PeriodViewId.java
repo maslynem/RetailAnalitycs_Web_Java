@@ -1,4 +1,4 @@
-package ru.school.retailanalitycs_web_java.entities.views;
+package ru.school.retailanalitycs_web_java.entities.views.periodView;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
@@ -25,20 +25,20 @@ public class PeriodViewId implements Serializable {
     private Long customerId;
 
     @Column(name = "group_id")
-    private Long groupId;
+    private Long skuGroupId;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
         PeriodViewId entity = (PeriodViewId) o;
-        return Objects.equals(this.groupId, entity.groupId) &&
+        return Objects.equals(this.skuGroupId, entity.skuGroupId) &&
                 Objects.equals(this.customerId, entity.customerId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(groupId, customerId);
+        return Objects.hash(skuGroupId, customerId);
     }
 
 }
