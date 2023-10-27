@@ -2,6 +2,12 @@ databaseChangeLog:
   - include:
       file: db/migrations/db.changelog-1.0-addTables.sql
   - include:
+      file: db/migrations/db.changelog-2.0-ImportsDataFromCsv.yaml
+  - include:
+      file: db/migrations/db.changelog-2.1-ImportsDataFromCsv-test.yaml
+  - include:
+      file: db/migrations/db.changelog-10.0-updateSequences.sql
+  - include:
       file: db/migrations/db.changelog-3.0-addCustomerView.sql
   - include:
       file: db/migrations/db.changelog-4.0-addPeriodsView.sql
@@ -15,9 +21,3 @@ databaseChangeLog:
       file: db/migrations/db.changelog-8.0-addPersonalOfferProcedure.sql
   - include:
       file: db/migrations/db.changelog-9.0-addMarginGrowthOffersProcedure.sql
-  - include:
-      file: db/migrations/db.changelog-2.0-ImportsDataFromCsv.yaml
-  - include:
-      file: db/migrations/db.changelog-2.1-ImportsDataFromCsv-test.yaml
-  - include:
-      file: db/migrations/db.changelog-10.0-updateSequences.sql

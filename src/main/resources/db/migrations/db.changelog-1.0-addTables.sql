@@ -73,4 +73,5 @@ CREATE TABLE Date_Of_Analysis_Formation
     Analysis_Formation TIMESTAMP WITHOUT TIME ZONE PRIMARY KEY
 );
 
+
 SET datestyle = 'european';

@@ -28,13 +28,13 @@ public class GroupViewController {
 
     @GetMapping(params = {"page", "size"})
     public Page<GroupViewDto> findAllGroupsByPage(@RequestParam("page") int page,
-                                                    @RequestParam("size") int size) {
+                                                  @RequestParam("size") int size) {
         return groupViewService.findAllByPage(page, size).map(groupViewMapper::toDto);
     }
 
     @GetMapping("/{customerId}/{skuGroupId}")
     public GroupViewDto findGroupById(@PathVariable Long customerId,
-                                        @PathVariable Long skuGroupId) {
+                                      @PathVariable Long skuGroupId) {
         GroupViewId id = new GroupViewId(customerId, skuGroupId);
         return groupViewService.findById(id).map(groupViewMapper::toDto).orElseThrow(() -> new GroupViewNotFoundException(id));
     }

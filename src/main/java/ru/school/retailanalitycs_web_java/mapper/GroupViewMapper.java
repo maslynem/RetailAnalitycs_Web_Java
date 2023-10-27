@@ -1,6 +1,7 @@
 package ru.school.retailanalitycs_web_java.mapper;
 
-import org.mapstruct.*;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import ru.school.retailanalitycs_web_java.dto.viewDto.GroupViewDto;
 import ru.school.retailanalitycs_web_java.entities.views.groupView.GroupView;
 

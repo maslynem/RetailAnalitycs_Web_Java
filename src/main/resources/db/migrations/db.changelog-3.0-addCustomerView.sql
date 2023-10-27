@@ -93,7 +93,7 @@ WITH customer_avg_check AS (SELECT p.customer_id,
                                                  WHEN c.Customer_Frequency = 0
                                                      THEN NULL
                                                  ELSE
-                                                     c.Customer_Inactive_Period / c.Customer_Frequency END AS Customer_Churn_Rate,
+                                                         c.Customer_Inactive_Period / c.Customer_Frequency END AS Customer_Churn_Rate,
                                              CASE
                                                  WHEN c.Customer_Frequency = 0
                                                      THEN NULL
