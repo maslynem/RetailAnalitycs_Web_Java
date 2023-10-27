@@ -71,7 +71,7 @@ WITH customer_avg_check AS (SELECT p.customer_id,
                                                                86400) AS freq_counter,
                                    EXTRACT(EPOCH FROM (SELECT max(analysis_formation) FROM date_of_analysis_formation) -
                                                       max(transaction_datetime)) /
-                                   86400 AS Customer_Inactive_Period
+                                   86400                              AS Customer_Inactive_Period
                             FROM personal_data p
                                      LEFT JOIN cards c ON p.customer_id = c.customer_id
                                      LEFT JOIN transactions t on c.customer_card_id = t.customer_card_id

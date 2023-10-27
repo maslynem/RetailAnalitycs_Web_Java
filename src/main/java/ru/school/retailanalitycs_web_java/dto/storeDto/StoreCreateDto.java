@@ -26,11 +26,13 @@ public class StoreCreateDto {
     @CsvBindByPosition(position = 1)
     private Integer sku;
 
+    @Min(value = 0, message = "Sku Purchase Price must be greater 0")
     @NotNull(message = "Sku Purchase Price is mandatory")
     @CsvBindByName(column = "sku_purchase_price", required = true)
     @CsvBindByPosition(position = 2)
     private Double skuPurchasePrice;
 
+    @Min(value = 0, message = "Sku Id must be greater 0")
     @NotNull(message = "Sku Retail Price is mandatory")
     @CsvBindByName(column = "sku_retail_price", required = true)
     @CsvBindByPosition(position = 3)

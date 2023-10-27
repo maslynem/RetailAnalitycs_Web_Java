@@ -20,13 +20,13 @@ public class Check {
     private CheckId id;
 
     @MapsId("transactionId")
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "transaction_id", nullable = false)
     @ToString.Exclude
     private Transaction transaction;
 
     @MapsId("skuId")
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "sku_id", nullable = false)
     @ToString.Exclude
     private Sku sku;
@@ -35,10 +35,10 @@ public class Check {
     private Double skuAmount;
 
     @Column(name = "sku_summ", nullable = false)
-    private Double skuSumm;
+    private Double skuSum;
 
     @Column(name = "sku_summ_paid", nullable = false)
-    private Double skuSummPaid;
+    private Double skuSumPaid;
 
     @Column(name = "sku_discount", nullable = false)
     private Double skuDiscount;

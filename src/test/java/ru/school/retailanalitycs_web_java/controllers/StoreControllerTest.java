@@ -18,8 +18,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static ru.school.retailanalitycs_web_java.exceptions.ExceptionCode.ENTITY_IS_NOT_VALID;
-import static ru.school.retailanalitycs_web_java.exceptions.ExceptionCode.NOT_FOUND;
+import static ru.school.retailanalitycs_web_java.exceptions.ExceptionCode.*;
 
 @SpringBootTest(classes = IntegrationsTestConfiguration.class)
 @AutoConfigureMockMvc
@@ -29,8 +28,8 @@ class StoreControllerTest extends IntegrationTestBase {
     private static final StoreId STORE_ID = new StoreId(1, 2);
     private static final Integer TRANSACTION_STORE_ID = 1;
     private static final Integer SKU_ID = 1;
-    private static final Integer NOT_EXISTING_SKU_ID = -1;
-    private static final StoreId NOT_EXISTING_STORE_ID = new StoreId(-1, -1);
+    private static final Integer NOT_EXISTING_SKU_ID = Integer.MAX_VALUE;
+    private static final StoreId NOT_EXISTING_STORE_ID = new StoreId(Integer.MAX_VALUE, Integer.MAX_VALUE);
 
     @Autowired
     private MockMvc mockMvc;
@@ -75,8 +74,8 @@ class StoreControllerTest extends IntegrationTestBase {
     @Test
     void findStoreById() throws Exception {
         StoreReadDto first = StoreReadDto.builder()
-                .transactionStoreId(1)
-                .sku(getSkuDtoWithId(2))
+                .transactionStoreId(STORE_ID.getTransactionStoreId())
+                .sku(getSkuDtoWithId(STORE_ID.getSkuId()))
                 .skuPurchasePrice(78.0071743954938)
                 .skuRetailPrice(104.882359988255).build();
         mockMvc.perform(get("/api/v1/stores/{trStoreId}/{skuId}", STORE_ID.getTransactionStoreId(), STORE_ID.getSkuId()))
@@ -112,6 +111,23 @@ class StoreControllerTest extends IntegrationTestBase {
                 .andExpect(jsonPath("$.sku.id").value(SKU_ID))
                 .andExpect(jsonPath("$.skuPurchasePrice").value(storeDto.getSkuPurchasePrice()))
                 .andExpect(jsonPath("$.skuRetailPrice").value(storeDto.getSkuRetailPrice()));
+    }
+
+    @Test
+    void createWithDuplicatedStoreId_shouldReturnBadRequest() throws Exception {
+        StoreCreateDto storeDto = StoreCreateDto.builder()
+                .transactionStoreId(STORE_ID.getTransactionStoreId())
+                .sku(STORE_ID.getSkuId())
+                .skuPurchasePrice(0.1)
+                .skuRetailPrice(0.1).build();
+
+        String requestJson = objectMapper.writeValueAsString(storeDto);
+        mockMvc.perform(post("/api/v1/stores")
+                        .contentType(APPLICATION_JSON)
+                        .content(requestJson))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.code").value(DUPLICATE_VALUE.name()))
+                .andExpect(jsonPath("$.message").exists());
     }
 
     @Test

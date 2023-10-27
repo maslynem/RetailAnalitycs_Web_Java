@@ -12,8 +12,8 @@ WITH t AS (SELECT cards.Customer_ID                           AS "Customer_ID",
                     JOIN checks ON transactions.transaction_id = checks.transaction_id
                     JOIN sku ON sku.sku_id = checks.sku_id
            GROUP BY cards.Customer_ID, sku.group_id),
-     t1 AS (SELECT cards.customer_id AS customer_id,
-                   sku.group_id      AS group_id,
+     t1 AS (SELECT cards.customer_id                          AS customer_id,
+                   sku.group_id                               AS group_id,
                    min(checks.sku_discount / checks.sku_summ) AS min_discount
             FROM cards
                      JOIN transactions ON cards.customer_card_id = transactions.customer_card_id

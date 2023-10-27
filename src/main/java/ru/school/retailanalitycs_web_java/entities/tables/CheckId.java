@@ -2,18 +2,25 @@ package ru.school.retailanalitycs_web_java.entities.tables;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.Hibernate;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
 
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Embeddable
 public class CheckId implements Serializable {
+    @Serial
     private static final long serialVersionUID = -5623599323863520535L;
+
     @Column(name = "transaction_id", nullable = false)
     private Integer transactionId;
 

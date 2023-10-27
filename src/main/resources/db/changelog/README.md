@@ -247,18 +247,18 @@ Function parameters:
    There is an option to choose a method of calculating an average check - for a certain period of time or for a certain
    number of recent transactions. The calculation method *manually determined* by the user.
 
-   1. The user selects the calculation method **by period**, and then specifies the first and last dates of the period
-      for which you want to calculate the average check for the entire population of customers in the sample. Here, the
-      last date of the specified period must be later than the first one, and the specified period must be within the
-      total analyzed period. If the date is too early or too late, the system automatically substitutes the date of the
-      beginning or the end of the analyzed period respectively. All transactions made by each specific customer during
-      a given period are considered for the calculation.
+    1. The user selects the calculation method **by period**, and then specifies the first and last dates of the period
+       for which you want to calculate the average check for the entire population of customers in the sample. Here, the
+       last date of the specified period must be later than the first one, and the specified period must be within the
+       total analyzed period. If the date is too early or too late, the system automatically substitutes the date of the
+       beginning or the end of the analyzed period respectively. All transactions made by each specific customer during
+       a given period are considered for the calculation.
 
-   2. The user selects the calculation method **by the number of recent transactions**, and then manually specifies the
-      number of transactions for which it is necessary to calculate the average check. To calculate the average check,
-      we take the user-specified number of transactions, starting with the most recent one in reverse chronological
-      order. In case any customer from the sample makes less than the specified number of transactions during the whole
-      analyzed period, the available number of transactions is used for the analysis.
+    2. The user selects the calculation method **by the number of recent transactions**, and then manually specifies the
+       number of transactions for which it is necessary to calculate the average check. To calculate the average check,
+       we take the user-specified number of transactions, starting with the most recent one in reverse chronological
+       order. In case any customer from the sample makes less than the specified number of transactions during the whole
+       analyzed period, the available number of transactions is used for the analysis.
 
 2. **Determination of the average check.** For each customer, the current value of the average check is determined
    according to the method selected in step 1. This is done by dividing the total turnover of all transactions of a
@@ -275,13 +275,13 @@ Function parameters:
 4. **Determination of the group to form the reward.** A group that meets the following criteria in sequence is selected
    to form the reward:
 
-   - The affinity index of the group is the highest possible.
+    - The affinity index of the group is the highest possible.
 
 - The churn index for this group should not exceed the value set by the user. If the churn index exceeds the set value,
   the next group by the affinity index is used;
 
-   - The share of transactions with a discount for this group is less than the value set by the user. If the selected
-     group exceeds the set value, the next group by the affinity index that also meets the churn criterion is used.
+    - The share of transactions with a discount for this group is less than the value set by the user. If the selected
+      group exceeds the set value, the next group by the affinity index that also meets the churn criterion is used.
 
 5. **Determination of the maximum allowable size of a discount for the reward.**
 
@@ -339,14 +339,14 @@ Function parameters:
 4. **Determination of the group to form the reward.** A group that meets the following criteria in sequence is selected
    to form the reward:
 
-   - The affinity index of the group is the highest possible.
+    - The affinity index of the group is the highest possible.
 
-   - The churn index for this group should not exceed the value set by the user. If the churn rate exceeds the set
-     value, the next group according to the affinity index is selected;
+    - The churn index for this group should not exceed the value set by the user. If the churn rate exceeds the set
+      value, the next group according to the affinity index is selected;
 
-   - The share of transactions with a discount for this group is less than the user-defined value. If the selected
-     group exceeds the set value, the next group is selected according to the affinity index, which also meets the
-     churn criterion.
+    - The share of transactions with a discount for this group is less than the user-defined value. If the selected
+      group exceeds the set value, the next group is selected according to the affinity index, which also meets the
+      churn criterion.
 
 5. **Determination of the maximum allowable discount for the reward.** The user manually determines the share of
    margin (in percent) that is allowed to be used to provide a reward for the group. The final value of the maximum

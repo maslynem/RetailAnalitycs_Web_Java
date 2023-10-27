@@ -3,7 +3,7 @@
 --changeset maslynem:1
 CREATE TABLE IF NOT EXISTS personal_data
 (
-    Customer_ID SERIAL PRIMARY KEY,
+    Customer_ID            SERIAL PRIMARY KEY,
     Customer_Name          TEXT,
     Customer_Surname       TEXT,
     Customer_Primary_Email TEXT,
@@ -24,7 +24,7 @@ CREATE INDEX ON cards (customer_id);
 
 CREATE TABLE IF NOT EXISTS transactions
 (
-    Transaction_ID SERIAL PRIMARY KEY,
+    Transaction_ID       SERIAL PRIMARY KEY,
     Customer_Card_ID     INT              NOT NULL REFERENCES cards (Customer_Card_ID),
     Transaction_Summ     DOUBLE PRECISION NOT NULL,
     Transaction_DateTime timestamp WITHOUT TIME ZONE,
@@ -40,7 +40,7 @@ CREATE TABLE groups_sku
 
 CREATE TABLE sku
 (
-    SKU_ID SERIAL PRIMARY KEY,
+    SKU_ID   SERIAL PRIMARY KEY,
     SKU_Name TEXT,
     Group_ID INT NOT NULL REFERENCES groups_sku (Group_ID),
     CONSTRAINT proper_name CHECK (SKU_Name ~ '^[a-zA-Zа-яА-Я0-9\s\-\_\.,:;!@#$%^&*()+=?"''<>\/\\\[\]\{\}\|]{1,}$')
@@ -59,7 +59,7 @@ CREATE TABLE stores
 
 CREATE TABLE IF NOT EXISTS checks
 (
-    Transaction_ID INT NOT NULL REFERENCES transactions (Transaction_ID),
+    Transaction_ID INT              NOT NULL REFERENCES transactions (Transaction_ID),
     SKU_ID         INT              NOT NULL REFERENCES sku (SKU_ID),
     SKU_Amount     DOUBLE PRECISION NOT NULL,
     SKU_Summ       DOUBLE PRECISION NOT NULL,
