@@ -4,10 +4,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
+@Transactional
 public abstract class BaseService<E, K> {
     protected final JpaRepository<E, K> repository;
 
@@ -15,28 +17,32 @@ public abstract class BaseService<E, K> {
         this.repository = repository;
     }
 
-    public Page<E> findAllByPage(int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
-        return repository.findAll(pageable);
-    }
 
     public E save(E entity) {
         return repository.save(entity);
     }
 
-    public Optional<E> findById(K id) {
-        return repository.findById(id);
+    public void save(Iterable<E> entities) {
+        repository.saveAll(entities);
     }
 
     public void deleteById(K id) {
         repository.deleteById(id);
     }
 
+    @Transactional(readOnly = true)
+    public Optional<E> findById(K id) {
+        return repository.findById(id);
+    }
+
+    @Transactional(readOnly = true)
     public List<E> findAll() {
         return repository.findAll();
     }
 
-    public void save(Iterable<E> entities) {
-        repository.saveAll(entities);
+    @Transactional(readOnly = true)
+    public Page<E> findAllByPage(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return repository.findAll(pageable);
     }
 }
