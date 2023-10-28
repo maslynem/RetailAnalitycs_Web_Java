@@ -1,14 +1,14 @@
 --liquibase formatted sql
 
 --changeset maslynem:1 splitStatements:false
-CREATE FUNCTION get_reward(max_churn_index NUMERIC,
+CREATE FUNCTION get_reward(max_churn_index DOUBLE PRECISION,
                            max_share_of_transactions_with_a_discount INT,
                            allowable_share_of_margin INT)
     RETURNS TABLE
             (
-                customer_id          INT,
+                customer_id          BIGINT,
                 group_name           TEXT,
-                offer_discount_depth NUMERIC
+                offer_discount_depth DOUBLE PRECISION
             )
 AS
 $$
@@ -20,32 +20,32 @@ BEGIN
                                                JOIN stores ON stores.sku_id = sku.sku_id
                                       GROUP BY sku.group_id),
                        groups_with_max_dis AS (SELECT p.customer_id,
-                                                      g.Group_ID,
-                                                      g.Group_Affinity_Index,
+                                                      g."Group_ID",
+                                                      g."Group_Affinity_Index",
                                                       avg_margin.avg * allowable_share_of_margin                                AS max_dis,
                                                       row_number()
-                                                      OVER (PARTITION BY p.customer_id ORDER BY g.Group_Affinity_Index DESC ) AS flag
+                                                      OVER (PARTITION BY p.customer_id ORDER BY g."Group_Affinity_Index" DESC ) AS flag
                                                FROM personal_data AS p
-                                                        LEFT JOIN groups g on p.customer_id = g.Customer_ID
-                                                        LEFT JOIN avg_margin ON g.Group_ID = avg_margin.group_id
-                                               WHERE g.Group_Churn_Rate < max_churn_index
-                                                 AND g.Group_Discount_Share * 100 <
+                                                        LEFT JOIN groups g on p.customer_id = g."Customer_ID"
+                                                        LEFT JOIN avg_margin ON g."Group_ID" = avg_margin.group_id
+                                               WHERE g."Group_Churn_Rate" < max_churn_index
+                                                 AND g."Group_Discount_Share" * 100 <
                                                      max_share_of_transactions_with_a_discount),
                        temp AS (SELECT t.customer_id,
-                                       t.Group_ID,
-                                       t.Group_Affinity_Index,
+                                       t."Group_ID",
+                                       t."Group_Affinity_Index",
                                        t.flag,
                                        t.max_dis,
-                                       ceil(g.Group_Minimum_Discount * 20) * 5                      AS new_discount,
-                                       row_number() OVER (PARTITION BY g.Customer_ID ORDER BY flag) AS flag2
+                                       ceil(g."Group_Minimum_Discount" * 20) * 5                      AS new_discount,
+                                       row_number() OVER (PARTITION BY g."Customer_ID" ORDER BY flag) AS flag2
                                 FROM groups_with_max_dis AS t
                                          LEFT JOIN groups AS g
-                                                   ON t.customer_id = g.Customer_ID AND t.Group_ID = g.Group_ID
-                                WHERE g.Group_Minimum_Discount != 0
-                                  AND ceil(g.Group_Minimum_Discount * 20) * 5 < t.max_dis)
+                                                   ON t.customer_id = g."Customer_ID" AND t."Group_ID" = g."Group_ID"
+                                WHERE g."Group_Minimum_Discount" != 0
+                                  AND ceil(g."Group_Minimum_Discount" * 20) * 5 < t.max_dis)
                   SELECT t.customer_id, g.group_name, t.new_discount
                   FROM temp AS t
-                           LEFT JOIN groups_sku g ON t.Group_ID = g.group_id
+                           LEFT JOIN groups_sku g ON t."Group_ID" = g.group_id
                   WHERE t.flag2 = 1);
 END ;
 $$ LANGUAGE plpgsql;
@@ -54,16 +54,16 @@ CREATE FUNCTION get_personal_offer_growth_of_the_average_check(
     average_check_calculation_method INT,
     first_date TIMESTAMP,
     last_date TIMESTAMP,
-    coefficient_of_average_check_increase NUMERIC,
-    max_churn_index NUMERIC,
+    coefficient_of_average_check_increase DOUBLE PRECISION,
+    max_churn_index DOUBLE PRECISION,
     max_share_of_transactions_with_a_discount INT,
     allowable_share_of_margin INT)
     RETURNS TABLE
             (
-                customer_id            INT,
-                required_check_measure NUMERIC,
+                customer_id            BIGINT,
+                required_check_measure DOUBLE PRECISION,
                 group_name             TEXT,
-                offer_discount_depth   NUMERIC
+                offer_discount_depth   DOUBLE PRECISION
             )
 AS
 $$
@@ -83,7 +83,7 @@ BEGIN
 
         RETURN QUERY
             WITH required_check_measure AS (SELECT p.customer_id,
-                                                   CAST(avg(transaction_summ) * coefficient_of_average_check_increase AS NUMERIC) AS required_check_measure
+                                                   CAST(avg(transaction_summ) * coefficient_of_average_check_increase AS DOUBLE PRECISION) AS required_check_measure
                                             FROM personal_data AS p
                                                      LEFT JOIN cards c on p.customer_id = c.customer_id
                                                      LEFT OUTER JOIN transactions t on c.customer_card_id = t.customer_card_id
@@ -100,16 +100,16 @@ $$ LANGUAGE plpgsql;
 CREATE FUNCTION get_personal_offer_growth_of_the_average_check(
     average_check_calculation_method INT,
     number_of_transactions INT,
-    coefficient_of_average_check_increase NUMERIC,
-    max_churn_index NUMERIC,
+    coefficient_of_average_check_increase DOUBLE PRECISION,
+    max_churn_index DOUBLE PRECISION,
     max_share_of_transactions_with_a_discount INT,
     allowable_share_of_margin INT)
     RETURNS TABLE
             (
-                customer_id            INT,
-                required_check_measure NUMERIC,
+                customer_id            BIGINT,
+                required_check_measure DOUBLE PRECISION,
                 group_name             TEXT,
-                offer_discount_depth   NUMERIC
+                offer_discount_depth   DOUBLE PRECISION
             )
 AS
 $$
@@ -126,7 +126,7 @@ BEGIN
                                      LEFT OUTER JOIN transactions t on c.customer_card_id = t.customer_card_id
                             WHERE transaction_summ IS NOT NULL),
                  required_check_measure AS (SELECT t.customer_id,
-                                                   CAST(avg(transaction_summ) * coefficient_of_average_check_increase AS NUMERIC) AS required_check_measure
+                                                   CAST(avg(transaction_summ) * coefficient_of_average_check_increase AS DOUBLE PRECISION) AS required_check_measure
                                             FROM all_tr AS t
                                             WHERE t.flag <= number_of_transactions
                                             GROUP BY t.customer_id)
@@ -138,14 +138,14 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
--- SELECT *
--- FROM get_personal_offer_growth_of_the_average_check(1,
---                                                     '2016-01-01',
---                                                     '2023-01-01',
---                                                     1,
---                                                     1.4,
---                                                     80,
---                                                     50);
+SELECT *
+FROM get_personal_offer_growth_of_the_average_check(1,
+                                                    '2016-01-01',
+                                                    '2023-01-01',
+                                                    1,
+                                                    1.4,
+                                                    80,
+                                                    50);
 -- SELECT *
 -- FROM get_personal_offer_growth_of_the_average_check(2,
 --                                                     100,

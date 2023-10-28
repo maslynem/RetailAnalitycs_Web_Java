@@ -12,7 +12,7 @@ import java.util.Map;
 @Component
 public class FrequencyOfVisitProcedure {
     private final JdbcTemplate jdbcTemplate;
-    private static final String FREQUENCY_QUERY = "SELECT * from get_frequency_of_visits(?::timestamp, ?::timestamp, ?, ?, ?, ?)";
+    private static final String FREQUENCY_QUERY = "SELECT * FROM get_frequency_of_visits(?::timestamp, ?::timestamp, ?, ?, ?, ?)";
 
     public FrequencyOfVisitProcedure(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;

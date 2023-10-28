@@ -6,28 +6,22 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class FrequencyOfVisitRequest {
-
-    @NotNull(message = "First Date is mandatory")
-    private LocalDateTime firstDate;
-
-    @NotNull(message = "Last Date is mandatory")
-    private LocalDateTime lastDate;
-
-    @NotNull(message = "Added Transactions is mandatory")
-    private Long addedTransactions;
+public class MarginGrowthOfferRequest {
+    @NotNull(message = "Group Number is mandatory")
+    private Long groupsNumber;
 
     @NotNull(message = "Max Churn Index is mandatory")
     private Double maxChurnIndex;
 
-    @NotNull(message = "Max Share Of Transactions is mandatory")
-    private Double maxShareOfTransactions;
+    @NotNull(message = "Max Stability Index is mandatory")
+    private Double maxStabilityIndex;
+
+    @NotNull(message = "Max Sku Index is mandatory")
+    private Double maxSkuShare;
 
     @NotNull(message = "Allowable Margin Share is mandatory")
     private Double allowableMarginShare;
