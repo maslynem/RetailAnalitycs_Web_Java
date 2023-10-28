@@ -7,11 +7,7 @@ CREATE TABLE IF NOT EXISTS personal_data
     Customer_Name          TEXT,
     Customer_Surname       TEXT,
     Customer_Primary_Email TEXT,
-    Customer_Primary_Phone TEXT,
-    CONSTRAINT proper_name CHECK (Customer_Name ~* '^[A-Za-zА-Яа-я][a-zа-я\ _]+$'),
-    CONSTRAINT proper_surname CHECK (Customer_Surname ~* '^[A-Za-zА-Яа-я][a-zа-я\ _]+$'),
-    CONSTRAINT proper_email CHECK (Customer_Primary_Email ~* '^[A-Za-z0-9._+%-]+@[A-Za-z0-9.-]+[.][A-Za-z]+$'),
-    CONSTRAINT proper_phone CHECK (Customer_Primary_Phone ~ '^\+7\d{10}$')
+    Customer_Primary_Phone TEXT
 );
 
 CREATE TABLE IF NOT EXISTS cards
@@ -34,16 +30,14 @@ CREATE TABLE IF NOT EXISTS transactions
 CREATE TABLE groups_sku
 (
     Group_ID   BIGSERIAL PRIMARY KEY,
-    Group_Name TEXT UNIQUE,
-    CONSTRAINT proper_name CHECK (Group_Name ~ '^[a-zA-Zа-яА-Я0-9\s\-\_\.,:;!@#$%^&*()+=?"''<>\/\\\[\]\{\}\|]{1,}$')
+    Group_Name TEXT UNIQUE
 );
 
 CREATE TABLE sku
 (
     SKU_ID   BIGSERIAL PRIMARY KEY,
     SKU_Name TEXT,
-    Group_ID BIGINT NOT NULL REFERENCES groups_sku (Group_ID),
-    CONSTRAINT proper_name CHECK (SKU_Name ~ '^[a-zA-Zа-яА-Я0-9\s\-\_\.,:;!@#$%^&*()+=?"''<>\/\\\[\]\{\}\|]{1,}$')
+    Group_ID BIGINT NOT NULL REFERENCES groups_sku (Group_ID)
 );
 
 CREATE INDEX ON sku (Group_ID);

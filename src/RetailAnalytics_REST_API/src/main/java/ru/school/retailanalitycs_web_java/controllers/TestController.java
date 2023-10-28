@@ -25,7 +25,6 @@ public class TestController {
 
     @PostMapping("test/import/{path}")
     public String importFromCSV(@RequestParam MultipartFile file, @PathVariable String path) {
-
         Resource invoicesResource = file.getResource();
         LinkedMultiValueMap<String, Object> parts = new LinkedMultiValueMap<>();
         parts.add("file", invoicesResource);

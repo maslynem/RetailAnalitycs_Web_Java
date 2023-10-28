@@ -1,0 +1,22 @@
+.table-href a {
+    text-decoration: none;
+
+}
+
+thead a {
+    font-size: 16px;
+    color: #FFF;
+}
+
+thead a:hover {
+    color: #44EB99;
+}
+
+tbody a {
+    font-size: 14px;
+    color: #008BFF;
+}
+
+tbody a:hover {
+    color: #A24FEA;
+}

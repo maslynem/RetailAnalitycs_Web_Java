@@ -4,14 +4,15 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>ru.s21school</groupId>
-    <artifactId>RetailAnalyticsWeb</artifactId>
+    <artifactId>RetailAnalyticsWebApplication</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
 
-    <name>RetailAnalyticsWeb</name>
+    <name>RetailAnalyticsWebApplication</name>
 
     <modules>
         <module>src/RetailAnalytics_REST_API</module>
+        <module>src/RetailAnalytics_Web</module>
     </modules>
 
     <parent>

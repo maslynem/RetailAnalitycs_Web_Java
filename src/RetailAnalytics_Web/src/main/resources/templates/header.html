@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Retail Analytics</title>
+</head>
+<body>
+
+<div th:fragment="header">
+    <div class="row1">
+        <div class="logo">
+            <a href="/"><img alt="" height="88px" src="/img/welcome_page_logo.png" width="94px"></a>
+        </div>
+        <div class="header__text header__title">Retail Analytics</div>
+    </div>
+    <div class="row2">
+        <div class="column_item">
+            <div class="item__ref data__submenu">
+                <a class="header__text" href="data/customers?page=0&size=30">Таблицы
+                    <ul class="data__list_submenu">
+                        <li><a class="header__text" href="data/customers?page=0&size=30">Покупатели</a></li>
+                        <li><a class="header__text" href="data/cards?page=0&size=30">Карты</a></li>
+                        <li><a class="header__text" href="data/transactions?page=0&size=30">Транзакции</a></li>
+                        <li><a class="header__text" href="data/checks?page=0&size=30">Чеки</a></li>
+                        <li><a class="header__text" href="data/skus?page=0&size=30">Товарная матрица</a></li>
+                        <li><a class="header__text" href="data/stores?page=0&size=30">Торговые точки</a></li>
+                        <li><a class="header__text" href="data/sku-groups?page=0&size=30">Группы SKU</a></li>
+                    </ul>
+                </a>
+            </div>
+        </div>
+        <div class="column_item">
+            <div class="item__ref data__submenu">
+                <a class="header__text" href="/peers/page-0?pageSize=30">Представления
+                    <ul class="data__list_submenu">
+                        <li><a class="header__text" href="/peers/page-0?pageSize=30">Клиенты</a></li>
+                        <li><a class="header__text" href="/tasks/page-0?pageSize=30">История покупок</a></li>
+                        <li><a class="header__text" href="/checks/page-0?pageSize=30">Периоды</a></li>
+                        <li><a class="header__text" href="/verters/page-0?pageSize=30">Группы</a></li>
+                    </ul>
+                </a>
+            </div>
+        </div>
+        <div class="column_item">
+            <div class="item__ref data__submenu">
+                <a class="header__text" href="/peers/page-0?pageSize=30">Аналитика</a>
+            </div>
+        </div>
+        <div class="column_item">
+            <div class="item__ref data__submenu">
+                <a class="header__text" href="/operations/">SQL запрос</a>
+            </div>
+        </div>
+        <div class="column_item">
+            <div class="item__ref data__submenu">
+                <a class="header__text" href="/operations/">Выход</a>
+            </div>
+        </div>
+
+    </div>
+</div>
+</body>
+</html>

@@ -1,11 +1,12 @@
-package ru.school.retailanalitycs_web_java.dto.viewDto;
+package ru.s21school.retailanalytics_web.dto.viewDto;
 
 import lombok.Builder;
 import lombok.Data;
-import ru.school.retailanalitycs_web_java.dto.entityDto.customerDto.CustomerDto;
-import ru.school.retailanalitycs_web_java.dto.entityDto.transactionDto.TransactionReadDto;
+import ru.s21school.retailanalytics_web.dto.entityDto.customerDto.CustomerDto;
+import ru.s21school.retailanalytics_web.dto.entityDto.transactionDto.TransactionReadDto;
 
 import java.time.LocalDateTime;
+
 @Data
 @Builder
 public class PurchaseHistoryViewDto {
