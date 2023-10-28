@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Customers</title>
+    <link href="/css/clearing.css" rel="stylesheet">
+
+    <link crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" rel="stylesheet">
+
+    <link href="https://cdn-app.sberdevices.ru/shared-static/0.0.0/styles/SBSansDisplay.0.1.0.css" rel="stylesheet"/>
+    <link href="/css/header.css" rel="stylesheet">
+    <link href="/css/pagination.css" rel="stylesheet">
+    <link href="/css/table.css" rel="stylesheet">
+    <link href="/css/error_msg.css" rel="stylesheet">
+</head>
+<body>
+<header th:insert="~{header :: header}"></header>
+<div class="container">
+    <div class="row">
+        <div class="col align-self-start">
+            <form action="#" th:action="@{/data/customers}" th:method="POST" th:object="${customer}">
+                <div class="form-group row mt-5">
+                    <label class="col-sm-2 col-form-label" for="customer_name">Customer Name</label>
+                    <input aria-describedby="customerNameError" class="form-control mb-4 col-4" id="customer_name"
+                           placeholder="Customer Name" th:field="*{customerName}"
+                           type="text">
+                    <small class="error_message" id="customerNameError"
+                           th:errors="*{customerName}" th:if="${#fields.hasErrors('customerName')}">error
+                        checkId</small>
+                </div>
+                <div class="form-group row mt-5">
+                    <label class="col-sm-2 col-form-label" for="customer_surname">Customer Surname</label>
+                    <input aria-describedby="customerSurnameError" class="form-control mb-4 col-4" id="customer_surname"
+                           placeholder="Customer Surname" th:field="*{customerSurname}"
+                           type="text">
+                    <small class="error_message" id="customerSurnameError"
+                           th:errors="*{customerSurname}" th:if="${#fields.hasErrors('customerSurname')}">error
+                        checkId</small>
+                </div>
+                <div class="form-group row mt-5">
+                    <label class="col-sm-2 col-form-label" for="customer_primary_email">Customer Primary Email</label>
+                    <input aria-describedby="customerPrimaryEmailError" class="form-control mb-4 col-4" id="customer_primary_email"
+                           placeholder="Customer Primary Email" th:field="*{customerPrimaryEmail}"
+                           type="text">
+                    <small class="error_message" id="customerPrimaryEmailError"
+                           th:errors="*{customerPrimaryEmail}" th:if="${#fields.hasErrors('customerPrimaryEmail')}">error
+                        checkId</small>
+                </div>
+                <div class="form-group row mt-5">
+                    <label class="col-sm-2 col-form-label" for="customer_primary_phone">Customer Primary Phone</label>
+                    <input aria-describedby="customerPrimaryPhoneError" class="form-control mb-4 col-4" id="customer_primary_phone"
+                           placeholder="Customer Primary Phone" th:field="*{customerPrimaryPhone}"
+                           type="text">
+                    <small class="error_message" id="customerPrimaryPhoneError"
+                           th:errors="*{customerPrimaryPhone}" th:if="${#fields.hasErrors('customerPrimaryPhone')}">error
+                        checkId</small>
+                </div>
+                <button class="btn btn-info col-2" onclick="return confirm_save()" type="submit">Добавить</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

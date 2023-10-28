@@ -43,17 +43,21 @@ public class CustomerController {
         model.addAttribute("totalElements", customersPage.getTotalElements());
         model.addAttribute("currentPage", page);
         model.addAttribute("pageSize", size);
+        return "customer/customers";
+    }
+
+    @GetMapping("new")
+    public String getCreateCustomerPage(Model model) {
         model.addAttribute("customer", new CustomerDto());
-        return "customers";
+        return "customer/new";
     }
 
     @PostMapping
-    public String createCustomer(@ModelAttribute @Valid CustomerDto customer, BindingResult bindingResult) {
+    public String createCustomer(@Valid @ModelAttribute("customer") CustomerDto customer, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             log.warn("New customer is not valid: {}", bindingResult.getAllErrors());
-            return "customers";
+            return "customer/new";
         }
-
         ResponseEntity<CustomerDto> customerDtoResponseEntity = restTemplate.postForEntity(CUSTOMER_API_URL, customer, CustomerDto.class);
         log.info("New customer was saved. Id: {}", customerDtoResponseEntity.getBody().getId());
         return "redirect:/data/customers";

@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org"
->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Customers</title>
@@ -92,55 +91,9 @@
 </div>
 <hr>
 <!--sec:authorize="hasRole('ROLE_USER')"-->
-<div class="container w-50 p-2">
-    <p class="fs-3">Добавить покупателя</p>
-</div>
-
-<div class="container w-50 p-2">
-    <div class="row">
-        <div class="col align-self-start">
-            <form action="#" method="POST" th:action="@{/data/customers}" th:object="${customer}">
-                <div class="mb-3">
-                    <label class="form-label" for="customer_name"> Имя </label>
-                    <input aria-describedby="customerNameError" class="form-control" id="customer_name" name="customerName"
-                           required="required" type="text"/>
-                </div>
-                <small class="error_message" id="customerNameError"
-                       th:errors="*{customerName}" th:if="${#fields.hasErrors('customerName')}">error
-                    customerName</small>
-
-                <div class="mb-3">
-                    <label class="form-label" for="customer_surname"> Фамилия </label>
-                    <input aria-describedby="customerSurnameError" class="form-control" id="customer_surname" name="customerSurname"
-                           required="required" type="text"/>
-                </div>
-                <small class="error_message" id="customerSurnameError"
-                       th:errors="*{customerSurname}" th:if="${#fields.hasErrors('customerSurname')}">error
-                    customerSurname</small>
-
-                <div class="mb-3">
-                    <label class="form-label" for="customer_primary_email"> E-mail </label>
-                    <input aria-describedby="customerPrimaryEmailError" class="form-control" id="customer_primary_email" name="customerPrimaryEmail"
-                           required="required" type="text"/>
-                </div>
-                <small class="error_message" id="customerPrimaryEmailError"
-                       th:errors="*{customerPrimaryEmail}" th:if="${#fields.hasErrors('customerPrimaryEmail')}">error
-                    customerPrimaryEmail</small>
+<a class="btn btn-primary btn-sm mb-3" th:href="@{/data/customers/new}"> Добавить пользователя </a>
 
 
-                <div class="mb-3">
-                    <label class="form-label" for="customer_primary_phone"> Телефон </label>
-                    <input aria-describedby="customerPrimaryPhoneError" class="form-control" id="customer_primary_phone" name="customerPrimaryPhone"
-                           required="required" type="text"/>
-                </div>
-                <small class="error_message" id="customerPrimaryPhoneError"
-                       th:errors="*{customerPrimaryPhone}" th:if="${#fields.hasErrors('customerPrimaryPhone')}">error
-                    customerPrimaryPhone</small>
-                <input class="btn btn-primary btn-sm" type="submit" value="Добавить"/>
-            </form>
-        </div>
-    </div>
-</div>
 
 <script src="/js/pagination_script.js" type="text/javascript"></script>
 <script src="/js/confirm_CUD.js" type="text/javascript"></script>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Retail Analytics</title>
@@ -16,9 +16,9 @@
     <div class="row2">
         <div class="column_item">
             <div class="item__ref data__submenu">
-                <a class="header__text" href="data/customers?page=0&size=30">Таблицы
+                <a class="header__text" th:href="@{/data/customers?page=0&size=30}">Таблицы
                     <ul class="data__list_submenu">
-                        <li><a class="header__text" href="data/customers?page=0&size=30">Покупатели</a></li>
+                        <li><a class="header__text" th:href="@{/data/customers?page=0&size=30}">Покупатели</a></li>
                         <li><a class="header__text" href="data/cards?page=0&size=30">Карты</a></li>
                         <li><a class="header__text" href="data/transactions?page=0&size=30">Транзакции</a></li>
                         <li><a class="header__text" href="data/checks?page=0&size=30">Чеки</a></li>
