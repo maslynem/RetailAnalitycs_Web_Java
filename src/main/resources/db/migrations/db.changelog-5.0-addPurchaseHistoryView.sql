@@ -2,13 +2,13 @@
 
 --changeset maslynem:1 splitStatements:false
 CREATE OR REPLACE VIEW purchase_history AS
-SELECT cards.Customer_ID                                  AS "Customer_ID",
-       transactions.transaction_id                        AS "Transaction_ID",
-       transactions.transaction_datetime                  AS "Transaction_DateTime",
-       sku.group_id                                       AS "Group_ID",
-       SUM(stores.sku_purchase_price * checks.sku_amount) AS "Group_Cost",
-       SUM(checks.sku_summ)                               AS "Group_Summ",
-       SUM(checks.sku_summ_paid)                          AS "Group_Summ_Paid"
+SELECT cards.Customer_ID                                  AS Customer_ID,
+       transactions.transaction_id                        AS Transaction_ID,
+       transactions.transaction_datetime                  AS Transaction_DateTime,
+       sku.group_id                                       AS Group_ID,
+       SUM(stores.sku_purchase_price * checks.sku_amount) AS Group_Cost,
+       SUM(checks.sku_summ)                               AS Group_Summ,
+       SUM(checks.sku_summ_paid)                          AS Group_Summ_Paid
 FROM cards
          JOIN transactions ON cards.customer_card_id = transactions.customer_card_id
          JOIN checks ON transactions.transaction_id = checks.transaction_id

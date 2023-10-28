@@ -20,32 +20,32 @@ BEGIN
                                                JOIN stores ON stores.sku_id = sku.sku_id
                                       GROUP BY sku.group_id),
                        groups_with_max_dis AS (SELECT p.customer_id,
-                                                      g."Group_ID",
-                                                      g."Group_Affinity_Index",
-                                                      avg_margin.avg * allowable_share_of_margin                                AS max_dis,
+                                                      g.Group_ID,
+                                                      g.Group_Affinity_Index,
+                                                      avg_margin.avg * allowable_share_of_margin                              AS max_dis,
                                                       row_number()
-                                                      OVER (PARTITION BY p.customer_id ORDER BY g."Group_Affinity_Index" DESC ) AS flag
+                                                      OVER (PARTITION BY p.customer_id ORDER BY g.Group_Affinity_Index DESC ) AS flag
                                                FROM personal_data AS p
-                                                        LEFT JOIN groups g on p.customer_id = g."Customer_ID"
-                                                        LEFT JOIN avg_margin ON g."Group_ID" = avg_margin.group_id
-                                               WHERE g."Group_Churn_Rate" < max_churn_index
-                                                 AND g."Group_Discount_Share" * 100 <
+                                                        LEFT JOIN groups g on p.customer_id = g.Customer_ID
+                                                        LEFT JOIN avg_margin ON g.Group_ID = avg_margin.group_id
+                                               WHERE g.Group_Churn_Rate < max_churn_index
+                                                 AND g.Group_Discount_Share * 100 <
                                                      max_share_of_transactions_with_a_discount),
                        temp AS (SELECT t.customer_id,
-                                       t."Group_ID",
-                                       t."Group_Affinity_Index",
+                                       t.Group_ID,
+                                       t.Group_Affinity_Index,
                                        t.flag,
                                        t.max_dis,
-                                       ceil(g."Group_Minimum_Discount" * 20) * 5                      AS new_discount,
-                                       row_number() OVER (PARTITION BY g."Customer_ID" ORDER BY flag) AS flag2
+                                       ceil(g.Group_Minimum_Discount * 20) * 5                      AS new_discount,
+                                       row_number() OVER (PARTITION BY g.Customer_ID ORDER BY flag) AS flag2
                                 FROM groups_with_max_dis AS t
                                          LEFT JOIN groups AS g
-                                                   ON t.customer_id = g."Customer_ID" AND t."Group_ID" = g."Group_ID"
-                                WHERE g."Group_Minimum_Discount" != 0
-                                  AND ceil(g."Group_Minimum_Discount" * 20) * 5 < t.max_dis)
+                                                   ON t.customer_id = g.Customer_ID AND t.Group_ID = g.Group_ID
+                                WHERE g.Group_Minimum_Discount != 0
+                                  AND ceil(g.Group_Minimum_Discount * 20) * 5 < t.max_dis)
                   SELECT t.customer_id, g.group_name, t.new_discount
                   FROM temp AS t
-                           LEFT JOIN groups_sku g ON t."Group_ID" = g.group_id
+                           LEFT JOIN groups_sku g ON t.Group_ID = g.group_id
                   WHERE t.flag2 = 1);
 END ;
 $$ LANGUAGE plpgsql;

@@ -9,10 +9,11 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
 @Component
 public class FrequencyOfVisitProcedure {
-    private final JdbcTemplate jdbcTemplate;
     private static final String FREQUENCY_QUERY = "SELECT * FROM get_frequency_of_visits(?::timestamp, ?::timestamp, ?, ?, ?, ?)";
+    private final JdbcTemplate jdbcTemplate;
 
     public FrequencyOfVisitProcedure(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;

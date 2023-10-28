@@ -63,15 +63,15 @@ WITH customer_avg_check AS (SELECT p.customer_id,
      customer_time_info AS (SELECT p.customer_id,
                                    (EXTRACT(EPOCH FROM
                                             (max(transaction_datetime) - min(transaction_datetime)) /
-                                            count(transaction_id)) / 86400)::DOUBLE PRECISION     AS Customer_Frequency,
+                                            count(transaction_id)) / 86400)::DOUBLE PRECISION AS Customer_Frequency,
                                    row_number() over (ORDER BY EXTRACT(EPOCH FROM
                                                                        (max(transaction_datetime) - min(transaction_datetime)) /
                                                                        count(transaction_id)) /
-                                                               86400)                             AS freq_counter,
+                                                               86400)                         AS freq_counter,
                                    (EXTRACT(EPOCH FROM
                                             (SELECT max(analysis_formation) FROM date_of_analysis_formation) -
                                             max(transaction_datetime)) /
-                                    86400)::DOUBLE PRECISION                                      AS Customer_Inactive_Period
+                                    86400)::DOUBLE PRECISION                                  AS Customer_Inactive_Period
                             FROM personal_data p
                                      LEFT JOIN cards c ON p.customer_id = c.customer_id
                                      LEFT JOIN transactions t on c.customer_card_id = t.customer_card_id
@@ -93,7 +93,7 @@ WITH customer_avg_check AS (SELECT p.customer_id,
                                                  WHEN c.Customer_Frequency = 0
                                                      THEN NULL
                                                  ELSE
-                                                         c.Customer_Inactive_Period / c.Customer_Frequency END AS Customer_Churn_Rate,
+                                                     c.Customer_Inactive_Period / c.Customer_Frequency END AS Customer_Churn_Rate,
                                              CASE
                                                  WHEN c.Customer_Frequency = 0
                                                      THEN NULL

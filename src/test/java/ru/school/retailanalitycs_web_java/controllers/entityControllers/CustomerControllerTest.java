@@ -76,6 +76,7 @@ class CustomerControllerTest extends IntegrationTestBase {
                 .andExpect(jsonPath("$.customerPrimaryEmail").value(customerDto.getCustomerPrimaryEmail()))
                 .andExpect(jsonPath("$.customerPrimaryPhone").value(customerDto.getCustomerPrimaryPhone()));
     }
+
     @Test
     void findNotExistingCustomer() throws Exception {
         mockMvc.perform(get("/api/v1/customers/{NOT_EXISTING_ID}", NOT_EXISTING_ID))
@@ -123,6 +124,7 @@ class CustomerControllerTest extends IntegrationTestBase {
                 .andExpect(jsonPath("$.code").value(ENTITY_IS_NOT_VALID.name()))
                 .andExpect(jsonPath("$.message").exists());
     }
+
     @Test
     void createWithMissingSurname_shouldReturnBadRequest() throws Exception {
         CustomerDto customerDto = CustomerDto.builder().customerName("test").customerPrimaryEmail("test@mail.ru").customerPrimaryPhone("+74957609115").build();
@@ -171,6 +173,7 @@ class CustomerControllerTest extends IntegrationTestBase {
                 .andExpect(jsonPath("$.code").value(ENTITY_IS_NOT_VALID.name()))
                 .andExpect(jsonPath("$.message").exists());
     }
+
     @Test
     void createWithMissingPhone_shouldReturnBadRequest() throws Exception {
         CustomerDto customerDto = CustomerDto.builder().customerName("test").customerSurname("test").customerPrimaryEmail("test@mail.ru").build();
