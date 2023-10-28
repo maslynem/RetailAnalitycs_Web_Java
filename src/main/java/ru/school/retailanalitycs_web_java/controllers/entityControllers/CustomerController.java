@@ -57,12 +57,6 @@ public class CustomerController {
         return customerDto;
     }
 
-// todo
-//    @PostMapping(value = "/${id}", consumes = MediaType.APPLICATION_JSON_VALUE)
-//    public CustomerDto update(@PathVariable Integer id, @RequestBody CustomerDto customerDto) {
-//        return customerDto;
-//    }
-
     @DeleteMapping("/{id}")
     public void delete(@PathVariable("id") Long id) {
         customerService.deleteById(id);
