@@ -2,9 +2,12 @@ package ru.school.retailanalitycs_web_java.controllers.entityControllers;
 
 import jakarta.validation.Valid;
 import lombok.SneakyThrows;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.school.retailanalitycs_web_java.dto.entityDto.storeDto.StoreCreateDto;
@@ -15,7 +18,9 @@ import ru.school.retailanalitycs_web_java.exceptions.notFoundExceptions.StoreNot
 import ru.school.retailanalitycs_web_java.mapper.StoreMapper;
 import ru.school.retailanalitycs_web_java.services.entityServices.StoreService;
 import ru.school.retailanalitycs_web_java.utils.CsvReader;
+import ru.school.retailanalitycs_web_java.utils.CsvWriter;
 
+import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.util.List;
 
@@ -25,11 +30,13 @@ public class StoreController {
     private final StoreService storeService;
     private final StoreMapper storeMapper;
     private final CsvReader<StoreCreateDto> csvReader;
+    private final CsvWriter<StoreCreateDto> csvWriter;
 
-    public StoreController(StoreService storeService, StoreMapper storeMapper, CsvReader<StoreCreateDto> csvReader) {
+    public StoreController(StoreService storeService, StoreMapper storeMapper, CsvReader<StoreCreateDto> csvReader, CsvWriter<StoreCreateDto> csvWriter) {
         this.storeService = storeService;
         this.storeMapper = storeMapper;
         this.csvReader = csvReader;
+        this.csvWriter = csvWriter;
     }
 
     @GetMapping
@@ -70,6 +77,16 @@ public class StoreController {
         InputStream inputStream = file.getInputStream();
         List<Store> stores = csvReader.importCsv(inputStream, StoreCreateDto.class).stream().map(storeMapper::toEntity).toList();
         storeService.save(stores);
+    }
+
+    @GetMapping(value = "export")
+    @SneakyThrows
+    public ResponseEntity<Resource> exportToCsv() {
+        ByteArrayOutputStream os = new ByteArrayOutputStream();
+        List<StoreCreateDto> customers = storeService.findAll().stream().map(storeMapper::toCreateDto).toList();
+        csvWriter.exportCsv(os, customers, StoreCreateDto.class);
+        ByteArrayResource res = new ByteArrayResource(os.toByteArray());
+        return ResponseEntity.ok(res);
     }
 
     private StoreId getId(Long trStoreId, Long skuId) {

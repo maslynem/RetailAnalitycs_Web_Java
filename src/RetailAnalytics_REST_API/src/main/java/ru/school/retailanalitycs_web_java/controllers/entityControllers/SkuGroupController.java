@@ -3,9 +3,12 @@ package ru.school.retailanalitycs_web_java.controllers.entityControllers;
 import jakarta.validation.Valid;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.school.retailanalitycs_web_java.dto.entityDto.skuGroupDto.SkuGroupDto;
@@ -14,7 +17,9 @@ import ru.school.retailanalitycs_web_java.exceptions.notFoundExceptions.SkuGroup
 import ru.school.retailanalitycs_web_java.mapper.SkuGroupMapper;
 import ru.school.retailanalitycs_web_java.services.entityServices.SkuGroupService;
 import ru.school.retailanalitycs_web_java.utils.CsvReader;
+import ru.school.retailanalitycs_web_java.utils.CsvWriter;
 
+import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.util.List;
 
@@ -24,12 +29,14 @@ public class SkuGroupController {
     private final SkuGroupService skuGroupService;
     private final SkuGroupMapper skuGroupMapper;
     private final CsvReader<SkuGroupDto> csvReader;
+    private final CsvWriter<SkuGroupDto> csvWriter;
 
     @Autowired
-    public SkuGroupController(SkuGroupService skuGroupService, SkuGroupMapper skuGroupMapper, CsvReader<SkuGroupDto> csvReader) {
+    public SkuGroupController(SkuGroupService skuGroupService, SkuGroupMapper skuGroupMapper, CsvReader<SkuGroupDto> csvReader, CsvWriter<SkuGroupDto> csvWriter) {
         this.skuGroupService = skuGroupService;
         this.skuGroupMapper = skuGroupMapper;
         this.csvReader = csvReader;
+        this.csvWriter = csvWriter;
     }
 
     @GetMapping
@@ -70,4 +77,14 @@ public class SkuGroupController {
         skuGroupService.save(cards);
     }
 
+
+    @GetMapping(value = "export")
+    @SneakyThrows
+    public ResponseEntity<Resource> exportToCsv() {
+        ByteArrayOutputStream os = new ByteArrayOutputStream();
+        List<SkuGroupDto> customers = skuGroupService.findAll().stream().map(skuGroupMapper::toDto).toList();
+        csvWriter.exportCsv(os, customers, SkuGroupDto.class);
+        ByteArrayResource res = new ByteArrayResource(os.toByteArray());
+        return ResponseEntity.ok(res);
+    }
 }

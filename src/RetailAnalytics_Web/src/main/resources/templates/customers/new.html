@@ -25,36 +25,29 @@
                     <input aria-describedby="customerNameError" class="form-control mb-4 col-4" id="customer_name"
                            placeholder="Customer Name" th:field="*{customerName}"
                            type="text">
-                    <small class="error_message" id="customerNameError"
-                           th:errors="*{customerName}" th:if="${#fields.hasErrors('customerName')}">error
-                        checkId</small>
                 </div>
                 <div class="form-group row mt-5">
                     <label class="col-sm-2 col-form-label" for="customer_surname">Customer Surname</label>
                     <input aria-describedby="customerSurnameError" class="form-control mb-4 col-4" id="customer_surname"
                            placeholder="Customer Surname" th:field="*{customerSurname}"
                            type="text">
-                    <small class="error_message" id="customerSurnameError"
-                           th:errors="*{customerSurname}" th:if="${#fields.hasErrors('customerSurname')}">error
-                        checkId</small>
                 </div>
                 <div class="form-group row mt-5">
                     <label class="col-sm-2 col-form-label" for="customer_primary_email">Customer Primary Email</label>
-                    <input aria-describedby="customerPrimaryEmailError" class="form-control mb-4 col-4" id="customer_primary_email"
+                    <input aria-describedby="customerPrimaryEmailError" class="form-control mb-4 col-4"
+                           id="customer_primary_email"
                            placeholder="Customer Primary Email" th:field="*{customerPrimaryEmail}"
                            type="text">
-                    <small class="error_message" id="customerPrimaryEmailError"
-                           th:errors="*{customerPrimaryEmail}" th:if="${#fields.hasErrors('customerPrimaryEmail')}">error
-                        checkId</small>
                 </div>
                 <div class="form-group row mt-5">
                     <label class="col-sm-2 col-form-label" for="customer_primary_phone">Customer Primary Phone</label>
-                    <input aria-describedby="customerPrimaryPhoneError" class="form-control mb-4 col-4" id="customer_primary_phone"
+                    <input aria-describedby="customerPrimaryPhoneError" class="form-control mb-4 col-4"
+                           id="customer_primary_phone"
                            placeholder="Customer Primary Phone" th:field="*{customerPrimaryPhone}"
                            type="text">
-                    <small class="error_message" id="customerPrimaryPhoneError"
-                           th:errors="*{customerPrimaryPhone}" th:if="${#fields.hasErrors('customerPrimaryPhone')}">error
-                        checkId</small>
+                </div>
+                <div th:if="${errors}">
+                    <p class="error_message" th:each="error : ${errors}" th:text="${error}">Error message</p>
                 </div>
                 <button class="btn btn-info col-2" onclick="return confirm_save()" type="submit">Добавить</button>
             </form>

@@ -7,14 +7,17 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import ru.school.retailanalitycs_web_java.exceptions.csvExceptions.CsvWriteException;
 
+import java.io.BufferedWriter;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.util.List;
 
 @Slf4j
 @Component
 public class CsvWriter<T> {
-    public void exportCsv(Writer writer, List<T> entities, Class<T> clazz) {
-        try {
+    public void exportCsv(OutputStream outputStream, List<T> entities, Class<T> clazz) {
+        try (Writer writer = new BufferedWriter(new OutputStreamWriter(outputStream))) {
             MappingStrategy<T> strategy = new MappingStrategy<>();
             strategy.setType(clazz);
             StatefulBeanToCsv<T> beanToCsv = new StatefulBeanToCsvBuilder<T>(writer)

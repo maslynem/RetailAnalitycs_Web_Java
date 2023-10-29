@@ -1,12 +1,14 @@
 package ru.school.retailanalitycs_web_java.controllers.entityControllers;
 
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.school.retailanalitycs_web_java.dto.entityDto.customerDto.CustomerDto;
@@ -17,6 +19,7 @@ import ru.school.retailanalitycs_web_java.services.entityServices.CustomerServic
 import ru.school.retailanalitycs_web_java.utils.CsvReader;
 import ru.school.retailanalitycs_web_java.utils.CsvWriter;
 
+import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.util.List;
 
@@ -76,10 +79,12 @@ public class CustomerController {
 
     @GetMapping(value = "export")
     @SneakyThrows
-    public void exportToCsv(HttpServletResponse servletResponse) {
-        servletResponse.setContentType("text/csv");
-        servletResponse.addHeader("Content-Disposition", "attachment; filename=\"customer.tsv\"");
+    public ResponseEntity<Resource> exportToCsv() {
+        ByteArrayOutputStream os = new ByteArrayOutputStream();
         List<CustomerDto> customers = customerService.findAll().stream().map(customerMapper::toDto).toList();
-        csvWriter.exportCsv(servletResponse.getWriter(), customers, CustomerDto.class);
+        csvWriter.exportCsv(os, customers, CustomerDto.class);
+        ByteArrayResource res = new ByteArrayResource(os.toByteArray());
+        return ResponseEntity.ok(res);
     }
+
 }

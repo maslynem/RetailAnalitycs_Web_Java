@@ -11,7 +11,7 @@ import ru.school.retailanalitycs_web_java.dto.ErrorDto;
 import ru.school.retailanalitycs_web_java.exceptions.duplicateValue.DuplicateValueException;
 import ru.school.retailanalitycs_web_java.exceptions.notFoundExceptions.EntityNotFoundException;
 
-import java.util.stream.Collectors;
+import java.util.List;
 
 import static ru.school.retailanalitycs_web_java.exceptions.ExceptionCode.ENTITY_IS_NOT_VALID;
 
@@ -24,7 +24,7 @@ public class CommonExceptionHandler {
         log.warn("{}", ex.getMessage());
         return ErrorDto.builder()
                 .code(ex.getCode())
-                .message(ex.getMessage())
+                .messages(List.of(ex.getMessage()))
                 .build();
     }
 
@@ -34,17 +34,17 @@ public class CommonExceptionHandler {
         log.warn("{}", ex.getMessage());
         return ErrorDto.builder()
                 .code(ex.getCode())
-                .message(ex.getMessage())
+                .messages(List.of(ex.getMessage()))
                 .build();
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorDto handleValidationExceptions(MethodArgumentNotValidException ex) {
-        String message = ex.getBindingResult().getFieldErrors().stream().map(FieldError::getDefaultMessage).collect(Collectors.joining("; "));
+        List<String> messages = ex.getBindingResult().getFieldErrors().stream().map(FieldError::getDefaultMessage).toList();
         return ErrorDto.builder()
                 .code(ENTITY_IS_NOT_VALID)
-                .message(message)
+                .messages(messages)
                 .build();
     }
 }

@@ -14,7 +14,12 @@ public abstract class CardMapper {
     @Autowired
     private CardService cardService;
 
-    public abstract CardReadDto toDto(Card entity);
+    public abstract CardReadDto toReadDto(Card entity);
+
+    @Mapping(target = "customer", source = "customer.id")
+    public abstract CardCreateDto toCreateDto(Card entity);
+
+
 
     @Mapping(target = "transactions", ignore = true)
     public abstract Card toEntity(CardCreateDto dto);

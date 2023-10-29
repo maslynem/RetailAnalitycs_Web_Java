@@ -13,6 +13,10 @@ public abstract class StoreMapper {
     @Mapping(target = "sku.skuGroup", ignore = true)
     public abstract StoreReadDto toDto(Store entity);
 
+    @Mapping(target = "sku", source = "sku.id")
+    @Mapping(target = "transactionStoreId", source = "id.transactionStoreId")
+    public abstract StoreCreateDto toCreateDto(Store store);
+
     @Mapping(target = "id", expression = "java(getStoreIdByDto(dto))")
     public abstract Store toEntity(StoreCreateDto dto);
 

@@ -17,6 +17,9 @@ public abstract class TransactionMapper {
     @Mapping(target = "customerCard.customer", ignore = true)
     public abstract TransactionReadDto toDto(Transaction transaction);
 
+    @Mapping(target = "customerCard", source = "customerCard.id")
+    public abstract TransactionCreateDto toCreateDto(Transaction transaction);
+
     @Mapping(target = "checks", ignore = true)
     public abstract Transaction toEntity(TransactionCreateDto transactionDto);
 

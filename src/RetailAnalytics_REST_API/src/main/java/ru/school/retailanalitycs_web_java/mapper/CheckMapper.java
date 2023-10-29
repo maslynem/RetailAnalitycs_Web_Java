@@ -12,6 +12,8 @@ public abstract class CheckMapper {
 
     public abstract CheckReadDto toDto(Check entity);
 
+    public abstract CheckCreateDto toCreateDto(Check check);
+
     @Mapping(target = "id", expression = "java(getCheckIdByDto(dto))")
     @Mapping(target = "transaction", source = "transactionId")
     @Mapping(target = "sku", source = "skuId")

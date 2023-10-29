@@ -2,9 +2,12 @@ package ru.school.retailanalitycs_web_java.controllers.entityControllers;
 
 import jakarta.validation.Valid;
 import lombok.SneakyThrows;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.school.retailanalitycs_web_java.dto.entityDto.cardDto.CardCreateDto;
@@ -14,7 +17,9 @@ import ru.school.retailanalitycs_web_java.exceptions.notFoundExceptions.CardNotF
 import ru.school.retailanalitycs_web_java.mapper.CardMapper;
 import ru.school.retailanalitycs_web_java.services.entityServices.CardService;
 import ru.school.retailanalitycs_web_java.utils.CsvReader;
+import ru.school.retailanalitycs_web_java.utils.CsvWriter;
 
+import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.util.List;
 
@@ -24,27 +29,29 @@ public class CardController {
     private final CardService cardService;
     private final CardMapper cardMapper;
     private final CsvReader<CardCreateDto> csvReader;
+    private final CsvWriter<CardCreateDto> csvWriter;
 
-    public CardController(CardService cardService, CardMapper cardMapper, CsvReader<CardCreateDto> csvReader) {
+    public CardController(CardService cardService, CardMapper cardMapper, CsvReader<CardCreateDto> csvReader, CsvWriter<CardCreateDto> csvWriter) {
         this.cardService = cardService;
         this.cardMapper = cardMapper;
         this.csvReader = csvReader;
+        this.csvWriter = csvWriter;
     }
 
     @GetMapping
     public List<CardReadDto> findAllCards() {
-        return cardService.findAll().stream().map(cardMapper::toDto).toList();
+        return cardService.findAll().stream().map(cardMapper::toReadDto).toList();
     }
 
     @GetMapping(params = {"page", "size"})
     public Page<CardReadDto> findAllCardsByPage(@RequestParam("page") int page,
                                                 @RequestParam("size") int size) {
-        return cardService.findAllByPage(page, size).map(cardMapper::toDto);
+        return cardService.findAllByPage(page, size).map(cardMapper::toReadDto);
     }
 
     @GetMapping("/{id}")
     public CardReadDto findCardById(@PathVariable Long id) {
-        return cardService.findById(id).map(cardMapper::toDto).orElseThrow(() -> new CardNotFoundException(id));
+        return cardService.findById(id).map(cardMapper::toReadDto).orElseThrow(() -> new CardNotFoundException(id));
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -52,7 +59,7 @@ public class CardController {
     public CardReadDto create(@Valid @RequestBody CardCreateDto cardDto) {
         Card card = cardMapper.toEntity(cardDto);
         Card save = cardService.save(card);
-        return cardMapper.toDto(save);
+        return cardMapper.toReadDto(save);
     }
 
     @DeleteMapping("/{id}")
@@ -66,5 +73,15 @@ public class CardController {
         InputStream inputStream = file.getInputStream();
         List<Card> cards = csvReader.importCsv(inputStream, CardCreateDto.class).stream().map(cardMapper::toEntity).toList();
         cardService.save(cards);
+    }
+
+    @GetMapping(value = "export")
+    @SneakyThrows
+    public ResponseEntity<Resource> exportToCsv() {
+        ByteArrayOutputStream os = new ByteArrayOutputStream();
+        List<CardCreateDto> customers = cardService.findAll().stream().map(cardMapper::toCreateDto).toList();
+        csvWriter.exportCsv(os, customers, CardCreateDto.class);
+        ByteArrayResource res = new ByteArrayResource(os.toByteArray());
+        return ResponseEntity.ok(res);
     }
 }

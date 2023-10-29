@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Customers</title>
+    <title>Cards</title>
     <link href="/css/clearing.css" rel="stylesheet">
 
     <link crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
@@ -20,7 +20,7 @@
     <div class="row">
         <div class="col">
             <p class="fs-3">Выгрузить TSV</p>
-            <form action="/data/customers/export" enctype="multipart/form-data">
+            <form action="/data/cards/export" enctype="multipart/form-data">
                 <div>
                     <input class="btn btn-primary btn-sm" type="submit" value="Выгрузить"/>
                 </div>
@@ -28,7 +28,7 @@
         </div>
         <div class="col">
             <p class="fs-3">Загрузить TSV</p>
-            <form action="/data/customer/import" enctype="multipart/form-data" method="POST">
+            <form action="/data/cards/import" enctype="multipart/form-data" method="POST">
                 <div>
                     <input accept=".tsv" class="btn btn-light btn-sm" name="file" required="required" type="file">
                     <input class="btn btn btn-primary btn-sm" type="submit" value="Загрузить"/>
@@ -48,30 +48,21 @@
                     ID
                 </th>
                 <th class="text-center">
-                    Customer Name
+                    Customer Id
                 </th>
                 <th class="text-center">
-                    Customer Surname
+                    Customer Full Name
                 </th>
-                <th class="text-center">
-                    Customer Primary Email
-                </th>
-                <th class="text-center">
-                    Customer Primary Phone
-                </th>
-
                 <th class="text-center" colspan="2"> Actions</th>
             </tr>
             </thead>
             <tbody>
             <tr th:each="entity : ${entities}">
                 <td th:text="${entity.getId()}"></td>
-                <td th:text="${entity.getCustomerName()}"></td>
-                <td th:text="${entity.getCustomerSurname()}"></td>
-                <td th:text="${entity.getCustomerPrimaryEmail()}"></td>
-                <td th:text="${entity.getCustomerPrimaryPhone()}"></td>
+                <td th:text="${entity.getCustomer().getId()}"></td>
+                <td th:text="${entity.getCustomer().getCustomerName()} + ' ' +${entity.getCustomer().getCustomerSurname()}"></td>
                 <td class="text-center">
-                    <form action="#" th:action="@{/data/customers/{id}(id=${entity.getId()})}" th:method="DELETE"
+                    <form action="#" th:action="@{/data/cards/{id}(id=${entity.getId()})}" th:method="DELETE"
                           th:object="${entity}">
                         <button class="btn btn-danger" onclick="return confirm_delete()" type="submit">Delete</button>
                     </form>
@@ -91,7 +82,7 @@
 </div>
 <hr>
 <!--sec:authorize="hasRole('ROLE_USER')"-->
-<a class="btn btn-primary btn-sm mb-3" th:href="@{/data/customers/new}"> Добавить пользователя </a>
+<a class="btn btn-primary btn-sm mb-3" th:href="@{/data/cards/new}"> Добавить карту </a>
 
 
 

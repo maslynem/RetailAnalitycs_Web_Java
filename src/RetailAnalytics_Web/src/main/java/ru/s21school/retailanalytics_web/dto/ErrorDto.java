@@ -1,10 +1,9 @@
-package ru.school.retailanalitycs_web_java.dto;
+package ru.s21school.retailanalytics_web.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.school.retailanalitycs_web_java.exceptions.ExceptionCode;
 
 import java.util.List;
 
