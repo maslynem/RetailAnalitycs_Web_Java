@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Skus</title>
+    <link href="/css/clearing.css" rel="stylesheet">
+
+    <link crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" rel="stylesheet">
+
+    <link href="https://cdn-app.sberdevices.ru/shared-static/0.0.0/styles/SBSansDisplay.0.1.0.css" rel="stylesheet"/>
+    <link href="/css/header.css" rel="stylesheet">
+    <link href="/css/pagination.css" rel="stylesheet">
+    <link href="/css/table.css" rel="stylesheet">
+    <link href="/css/error_msg.css" rel="stylesheet">
+</head>
+<body>
+<header th:insert="~{header :: header}"></header>
+<div class="container">
+    <div class="row">
+        <div class="col align-self-start">
+            <form action="#" th:action="@{/data/skus}" th:method="POST" th:object="${sku}">
+                <div class="form-group row mt-5">
+                    <label class="col-sm-2 col-form-label" for="skuSum">Sku Name</label>
+                    <input class="form-control mb-4 col-4" id="skuSum"
+                           placeholder="Sku Name" th:field="*{skuName}"
+                           type="number">
+                </div>
+                <div class="form-group row mt-5">
+                    <label class="col-sm-2 col-form-label" for="skuDatetime">Sku Group</label>
+                    <input class="form-control mb-4 col-4"
+                           id="skuDatetime"
+                           placeholder="Sku Group" th:field="*{skuGroup}"
+                           type="datetime-local">
+                </div>
+                <div th:if="${errors}">
+                    <p class="error_message" th:each="error : ${errors}" th:text="${error}">Error message</p>
+                </div>
+                <button class="btn btn-info col-2" onclick="return confirm_save()" type="submit">Добавить</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

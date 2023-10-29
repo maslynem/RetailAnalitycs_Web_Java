@@ -10,7 +10,6 @@ import ru.school.retailanalitycs_web_java.entities.tables.StoreId;
 @Mapper(componentModel = "spring", uses = {SkuMapper.class})
 public abstract class StoreMapper {
     @Mapping(target = "transactionStoreId", source = "id.transactionStoreId")
-    @Mapping(target = "sku.skuGroup", ignore = true)
     public abstract StoreReadDto toDto(Store entity);
 
     @Mapping(target = "sku", source = "sku.id")

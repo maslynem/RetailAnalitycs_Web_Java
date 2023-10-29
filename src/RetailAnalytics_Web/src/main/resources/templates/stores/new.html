@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Stores</title>
+    <link href="/css/clearing.css" rel="stylesheet">
+
+    <link crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" rel="stylesheet">
+
+    <link href="https://cdn-app.sberdevices.ru/shared-static/0.0.0/styles/SBSansDisplay.0.1.0.css" rel="stylesheet"/>
+    <link href="/css/header.css" rel="stylesheet">
+    <link href="/css/pagination.css" rel="stylesheet">
+    <link href="/css/table.css" rel="stylesheet">
+    <link href="/css/error_msg.css" rel="stylesheet">
+</head>
+<body>
+<header th:insert="~{header :: header}"></header>
+<div class="container">
+    <div class="row">
+        <div class="col align-self-start">
+            <form action="#" th:action="@{/data/stores}" th:method="POST" th:object="${store}">
+                <div class="form-group row mt-5">
+                    <label class="col-sm-2 col-form-label" for="storeSum">Transaction Store Id</label>
+                    <input class="form-control mb-4 col-4" id="storeSum"
+                           placeholder="Transaction Store Id" th:field="*{transactionStoreId}"
+                           type="number">
+                </div>
+                <div class="form-group row mt-5">
+                    <label class="col-sm-2 col-form-label" for="storeDatetime">Sku Id</label>
+                    <input class="form-control mb-4 col-4"
+                           id="storeDatetime"
+                           placeholder="Sku Id" th:field="*{sku}"
+                           type="number">
+                </div>
+                <div class="form-group row mt-5">
+                    <label class="col-sm-2 col-form-label" for="skuPurchasePrice">Sku Purchase Price</label>
+                    <input class="form-control mb-4 col-4"
+                           id="skuPurchasePrice"
+                           placeholder="Sku Purchase Price" th:field="*{skuPurchasePrice}"
+                           type="number">
+                </div>
+                <div class="form-group row mt-5">
+                    <label class="col-sm-2 col-form-label" for="skuRetailPrice">Sku Retail Price</label>
+                    <input class="form-control mb-4 col-4"
+                           id="skuRetailPrice"
+                           placeholder="Sku Retail Price" th:field="*{skuRetailPrice}"
+                           type="number">
+                </div>
+
+                <div th:if="${errors}">
+                    <p class="error_message" th:each="error : ${errors}" th:text="${error}">Error message</p>
+                </div>
+                <button class="btn btn-info col-2" onclick="return confirm_save()" type="submit">Добавить</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

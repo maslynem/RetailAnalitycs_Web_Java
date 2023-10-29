@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Checks</title>
+    <link href="/css/clearing.css" rel="stylesheet">
+
+    <link crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" rel="stylesheet">
+
+    <link href="https://cdn-app.sberdevices.ru/shared-static/0.0.0/styles/SBSansDisplay.0.1.0.css" rel="stylesheet"/>
+    <link href="/css/header.css" rel="stylesheet">
+    <link href="/css/pagination.css" rel="stylesheet">
+    <link href="/css/table.css" rel="stylesheet">
+    <link href="/css/error_msg.css" rel="stylesheet">
+</head>
+<body>
+<header th:insert="~{header :: header}"></header>
+<div class="container">
+    <div class="row">
+        <div class="col align-self-start">
+            <form action="#" th:action="@{/data/checks}" th:method="POST" th:object="${check}">
+                <div class="form-group row mt-5">
+                    <label class="col-sm-2 col-form-label" for="checkSum">Transaction Id</label>
+                    <input class="form-control mb-4 col-4" id="checkSum"
+                           placeholder="Transaction Id" th:field="*{transactionId}"
+                           type="number">
+                </div>
+                <div class="form-group row mt-5">
+                    <label class="col-sm-2 col-form-label" for="skuId">Sku Id</label>
+                    <input class="form-control mb-4 col-4"
+                           id="skuId"
+                           placeholder="Sku Id" th:field="*{skuId}"
+                           type="number">
+                </div>
+                <div class="form-group row mt-5">
+                    <label class="col-sm-2 col-form-label" for="skuAmount">Sku Amount</label>
+                    <input class="form-control mb-4 col-4"
+                           id="skuAmount"
+                           placeholder="Sku Amount" th:field="*{skuAmount}"
+                           type="number">
+                </div>
+                <div class="form-group row mt-5">
+                    <label class="col-sm-2 col-form-label" for="skuSum">Sku Sum</label>
+                    <input class="form-control mb-4 col-4"
+                           id="skuSum"
+                           placeholder="Sku Sum" th:field="*{skuSum}"
+                           type="number">
+                </div>
+                <div class="form-group row mt-5">
+                    <label class="col-sm-2 col-form-label" for="skuSumPaid">Sku Sum Paid</label>
+                    <input class="form-control mb-4 col-4"
+                           id="skuSumPaid"
+                           placeholder="Sku Sum Paid" th:field="*{skuSumPaid}"
+                           type="number">
+                </div>
+                <div class="form-group row mt-5">
+                    <label class="col-sm-2 col-form-label" for="skuDiscount">Sku Discount</label>
+                    <input class="form-control mb-4 col-4"
+                           id="skuDiscount"
+                           placeholder="Sku Discount" th:field="*{skuDiscount}"
+                           type="number">
+                </div>
+
+                <div th:if="${errors}">
+                    <p class="error_message" th:each="error : ${errors}" th:text="${error}">Error message</p>
+                </div>
+                <button class="btn btn-info col-2" onclick="return confirm_save()" type="submit">Добавить</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

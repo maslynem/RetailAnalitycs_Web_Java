@@ -14,7 +14,6 @@ public abstract class TransactionMapper {
     @Autowired
     private TransactionService transactionService;
 
-    @Mapping(target = "customerCard.customer", ignore = true)
     public abstract TransactionReadDto toDto(Transaction transaction);
 
     @Mapping(target = "customerCard", source = "customerCard.id")
