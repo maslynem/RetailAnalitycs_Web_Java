@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>ru.s21school</groupId>
-        <artifactId>RetailAnalyticsWeb</artifactId>
+        <artifactId>RetailAnalyticsWebApplication</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 

@@ -1,10 +1,7 @@
 package ru.school.retailanalitycs_web_java.utils;
 
-import com.opencsv.bean.BeanField;
 import com.opencsv.bean.ColumnPositionMappingStrategy;
 import com.opencsv.bean.CsvBindByName;
-
-import java.util.stream.IntStream;
 
 class MappingStrategy<T> extends ColumnPositionMappingStrategy<T> {
 
@@ -14,13 +11,9 @@ class MappingStrategy<T> extends ColumnPositionMappingStrategy<T> {
 
         String[] header = new String[numColumns];
         super.setColumnMapping(header);
-
-        header = IntStream.range(0, numColumns)
-                .mapToObj(this::findField)
-                .map(BeanField::getField)
-                .map(field -> field.getDeclaredAnnotation(CsvBindByName.class))
-                .map(CsvBindByName::column)
-                .toArray(String[]::new);
+        for (int i = 0; i < numColumns; i++) {
+            header[i] = findField(i).getField().getDeclaredAnnotation(CsvBindByName.class).column();
+        }
 
         return header;
     }

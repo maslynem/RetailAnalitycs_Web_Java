@@ -16,6 +16,7 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 import ru.s21school.retailanalytics_web.dto.ErrorDto;
+import ru.s21school.retailanalytics_web.dto.entityDto.cardDto.CardReadDto;
 import ru.s21school.retailanalytics_web.dto.entityDto.checkDto.CheckCreateDto;
 import ru.s21school.retailanalytics_web.dto.entityDto.checkDto.CheckPageDto;
 
@@ -51,7 +52,8 @@ public class CheckController {
     }
 
     @GetMapping("new")
-    public String getCreateCheckPage() {
+    public String getCreateCheckPage(Model model) {
+        model.addAttribute("check", new CheckCreateDto());
         return "checks/new";
     }
 

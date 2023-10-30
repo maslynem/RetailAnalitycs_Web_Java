@@ -24,14 +24,14 @@
                     <label class="col-sm-2 col-form-label" for="skuSum">Sku Name</label>
                     <input class="form-control mb-4 col-4" id="skuSum"
                            placeholder="Sku Name" th:field="*{skuName}"
-                           type="number">
+                           type="text">
                 </div>
                 <div class="form-group row mt-5">
                     <label class="col-sm-2 col-form-label" for="skuDatetime">Sku Group</label>
                     <input class="form-control mb-4 col-4"
                            id="skuDatetime"
                            placeholder="Sku Group" th:field="*{skuGroup}"
-                           type="datetime-local">
+                           type="number">
                 </div>
                 <div th:if="${errors}">
                     <p class="error_message" th:each="error : ${errors}" th:text="${error}">Error message</p>

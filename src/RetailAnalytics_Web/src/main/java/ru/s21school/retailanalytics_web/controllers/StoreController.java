@@ -51,7 +51,8 @@ public class StoreController {
     }
 
     @GetMapping("new")
-    public String getCreateStorePage() {
+    public String getCreateStorePage(Model model) {
+        model.addAttribute("store", new StoreCreateDto());
         return "stores/new";
     }
 
