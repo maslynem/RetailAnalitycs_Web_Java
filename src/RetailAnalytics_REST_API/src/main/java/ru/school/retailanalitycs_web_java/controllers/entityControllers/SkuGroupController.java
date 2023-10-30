@@ -77,7 +77,6 @@ public class SkuGroupController {
         skuGroupService.save(cards);
     }
 
-
     @GetMapping(value = "export")
     @SneakyThrows
     public ResponseEntity<Resource> exportToCsv() {

@@ -19,31 +19,37 @@
 <div class="container">
     <div class="row">
         <div class="col align-self-start">
-            <form action="#" th:action="@{/data/customers}" th:method="POST" th:object="${customer}">
+            <form action="#" th:action="@{/data/customers}" th:method="POST">
                 <div class="form-group row mt-5">
                     <label class="col-sm-2 col-form-label" for="customer_name">Customer Name</label>
-                    <input aria-describedby="customerNameError" class="form-control mb-4 col-4" id="customer_name"
-                           placeholder="Customer Name" th:field="*{customerName}"
+                    <input class="form-control mb-4 col-4"
+                           id="customer_name"
+                           name="customerName"
+                           placeholder="Customer Name"
                            type="text">
                 </div>
                 <div class="form-group row mt-5">
                     <label class="col-sm-2 col-form-label" for="customer_surname">Customer Surname</label>
-                    <input aria-describedby="customerSurnameError" class="form-control mb-4 col-4" id="customer_surname"
-                           placeholder="Customer Surname" th:field="*{customerSurname}"
+                    <input class="form-control mb-4 col-4"
+                           id="customer_surname"
+                           name="customerSurname"
+                           placeholder="Customer Surname"
                            type="text">
                 </div>
                 <div class="form-group row mt-5">
                     <label class="col-sm-2 col-form-label" for="customer_primary_email">Customer Primary Email</label>
-                    <input aria-describedby="customerPrimaryEmailError" class="form-control mb-4 col-4"
+                    <input class="form-control mb-4 col-4"
                            id="customer_primary_email"
-                           placeholder="Customer Primary Email" th:field="*{customerPrimaryEmail}"
+                           name="customerPrimaryEmail"
+                           placeholder="Customer Primary Email"
                            type="text">
                 </div>
                 <div class="form-group row mt-5">
                     <label class="col-sm-2 col-form-label" for="customer_primary_phone">Customer Primary Phone</label>
-                    <input aria-describedby="customerPrimaryPhoneError" class="form-control mb-4 col-4"
+                    <input class="form-control mb-4 col-4"
                            id="customer_primary_phone"
-                           placeholder="Customer Primary Phone" th:field="*{customerPrimaryPhone}"
+                           name="customerPrimaryPhone"
+                           placeholder="Customer Primary Phone"
                            type="text">
                 </div>
                 <div th:if="${errors}">

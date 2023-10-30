@@ -15,7 +15,6 @@ public class PersonalOfferGrowthProcedure {
     private static final String PERSONAL_OFFER_QUERY_2 = "SELECT * FROM get_personal_offer_growth_of_the_average_check(2, ?, ?, ?, ?, ?)";
     private final JdbcTemplate jdbcTemplate;
 
-
     public PersonalOfferGrowthProcedure(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }

@@ -149,7 +149,6 @@ class CustomerControllerTest extends IntegrationTestBase {
                 .andExpect(jsonPath("$.message").exists());
     }
 
-
     @Test
     void createWithMissingEmail_shouldReturnBadRequest() throws Exception {
         CustomerDto customerDto = CustomerDto.builder().customerName("test").customerSurname("test").customerPrimaryPhone("+74957609115").build();
@@ -203,7 +202,6 @@ class CustomerControllerTest extends IntegrationTestBase {
                 .andExpect(jsonPath("$.code").value(ENTITY_IS_NOT_VALID.name()))
                 .andExpect(jsonPath("$.message").exists());
     }
-
 
 // todo
 //    @Test

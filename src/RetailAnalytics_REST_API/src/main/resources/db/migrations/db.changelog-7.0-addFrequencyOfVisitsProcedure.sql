@@ -4,7 +4,7 @@
 DROP MATERIALIZED VIEW IF EXISTS average_margin;
 CREATE MATERIALIZED VIEW average_margin AS
 SELECT sum(stores.sku_retail_price - stores.sku_purchase_price) / sum(stores.sku_retail_price) AS avg_margin,
-       sku.group_id AS group_id
+       sku.group_id                                                                            AS group_id
 FROM sku
          JOIN stores ON stores.sku_id = sku.sku_id
 GROUP BY sku.group_id;

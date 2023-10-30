@@ -14,6 +14,7 @@ public abstract class TransactionMapper {
     @Autowired
     private TransactionService transactionService;
 
+    @Mapping(target = "customerCard.customer", ignore = true)
     public abstract TransactionReadDto toDto(Transaction transaction);
 
     @Mapping(target = "customerCard", source = "customerCard.id")
@@ -22,7 +23,7 @@ public abstract class TransactionMapper {
     @Mapping(target = "checks", ignore = true)
     public abstract Transaction toEntity(TransactionCreateDto transactionDto);
 
-    public Transaction toDtoById(Long id) {
+    public Transaction toEntityById(Long id) {
         return transactionService.findById(id).orElseThrow(() -> new TransactionNotFoundException(id));
     }
 }

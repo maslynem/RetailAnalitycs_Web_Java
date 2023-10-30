@@ -6,9 +6,10 @@ import org.mapstruct.MappingConstants;
 import ru.school.retailanalitycs_web_java.dto.viewDto.PurchaseHistoryViewDto;
 import ru.school.retailanalitycs_web_java.entities.views.purchaseHistoryView.PurchaseHistoryView;
 
-@Mapper(componentModel = MappingConstants.ComponentModel.SPRING, uses = {CustomerMapper.class, TransactionMapper.class})
+@Mapper(componentModel = MappingConstants.ComponentModel.SPRING, uses = {CustomerMapper.class, TransactionMapper.class, SkuGroupMapper.class})
 public abstract class PurchaseHistoryViewMapper {
 
+    @Mapping(target = "skuGroup", source = "groupId")
     @Mapping(target = "transaction", source = "id.transactionId")
     @Mapping(target = "customer", source = "id.customerId")
     public abstract PurchaseHistoryViewDto toDto(PurchaseHistoryView purchaseHistoryView);

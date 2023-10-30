@@ -4,7 +4,7 @@
 CREATE OR REPLACE FUNCTION get_margin(method VARCHAR DEFAULT 'default ', count BIGINT DEFAULT 0)
     RETURNS TABLE
             (
-                Customer_id BIGINT,
+                Customer_id  BIGINT,
                 Group_ID     BIGINT,
                 Group_Margin DOUBLE PRECISION
             )

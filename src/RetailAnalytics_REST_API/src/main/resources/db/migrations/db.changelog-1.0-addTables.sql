@@ -21,7 +21,7 @@ CREATE INDEX ON cards (customer_id);
 CREATE TABLE IF NOT EXISTS transactions
 (
     Transaction_ID       BIGSERIAL PRIMARY KEY,
-    Customer_Card_ID BIGINT NOT NULL REFERENCES cards (Customer_Card_ID),
+    Customer_Card_ID     BIGINT           NOT NULL REFERENCES cards (Customer_Card_ID),
     Transaction_Summ     DOUBLE PRECISION NOT NULL,
     Transaction_DateTime timestamp WITHOUT TIME ZONE,
     Transaction_Store_ID BIGINT
@@ -45,7 +45,7 @@ CREATE INDEX ON sku (Group_ID);
 CREATE TABLE stores
 (
     Transaction_Store_ID BIGINT,
-    SKU_ID BIGINT NOT NULL REFERENCES sku (SKU_ID),
+    SKU_ID               BIGINT           NOT NULL REFERENCES sku (SKU_ID),
     SKU_Purchase_Price   DOUBLE PRECISION NOT NULL,
     SKU_Retail_Price     DOUBLE PRECISION NOT NULL,
     PRIMARY KEY (Transaction_Store_ID, SKU_ID)
@@ -53,8 +53,8 @@ CREATE TABLE stores
 
 CREATE TABLE IF NOT EXISTS checks
 (
-    Transaction_ID BIGINT NOT NULL REFERENCES transactions (Transaction_ID),
-    SKU_ID         BIGINT NOT NULL REFERENCES sku (SKU_ID),
+    Transaction_ID BIGINT           NOT NULL REFERENCES transactions (Transaction_ID),
+    SKU_ID         BIGINT           NOT NULL REFERENCES sku (SKU_ID),
     SKU_Amount     DOUBLE PRECISION NOT NULL,
     SKU_Summ       DOUBLE PRECISION NOT NULL,
     SKU_Summ_Paid  DOUBLE PRECISION NOT NULL,

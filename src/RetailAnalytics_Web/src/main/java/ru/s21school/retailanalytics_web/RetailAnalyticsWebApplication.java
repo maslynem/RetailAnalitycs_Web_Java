@@ -13,7 +13,6 @@ public class RetailAnalyticsWebApplication {
         SpringApplication.run(RetailAnalyticsWebApplication.class, args);
     }
 
-
     @Bean
     public RestTemplate restTemplate() {
         return new RestTemplate();

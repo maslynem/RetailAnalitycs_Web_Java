@@ -19,8 +19,6 @@ public abstract class CardMapper {
     @Mapping(target = "customer", source = "customer.id")
     public abstract CardCreateDto toCreateDto(Card entity);
 
-
-
     @Mapping(target = "transactions", ignore = true)
     public abstract Card toEntity(CardCreateDto dto);
 

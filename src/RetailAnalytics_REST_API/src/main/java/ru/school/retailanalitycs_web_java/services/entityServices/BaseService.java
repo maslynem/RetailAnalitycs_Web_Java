@@ -17,7 +17,6 @@ public abstract class BaseService<E, K> {
         this.repository = repository;
     }
 
-
     public E save(E entity) {
         return repository.save(entity);
     }
