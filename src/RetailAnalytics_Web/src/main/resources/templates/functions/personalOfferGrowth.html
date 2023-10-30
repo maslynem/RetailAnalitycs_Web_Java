@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Personal Offer Growth</title>
+    <link href="/css/clearing.css" rel="stylesheet">
+
+    <link crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" rel="stylesheet">
+
+    <link href="https://cdn-app.sberdevices.ru/shared-static/0.0.0/styles/SBSansDisplay.0.1.0.css" rel="stylesheet"/>
+    <link href="/css/header.css" rel="stylesheet">
+    <link href="/css/table.css" rel="stylesheet">
+</head>
+<body>
+<header th:insert="~{header :: header}"></header>
+
+<div class="container w-80 p-2">
+    <h5>Формирование персональных предложений, ориентированных на рост среднего чека</h5>
+    <hr>
+    <div class="row">
+        <div class="col">
+            <form action="/functions/personal-offer-growth-by-dates" method="post">
+                <div class="mb-2">
+                    <label for="firstDate1" class="form-label">Начальная дата периода:</label>
+                    <input name="firstDate" class="form-control" id="firstDate1" type="date"
+                           value="2021-08-18"
+                           required="required"/>
+                </div>
+                <div class="mb-2">
+                    <label for="lastDate1" class="form-label">Конечная дата периода:</label>
+                    <input name="lastDate" class="form-control" id="lastDate1" type="date"
+                           value="2023-08-18"
+                           required="required"/>
+                </div>
+                <div class="mb-2">
+                    <label for="coefficientOfAverageCheckIncrease1" class="form-label">Коэффициент увеличения среднего
+                        чека:</label>
+                    <input name="coefficientOfAverageCheckIncrease" class="form-control"
+                           id="coefficientOfAverageCheckIncrease1"
+                           type="number" value="1.15" min="1" step="0.01"
+                           required="required"/>
+                </div>
+                <div class="mb-2">
+                    <label for="maxChurnIndex1" class="form-label">Максимальный индекс оттока:</label>
+                    <input name="maxChurnIndex" class="form-control" id="maxChurnIndex1" type="number" value="3" min="0"
+                           step="0.01"
+                           required="required"/>
+                </div>
+                <div class="mb-2">
+                    <label for="maxShareOfTransactionsWithDiscount1" class="form-label">Максимальная доля транзакций со скидкой (в
+                        процентах):</label>
+                    <input name="maxShareOfTransactionsWithDiscount" class="form-control" id="maxShareOfTransactionsWithDiscount1" type="number"
+                           value="70" min="0" step="0.01"
+                           required="required"/>
+                </div>
+                <div class="mb-2">
+                    <label for="allowableShareOfMargin1" class="form-label">Допустимая доля маржи (в процентах):</label>
+                    <input name="allowableShareOfMargin" class="form-control" id="allowableShareOfMargin1" type="number"
+                           value="30"
+                           min="0" step="0.01"
+                           required="required"/>
+                </div>
+                <input class="btn btn btn-primary btn-sm" type="submit" value="Сформировать"/>
+            </form>
+        </div>
+        <div class="col">
+
+            <form action="/functions/personal-offer-growth-by-transactions-number" method="post">
+                <div class="mb-2">
+                    <label for="numberOfTransactions" class="form-label">Количество транзакций :</label>
+                    <input name="numberOfTransactions" class="form-control" id="numberOfTransactions" type="number"
+                           value="100"
+                           min="0"
+                           required="required"/>
+                </div>
+                <div class="mb-2">
+                    <label for="coefficientOfAverageCheckIncrease" class="form-label">Коэффициент увеличения среднего
+                        чека:</label>
+                    <input name="coefficientOfAverageCheckIncrease" class="form-control"
+                           id="coefficientOfAverageCheckIncrease"
+                           type="number" value="1.15" min="1" step="0.01"
+                           required="required"/>
+                </div>
+                <div class="mb-2">
+                    <label for="maxChurnIndex" class="form-label">Максимальный индекс оттока:</label>
+                    <input name="maxChurnIndex" class="form-control" id="maxChurnIndex" type="number" value="3" min="0"
+                           step="0.01"
+                           required="required"/>
+                </div>
+                <div class="mb-2">
+                    <label for="maxShareOfTransactionsWithDiscount" class="form-label">Максимальная доля транзакций со скидкой (в
+                        процентах):</label>
+                    <input name="maxShareOfTransactionsWithDiscount" class="form-control" id="maxShareOfTransactionsWithDiscount" type="number"
+                           value="70" min="0" step="0.01"
+                           required="required"/>
+                </div>
+                <div class="mb-2">
+                    <label for="allowableShareOfMargin" class="form-label">Допустимая доля маржи (в процентах):</label>
+                    <input name="allowableShareOfMargin" class="form-control" id="allowableShareOfMargin" type="number"
+                           value="30"
+                           min="0" step="0.01"
+                           required="required"/>
+                </div>
+                <input class="btn btn btn-primary btn-sm" type="submit" value="Сформировать"/>
+            </form>
+        </div>
+
+    </div>
+
+
+    <div th:if="${entities}" style="max-height: 900px; overflow-x: auto;">
+        <table class="table table-bordered table-striped table-href">
+            <caption></caption>
+            <thead class="table-dark">
+            <tr>
+                <th class="text-center">
+                    Идентификатор клиента
+                </th>
+                <th class="text-center">
+                    Полное имя клиента
+                </th>
+                <th class="text-center">
+                    Целевое значение среднего чека
+                </th>
+                <th class="text-center">
+                    Группа предложения
+                </th>
+                <th class="text-center">
+                    Максимальная глубина скидки
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="entity : ${entities}">
+                <td th:text="${entity.customer.id}"></td>
+                <td th:text="${entity.customer.customerName} + ' ' + ${entity.customer.customerSurname}"></td>
+                <td th:text="${entity.requiredCheckMeasure}"></td>
+                <td th:text="${entity.groupName}"></td>
+                <td th:text="${entity.offerDiscountDepth}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+</body>
+</html>

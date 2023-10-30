@@ -42,6 +42,5 @@ public class FrequencyOfVisitProcedure {
             result.add(frequencyOfVisit);
         }
         return result;
-
     }
 }

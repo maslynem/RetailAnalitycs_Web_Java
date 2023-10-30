@@ -52,17 +52,17 @@ public class CardController {
         model.addAttribute("totalElements", cardsPage.getTotalElements());
         model.addAttribute("currentPage", page);
         model.addAttribute("pageSize", size);
-        return "cards/cards";
+        return "tables/cards/cards";
     }
 
     @GetMapping("new")
     public String getCreateCardPage(Model model) {
         model.addAttribute("card", new CardReadDto());
-        return "cards/new";
+        return "tables/cards/new";
     }
 
     @PostMapping
-    public String createCard(@Valid @ModelAttribute("card") CardCreateDto card, BindingResult bindingResult, Model model) {
+    public String createCard(@Valid @ModelAttribute("card") CardCreateDto card, Model model) {
         try {
             HttpEntity<CardCreateDto> httpEntity = new HttpEntity<>(card);
             ResponseEntity<LinkedHashMap<String, Object>> response =
@@ -76,7 +76,7 @@ public class CardController {
             ErrorDto errorDto = exception.getResponseBodyAs(ErrorDto.class);
             log.warn(errorDto.getMessages().toString());
             model.addAttribute("errors", errorDto.getMessages());
-            return "cards/new";
+            return "tables/cards/new";
         }
     }
 

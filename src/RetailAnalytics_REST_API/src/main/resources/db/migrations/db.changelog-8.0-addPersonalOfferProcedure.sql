@@ -138,14 +138,14 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-SELECT *
-FROM get_personal_offer_growth_of_the_average_check(1,
-                                                    '2016-01-01',
-                                                    '2023-01-01',
-                                                    1,
-                                                    1.4,
-                                                    80,
-                                                    50);
+-- SELECT *
+-- FROM get_personal_offer_growth_of_the_average_check(1,
+--                                                     '2016-01-01',
+--                                                     '2023-01-01',
+--                                                     1,
+--                                                     1.4,
+--                                                     80,
+--                                                     50);
 -- SELECT *
 -- FROM get_personal_offer_growth_of_the_average_check(2,
 --                                                     100,

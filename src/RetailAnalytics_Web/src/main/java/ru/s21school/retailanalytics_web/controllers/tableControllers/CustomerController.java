@@ -50,13 +50,13 @@ public class CustomerController {
         model.addAttribute("totalElements", customersPage.getTotalElements());
         model.addAttribute("currentPage", page);
         model.addAttribute("pageSize", size);
-        return "customers/customers";
+        return "tables/customers/customers";
     }
 
     @GetMapping("new")
     public String getCreateCustomerPage(Model model) {
         model.addAttribute("customer", new CustomerDto());
-        return "customers/new";
+        return "tables/customers/new";
     }
 
     @PostMapping
@@ -74,7 +74,7 @@ public class CustomerController {
             ErrorDto errorDto = exception.getResponseBodyAs(ErrorDto.class);
             log.warn(errorDto.getMessages().toString());
             model.addAttribute("errors", errorDto.getMessages());
-            return "customers/new";
+            return "tables/customers/new";
         }
     }
 

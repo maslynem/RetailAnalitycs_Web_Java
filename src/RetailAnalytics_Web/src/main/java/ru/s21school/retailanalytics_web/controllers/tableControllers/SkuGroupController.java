@@ -50,13 +50,13 @@ public class SkuGroupController {
         model.addAttribute("totalElements", skuGroupsPage.getTotalElements());
         model.addAttribute("currentPage", page);
         model.addAttribute("pageSize", size);
-        return "skuGroups/skuGroups";
+        return "tables/skuGroups/skuGroups";
     }
 
     @GetMapping("new")
     public String getCreateSkuGroupPage(Model model) {
         model.addAttribute("skuGroup", new SkuGroupDto());
-        return "skuGroups/new";
+        return "tables/skuGroups/new";
     }
 
     @PostMapping
@@ -74,7 +74,7 @@ public class SkuGroupController {
             ErrorDto errorDto = exception.getResponseBodyAs(ErrorDto.class);
             log.warn(errorDto.getMessages().toString());
             model.addAttribute("errors", errorDto.getMessages());
-            return "skuGroups/new";
+            return "tables/skuGroups/new";
         }
     }
 

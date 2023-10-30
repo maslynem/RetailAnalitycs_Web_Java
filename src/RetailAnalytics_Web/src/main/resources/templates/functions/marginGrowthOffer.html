@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Margin Growth Offer</title>
+    <link href="/css/clearing.css" rel="stylesheet">
+
+    <link crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" rel="stylesheet">
+
+    <link href="https://cdn-app.sberdevices.ru/shared-static/0.0.0/styles/SBSansDisplay.0.1.0.css" rel="stylesheet"/>
+    <link href="/css/header.css" rel="stylesheet">
+    <link href="/css/table.css" rel="stylesheet">
+</head>
+<body>
+<header th:insert="~{header :: header}"></header>
+
+<div class="container w-80 p-2">
+    <form action="/functions/margin-growth-offer" method="post">
+        <div class="mb-2">
+            <label for="groupsNumber" class="form-label">Количество групп:</label>
+            <input name="groupsNumber" class="form-control" id="groupsNumber" type="number" value="5" min="0"
+                   required="required"/>
+        </div>
+        <div class="mb-2">
+            <label for="maxChurnIndex" class="form-label">Максимальный индекс оттока:</label>
+            <input name="maxChurnIndex" class="form-control" id="maxChurnIndex" type="number" value="3" min="0"
+                   step="0.1"
+                   required="required"/>
+        </div>
+        <div class="mb-2">
+            <label for="maxStabilityIndex" class="form-label">максимальный индекс стабильности потребления:</label>
+            <input name="maxStabilityIndex" class="form-control" id="maxStabilityIndex" type="number"
+                   value="0.5" min="0" step="0.1"
+                   required="required"/>
+        </div>
+        <div class="mb-2">
+            <label for="maxSkuShare" class="form-label">Максимальная доля SKU (в процентах):</label>
+            <input name="maxSkuShare" class="form-control" id="maxSkuShare" type="number" value="100"
+                   min="0"
+                   required="required"/>
+        </div>
+        <div class="mb-2">
+            <label for="allowableMarginShare" class="form-label">Допустимая доля маржи (в процентах):</label>
+            <input name="allowableMarginShare" class="form-control" id="allowableMarginShare" type="number" value="30"
+                   min="0"
+                   required="required"/>
+        </div>
+        <input class="btn btn btn-primary btn-sm" type="submit" value="Сформировать"/>
+    </form>
+
+    <div th:if="${entities}" style="max-height: 900px; overflow-x: auto;">
+        <table class="table table-bordered table-striped table-href">
+            <caption></caption>
+            <thead class="table-dark">
+            <tr>
+                <th class="text-center">
+                    Идентификатор клиента
+                </th>
+                <th class="text-center">
+                    Полное имя клиента
+                </th>
+                <th class="text-center">
+                    SKU предложения
+                </th>
+                <th class="text-center">
+                    Максимальная глубина скидки
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="entity : ${entities}">
+                <td th:text="${entity.customer.id}"></td>
+                <td th:text="${entity.customer.customerName} + ' ' + ${entity.customer.customerSurname}"></td>
+                <td th:text="${entity.skuName}"></td>
+                <td th:text="${entity.offerDiscountDepth}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+</body>
+</html>

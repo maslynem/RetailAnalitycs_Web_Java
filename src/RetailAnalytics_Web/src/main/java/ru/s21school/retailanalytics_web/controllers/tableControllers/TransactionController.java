@@ -51,17 +51,17 @@ public class TransactionController {
         model.addAttribute("totalElements", transactionsPage.getTotalElements());
         model.addAttribute("currentPage", page);
         model.addAttribute("pageSize", size);
-        return "transactions/transactions";
+        return "tables/transactions/transactions";
     }
 
     @GetMapping("new")
     public String getCreateTransactionPage(Model model) {
         model.addAttribute("transaction", new TransactionReadDto());
-        return "transactions/new";
+        return "tables/transactions/new";
     }
 
     @PostMapping
-    public String createTransaction(@Valid @ModelAttribute("transaction") TransactionCreateDto transaction, BindingResult bindingResult, Model model) {
+    public String createTransaction(@Valid @ModelAttribute("transaction") TransactionCreateDto transaction, Model model) {
         try {
             HttpEntity<TransactionCreateDto> httpEntity = new HttpEntity<>(transaction);
             ResponseEntity<LinkedHashMap<String, Object>> response =
@@ -75,7 +75,7 @@ public class TransactionController {
             ErrorDto errorDto = exception.getResponseBodyAs(ErrorDto.class);
             log.warn(errorDto.getMessages().toString());
             model.addAttribute("errors", errorDto.getMessages());
-            return "transactions/new";
+            return "tables/transactions/new";
         }
     }
 

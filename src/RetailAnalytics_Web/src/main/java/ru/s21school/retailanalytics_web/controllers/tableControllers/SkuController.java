@@ -52,17 +52,17 @@ public class SkuController {
         model.addAttribute("totalElements", skusPage.getTotalElements());
         model.addAttribute("currentPage", page);
         model.addAttribute("pageSize", size);
-        return "skus/skus";
+        return "tables/skus/skus";
     }
 
     @GetMapping("new")
     public String getCreateSkuPage(Model model) {
         model.addAttribute("sku", new SkuReadDto());
-        return "skus/new";
+        return "tables/skus/new";
     }
 
     @PostMapping
-    public String createSku(@Valid @ModelAttribute("sku") SkuCreateDto sku, BindingResult bindingResult, Model model) {
+    public String createSku(@Valid @ModelAttribute("sku") SkuCreateDto sku, Model model) {
         try {
             HttpEntity<SkuCreateDto> httpEntity = new HttpEntity<>(sku);
             ResponseEntity<LinkedHashMap<String, Object>> response =
@@ -76,7 +76,7 @@ public class SkuController {
             ErrorDto errorDto = exception.getResponseBodyAs(ErrorDto.class);
             log.warn(errorDto.getMessages().toString());
             model.addAttribute("errors", errorDto.getMessages());
-            return "skus/new";
+            return "tables/skus/new";
         }
     }
 

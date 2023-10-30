@@ -64,6 +64,6 @@ END;
 $$ LANGUAGE plpgsql;
 
 SET datestyle = 'european';
-
-SELECT *
-FROM get_frequency_of_visits('2022-08-18 00:00:00', '2022-08-18 00:00:00', 1, 3, 70, 30);
+--
+-- SELECT *
+-- FROM get_frequency_of_visits('2022-08-18 00:00:00', '2022-08-18 00:00:00', 1, 3, 70, 30);

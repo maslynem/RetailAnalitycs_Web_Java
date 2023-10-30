@@ -51,17 +51,17 @@ public class StoreController {
         model.addAttribute("totalElements", storesPage.getTotalElements());
         model.addAttribute("currentPage", page);
         model.addAttribute("pageSize", size);
-        return "stores/stores";
+        return "tables/stores/stores";
     }
 
     @GetMapping("new")
     public String getCreateStorePage(Model model) {
         model.addAttribute("store", new StoreCreateDto());
-        return "stores/new";
+        return "tables/stores/new";
     }
 
     @PostMapping
-    public String createStore(@Valid @ModelAttribute("store") StoreCreateDto store, BindingResult bindingResult, Model model) {
+    public String createStore(@Valid @ModelAttribute("store") StoreCreateDto store, Model model) {
         try {
             HttpEntity<StoreCreateDto> httpEntity = new HttpEntity<>(store);
             ResponseEntity<LinkedHashMap<String, Object>> response =
@@ -75,7 +75,7 @@ public class StoreController {
             ErrorDto errorDto = exception.getResponseBodyAs(ErrorDto.class);
             log.warn(errorDto.getMessages().toString());
             model.addAttribute("errors", errorDto.getMessages());
-            return "stores/new";
+            return "tables/stores/new";
         }
     }
 

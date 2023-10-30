@@ -50,17 +50,17 @@ public class CheckController {
         model.addAttribute("totalElements", checksPage.getTotalElements());
         model.addAttribute("currentPage", page);
         model.addAttribute("pageSize", size);
-        return "checks/checks";
+        return "tables/checks/checks";
     }
 
     @GetMapping("new")
     public String getCreateCheckPage(Model model) {
         model.addAttribute("check", new CheckCreateDto());
-        return "checks/new";
+        return "tables/checks/new";
     }
 
     @PostMapping
-    public String createCheck(@Valid @ModelAttribute("check") CheckCreateDto check, BindingResult bindingResult, Model model) {
+    public String createCheck(@Valid @ModelAttribute("check") CheckCreateDto check, Model model) {
         try {
             HttpEntity<CheckCreateDto> httpEntity = new HttpEntity<>(check);
             ResponseEntity<LinkedHashMap<String, Object>> response =
@@ -74,7 +74,7 @@ public class CheckController {
             ErrorDto errorDto = exception.getResponseBodyAs(ErrorDto.class);
             log.warn(errorDto.getMessages().toString());
             model.addAttribute("errors", errorDto.getMessages());
-            return "checks/new";
+            return "tables/checks/new";
         }
     }
 

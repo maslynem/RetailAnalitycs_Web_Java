@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Functions</title>
+    <link rel="stylesheet" href="/css/clearing.css">
+
+    <link rel="stylesheet"
+          href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="https://cdn-app.sberdevices.ru/shared-static/0.0.0/styles/SBSansDisplay.0.1.0.css"/>
+    <link rel="stylesheet" href="/css/header.css">
+</head>
+<body>
+<header th:insert="~{header :: header}"></header>
+<div class="container">
+    <div class="row">
+        <div class="col-15 mt-2">
+            <h5>1. Формирование персональных предложений, ориентированных на рост частоты визитов</h5>
+        </div>
+    </div>
+    <div class="row">
+        <div>
+            <p>Параметры функции:<br>
+                1. первая и последняя даты периода<br>
+                2. добавляемое число транзакций<br>
+                3. максимальный индекс оттока<br>
+                4. максимальная доля транзакций со скидкой (в процентах)<br>
+                5. допустимая доля маржи (в процентах)</p>
+        </div>
+    </div>
+    <div class="row">
+        <a href="/functions/frequency-of-visits" class="btn btn-primary">Перейти</a>
+    </div>
+</div>
+<hr>
+<div class="container">
+    <div class="row">
+        <div class="col-15 mt-2">
+            <h5>2. Формирование персональных предложений, ориентированных на рост среднего чека</h5>
+        </div>
+    </div>
+    <div class="row">
+        <div>
+            <p>Параметры функции:<br>
+                - метод расчета среднего чека (1 - за период, 2 - за количество)
+                - первая и последняя даты периода (для 1 метода)
+                - количество транзакций (для 2 метода)
+                - коэффициент увеличения среднего чека
+                - максимальный индекс оттока
+                - максимальная доля транзакций со скидкой (в процентах)
+                - допустимая доля маржи (в процентах)</p>
+        </div>
+    </div>
+    <div class="row">
+        <a href="/functions/personal-offer-growth" class="btn btn-primary">Перейти</a>
+    </div>
+</div>
+<hr>
+<div class="container">
+    <div class="row">
+        <div class="col-15 mt-2">
+            <h5>3. Формирование персональных предложений, ориентированных на кросс-продажи</h5>
+        </div>
+    </div>
+    <div class="row">
+        <div>
+            <p>Параметры функции:<br>
+                - количество групп
+                - максимальный индекс оттока
+                - максимальный индекс стабильности потребления
+                - максимальная доля SKU (в процентах)
+                - допустимая доля маржи (в процентах)</p>
+        </div>
+    </div>
+    <div class="row">
+        <a href="/functions/margin-growth-offer" class="btn btn-primary">Перейти</a>
+    </div>
+</div>
+
+</body>
+</html>

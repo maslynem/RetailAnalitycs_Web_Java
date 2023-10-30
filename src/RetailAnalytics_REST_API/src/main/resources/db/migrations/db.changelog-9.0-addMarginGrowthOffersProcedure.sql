@@ -1,6 +1,8 @@
 --liquibase formatted sql
 
 --changeset maslynem:1 splitStatements:false
+
+
 CREATE OR REPLACE FUNCTION sku_share_in_group(customer_id_ BIGINT, group_id_ BIGINT, sku_id_ BIGINT)
     RETURNS DOUBLE PRECISION AS
 $$
@@ -85,5 +87,5 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 --
-SELECT *
-FROM margin_growth_offers(5, 3, 0.5, 100, 30);
+-- SELECT *
+-- FROM margin_growth_offers(5, 3, 0.5, 100, 30);
