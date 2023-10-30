@@ -17,6 +17,7 @@ import ru.school.retailanalitycs_web_java.mapper.FrequencyOfVisitMapper;
 import ru.school.retailanalitycs_web_java.mapper.MarginGrowthOfferMapper;
 import ru.school.retailanalitycs_web_java.mapper.PersonalOfferMapper;
 import ru.school.retailanalitycs_web_java.services.FunctionsService;
+import ru.school.retailanalitycs_web_java.services.MarginGroupOfferService;
 
 import java.util.List;
 
@@ -28,6 +29,8 @@ public class FunctionController {
     private final FrequencyOfVisitMapper frequencyOfVisitMapper;
     private final PersonalOfferMapper personalOfferMapper;
     private final MarginGrowthOfferMapper marginGrowthOfferMapper;
+    //todo
+    private final MarginGroupOfferService marginGroupOfferService;
 
     @PostMapping("frequency-of-visits")
     public List<FrequencyOfVisitDto> getFrequencyOfVisit(@Valid @RequestBody FrequencyOfVisitRequest request) {
@@ -46,6 +49,7 @@ public class FunctionController {
 
     @PostMapping("margin-growth-offer")
     public List<MarginGrowthOfferDto> getMarginGrowthOffer(@Valid @RequestBody MarginGrowthOfferRequest request) {
-        return functionsService.getMarginGrowthOffer(request).stream().map(marginGrowthOfferMapper::toDto).toList();
+        return marginGroupOfferService.getMarginGroup(request).stream().map(marginGrowthOfferMapper::toDto).toList();
+//        return functionsService.getMarginGrowthOffer(request).stream().map(marginGrowthOfferMapper::toDto).toList();
     }
 }

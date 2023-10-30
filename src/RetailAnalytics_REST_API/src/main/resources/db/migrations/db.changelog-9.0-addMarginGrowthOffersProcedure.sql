@@ -47,8 +47,7 @@ BEGIN
                         FROM (SELECT g.Customer_ID,
                                      g.Group_ID,
                                      g.Group_Affinity_Index,
-                                     rank()
-                                     OVER (PARTITION BY g.Customer_ID ORDER BY Group_Affinity_Index DESC ) AS rk
+                                     rank() OVER (PARTITION BY g.Customer_ID ORDER BY Group_Affinity_Index DESC ) AS rk
                               FROM groups g) AS aff
                         WHERE rk <= groups_number),
 

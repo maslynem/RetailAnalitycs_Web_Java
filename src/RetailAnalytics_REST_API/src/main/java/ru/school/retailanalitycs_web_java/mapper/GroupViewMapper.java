@@ -10,8 +10,8 @@ import static org.mapstruct.MappingConstants.ComponentModel.SPRING;
 @Mapper(componentModel = SPRING, uses = {CustomerMapper.class, SkuGroupMapper.class})
 public abstract class GroupViewMapper {
 
-    @Mapping(target = "skuGroup", source = "id.skuGroupId")
-    @Mapping(target = "customer", source = "id.customerId")
+    @Mapping(target = "skuGroup", source = "id.skuGroup")
+    @Mapping(target = "customer", source = "id.customer")
     public abstract GroupViewDto toDto(GroupView groupView);
 
 }

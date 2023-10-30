@@ -4,6 +4,6 @@ import ru.school.retailanalitycs_web_java.entities.views.groupView.GroupViewId;
 
 public class GroupViewNotFoundException extends EntityNotFoundException {
     public GroupViewNotFoundException(GroupViewId id) {
-        super(String.format("Group View with customer id {%d} and sku group id {%d} not found", id.getCustomerId(), id.getSkuGroupId()));
+        super(String.format("Group View with customer id {%d} and sku group id {%d} not found", id.getCustomer().getId(), id.getSkuGroup().getId()));
     }
 }

@@ -7,16 +7,20 @@ import ru.school.retailanalitycs_web_java.entities.tables.StoreId;
 import ru.school.retailanalitycs_web_java.exceptions.duplicateValue.StoreDuplicateValueException;
 import ru.school.retailanalitycs_web_java.repositories.entityRepositories.StoreRepository;
 
+import java.util.List;
+
 @Service
 public class StoreService extends BaseService<Store, StoreId> {
+    private final StoreRepository repository;
 
     @Autowired
     protected StoreService(StoreRepository repository) {
         super(repository);
+        this.repository = repository;
     }
 
     public boolean existsByTransactionalStoreId(Long transactionalStoreId) {
-        return ((StoreRepository) repository).existsByTransactionStoreId(transactionalStoreId);
+        return repository.existsByTransactionStoreId(transactionalStoreId);
     }
 
     @Override
@@ -27,5 +31,9 @@ public class StoreService extends BaseService<Store, StoreId> {
                     throw new StoreDuplicateValueException(storeId);
                 });
         return super.save(entity);
+    }
+
+    public List<Store> getStoresWithTransactionalStoreId(Long customerPrimaryStore) {
+        return repository.findById_TransactionStoreId(customerPrimaryStore);
     }
 }
