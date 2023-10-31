@@ -79,6 +79,32 @@ class CardControllerTest extends IntegrationTestBase {
     }
 
     @Test
+    void update() throws Exception {
+        CardCreateDto cardCreateDto = CardCreateDto.builder().customer(CUSTOMER_ID).build();
+
+        String requestJson = objectMapper.writeValueAsString(cardCreateDto);
+        mockMvc.perform(put("/api/v1/cards/" + CARD_ID)
+                        .contentType(APPLICATION_JSON)
+                        .content(requestJson))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(CARD_ID))
+                .andExpect(jsonPath("$.customer.id").value(CUSTOMER_ID));
+    }
+
+    @Test
+    void updateNotExistingCard_ShouldReturnNotFound() throws Exception {
+        CardCreateDto cardCreateDto = CardCreateDto.builder().customer(CUSTOMER_ID).build();
+
+        String requestJson = objectMapper.writeValueAsString(cardCreateDto);
+        mockMvc.perform(put("/api/v1/cards/" + NOT_EXISTING_CARD_ID)
+                        .contentType(APPLICATION_JSON)
+                        .content(requestJson))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.code").value(NOT_FOUND.name()))
+                .andExpect(jsonPath("$.messages").exists());
+    }
+
+    @Test
     void create() throws Exception {
         CardCreateDto cardDto = CardCreateDto.builder().customer(CUSTOMER_ID).build();
 

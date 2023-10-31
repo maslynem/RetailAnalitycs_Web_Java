@@ -1,7 +1,7 @@
 spring:
   liquibase:
     enabled: true
-    contexts: dev
+    contexts: test
   datasource:
     url: ${URL_DB:jdbc:postgresql://localhost:5432/postgres}
     username: ${USERNAME_DB:postgres}
