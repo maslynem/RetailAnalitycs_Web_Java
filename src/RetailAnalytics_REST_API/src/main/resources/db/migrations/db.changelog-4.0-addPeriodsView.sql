@@ -1,12 +1,12 @@
 --liquibase formatted sql
 
 --changeset maslynem:1 splitStatements:false
-CREATE OR REPLACE VIEW periods AS
+CREATE MATERIALIZED VIEW periods AS
 WITH t AS (SELECT cards.Customer_ID                           AS Customer_ID,
+                  sku.group_id                           AS Group_ID,
                   COUNT(DISTINCT transactions.transaction_id) AS Group_Purchase,
                   MIN(transactions.transaction_datetime)      AS first_group_purchase_date,
-                  MAX(transactions.transaction_datetime)      AS last_group_purchase_date,
-                  sku.group_id                                AS Group_ID
+                  MAX(transactions.transaction_datetime) AS last_group_purchase_date
            FROM cards
                     JOIN transactions ON cards.customer_card_id = transactions.customer_card_id
                     JOIN checks ON transactions.transaction_id = checks.transaction_id
@@ -30,3 +30,6 @@ SELECT t.Customer_ID,
        coalesce(min_discount, 0) AS Group_Min_Discount
 FROM t
          LEFT JOIN t1 ON t1.customer_id = t.Customer_ID AND t1.group_id = t.Group_ID;
+
+CREATE INDEX IF NOT EXISTS periods_view_idx ON periods USING btree (customer_id, group_id);
+

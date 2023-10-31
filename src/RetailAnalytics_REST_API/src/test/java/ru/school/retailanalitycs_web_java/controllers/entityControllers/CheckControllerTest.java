@@ -14,6 +14,8 @@ import ru.school.retailanalitycs_web_java.dto.entityDto.checkDto.CheckReadDto;
 import ru.school.retailanalitycs_web_java.dto.entityDto.skuDto.SkuReadDto;
 import ru.school.retailanalitycs_web_java.dto.entityDto.transactionDto.TransactionReadDto;
 import ru.school.retailanalitycs_web_java.entities.tables.CheckId;
+import ru.school.retailanalitycs_web_java.entities.tables.Sku;
+import ru.school.retailanalitycs_web_java.entities.tables.Transaction;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -26,12 +28,12 @@ import static ru.school.retailanalitycs_web_java.exceptions.ExceptionCode.*;
 @Transactional
 class CheckControllerTest extends IntegrationTestBase {
 
-    private static final CheckId CHECK_ID = new CheckId(1L, 2L);
+    private static final CheckId CHECK_ID = new CheckId(Transaction.builder().id(1L).build(), Sku.builder().id(2L).build());
     private static final Long TRANSACTION_ID = 1L;
     private static final Long SKU_ID = 1L;
     private static final Long NOT_EXISTING_SKU_ID = Long.MAX_VALUE;
     private static final Long NOT_EXISTING_TRANSACTION_ID = Long.MAX_VALUE;
-    private static final CheckId NOT_EXISTING_CHECK_ID = new CheckId(Long.MAX_VALUE, Long.MAX_VALUE);
+    private static final CheckId NOT_EXISTING_CHECK_ID = new CheckId(Transaction.builder().id(Long.MAX_VALUE).build(), Sku.builder().id(Long.MAX_VALUE).build());
 
     @Autowired
     private MockMvc mockMvc;
@@ -87,14 +89,14 @@ class CheckControllerTest extends IntegrationTestBase {
     @Test
     void findCheckById() throws Exception {
         CheckReadDto first = CheckReadDto.builder()
-                .transaction(getTransactionDtoWithId(CHECK_ID.getTransactionId()))
-                .sku(getSkuDtoWithId(CHECK_ID.getSkuId()))
+                .transaction(getTransactionDtoWithId(CHECK_ID.getTransaction().getId()))
+                .sku(getSkuDtoWithId(CHECK_ID.getSku().getId()))
                 .skuAmount(3.20664673)
                 .skuSum(336.3206767)
                 .skuSumPaid(190.2882909)
                 .skuDiscount(146.0323858)
                 .build();
-        mockMvc.perform(get("/api/v1/checks/{trId}/{skuId}", CHECK_ID.getTransactionId(), CHECK_ID.getSkuId()))
+        mockMvc.perform(get("/api/v1/checks/{trId}/{skuId}", CHECK_ID.getTransaction().getId(), CHECK_ID.getSku().getId()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.transaction.id").value(first.getTransaction().getId()))
                 .andExpect(jsonPath("$.sku.id").value(first.getSku().getId()))
@@ -106,10 +108,10 @@ class CheckControllerTest extends IntegrationTestBase {
 
     @Test
     void findNotExistingCheck() throws Exception {
-        mockMvc.perform(get("/api/v1/checks/{trCheckId}/{skuId}", NOT_EXISTING_CHECK_ID.getTransactionId(), NOT_EXISTING_CHECK_ID.getSkuId()))
+        mockMvc.perform(get("/api/v1/checks/{trCheckId}/{skuId}", NOT_EXISTING_CHECK_ID.getTransaction().getId(), NOT_EXISTING_CHECK_ID.getSku().getId()))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.code").value(NOT_FOUND.name()))
-                .andExpect(jsonPath("$.message").exists());
+                .andExpect(jsonPath("$.messages").exists());
     }
 
     @Test
@@ -139,8 +141,8 @@ class CheckControllerTest extends IntegrationTestBase {
     @Test
     void createWithDuplicatedCheckId_shouldReturnBadRequest() throws Exception {
         CheckCreateDto checkDto = CheckCreateDto.builder()
-                .transactionId(CHECK_ID.getTransactionId())
-                .skuId(CHECK_ID.getSkuId())
+                .transactionId(CHECK_ID.getTransaction().getId())
+                .skuId(CHECK_ID.getSku().getId())
                 .skuAmount(3.20664673)
                 .skuSum(336.3206767)
                 .skuSumPaid(190.2882909)
@@ -153,7 +155,7 @@ class CheckControllerTest extends IntegrationTestBase {
                         .content(requestJson))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.code").value(DUPLICATE_VALUE.name()))
-                .andExpect(jsonPath("$.message").exists());
+                .andExpect(jsonPath("$.messages").exists());
     }
 
     @Test
@@ -171,7 +173,7 @@ class CheckControllerTest extends IntegrationTestBase {
                         .content(requestJson))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.code").value(ENTITY_IS_NOT_VALID.name()))
-                .andExpect(jsonPath("$.message").exists());
+                .andExpect(jsonPath("$.messages").exists());
     }
 
     @Test
@@ -189,7 +191,7 @@ class CheckControllerTest extends IntegrationTestBase {
                         .content(requestJson))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.code").value(ENTITY_IS_NOT_VALID.name()))
-                .andExpect(jsonPath("$.message").exists());
+                .andExpect(jsonPath("$.messages").exists());
     }
 
     @Test
@@ -207,7 +209,7 @@ class CheckControllerTest extends IntegrationTestBase {
                         .content(requestJson))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.code").value(ENTITY_IS_NOT_VALID.name()))
-                .andExpect(jsonPath("$.message").exists());
+                .andExpect(jsonPath("$.messages").exists());
     }
 
     @Test
@@ -225,7 +227,7 @@ class CheckControllerTest extends IntegrationTestBase {
                         .content(requestJson))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.code").value(ENTITY_IS_NOT_VALID.name()))
-                .andExpect(jsonPath("$.message").exists());
+                .andExpect(jsonPath("$.messages").exists());
     }
 
     @Test
@@ -243,7 +245,7 @@ class CheckControllerTest extends IntegrationTestBase {
                         .content(requestJson))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.code").value(ENTITY_IS_NOT_VALID.name()))
-                .andExpect(jsonPath("$.message").exists());
+                .andExpect(jsonPath("$.messages").exists());
     }
 
     @Test
@@ -261,7 +263,7 @@ class CheckControllerTest extends IntegrationTestBase {
                         .content(requestJson))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.code").value(ENTITY_IS_NOT_VALID.name()))
-                .andExpect(jsonPath("$.message").exists());
+                .andExpect(jsonPath("$.messages").exists());
     }
 
     @Test
@@ -280,7 +282,7 @@ class CheckControllerTest extends IntegrationTestBase {
                         .content(requestJson))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.code").value(NOT_FOUND.name()))
-                .andExpect(jsonPath("$.message").exists());
+                .andExpect(jsonPath("$.messages").exists());
     }
 
     @Test
@@ -299,17 +301,17 @@ class CheckControllerTest extends IntegrationTestBase {
                         .content(requestJson))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.code").value(NOT_FOUND.name()))
-                .andExpect(jsonPath("$.message").exists());
+                .andExpect(jsonPath("$.messages").exists());
     }
 
     @Test
     void deleteCheck() throws Exception {
-        mockMvc.perform(delete("/api/v1/checks/{trCheckId}/{skuId}", CHECK_ID.getTransactionId(), CHECK_ID.getSkuId()))
+        mockMvc.perform(delete("/api/v1/checks/{trCheckId}/{skuId}", CHECK_ID.getTransaction().getId(), CHECK_ID.getSku().getId()))
                 .andExpect(status().isOk());
-        mockMvc.perform(get("/api/v1/checks/{trCheckId}/{skuId}", CHECK_ID.getTransactionId(), CHECK_ID.getSkuId()))
+        mockMvc.perform(get("/api/v1/checks/{trCheckId}/{skuId}", CHECK_ID.getTransaction().getId(), CHECK_ID.getSku().getId()))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.code").value(NOT_FOUND.name()))
-                .andExpect(jsonPath("$.message").exists());
+                .andExpect(jsonPath("$.messages").exists());
     }
 
     private SkuReadDto getSkuDtoWithId(Long id) {

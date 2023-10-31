@@ -4,6 +4,6 @@ import ru.school.retailanalitycs_web_java.entities.views.periodView.PeriodViewId
 
 public class PeriodViewNotFoundException extends EntityNotFoundException {
     public PeriodViewNotFoundException(PeriodViewId id) {
-        super(String.format("Period View with customer id {%d} and sku group id {%d} not found", id.getCustomerId(), id.getSkuGroupId()));
+        super(String.format("Period View with customer id {%d} and sku group id {%d} not found", id.getCustomer().getId(), id.getSkuGroup().getId()));
     }
 }

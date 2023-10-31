@@ -1,7 +1,7 @@
 spring:
   liquibase:
     enabled: true
-    contexts: dev
+    contexts: test
   datasource:
     url: ${URL_DB:jdbc:postgresql://localhost:5432/postgres}
     username: ${USERNAME_DB:postgres}
@@ -12,7 +12,5 @@ spring:
       hibernate:
         hbm2ddl:
           auto: validate
-        format_sql: true
-        show_sql: true
 
 server.port: ${SERVER_PORT:8081}

@@ -1,12 +1,16 @@
 package ru.school.retailanalitycs_web_java.entities.tables;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.EmbeddedId;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.proxy.HibernateProxy;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 @Getter
@@ -15,21 +19,9 @@ import java.util.Objects;
 @ToString
 @RequiredArgsConstructor
 @Table(name = "checks")
-public class Check {
+public class Check implements Serializable {
     @EmbeddedId
     private CheckId id;
-
-    @MapsId("transactionId")
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
-    @JoinColumn(name = "transaction_id", nullable = false)
-    @ToString.Exclude
-    private Transaction transaction;
-
-    @MapsId("skuId")
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
-    @JoinColumn(name = "sku_id", nullable = false)
-    @ToString.Exclude
-    private Sku sku;
 
     @Column(name = "sku_amount", nullable = false)
     private Double skuAmount;

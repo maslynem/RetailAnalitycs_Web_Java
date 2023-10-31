@@ -75,7 +75,7 @@ class CardControllerTest extends IntegrationTestBase {
         mockMvc.perform(get("/api/v1/cards/{NOT_EXISTING_CARD_ID}", NOT_EXISTING_CARD_ID))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.code").value(NOT_FOUND.name()))
-                .andExpect(jsonPath("$.message").exists());
+                .andExpect(jsonPath("$.messages").exists());
     }
 
     @Test
@@ -100,7 +100,7 @@ class CardControllerTest extends IntegrationTestBase {
                         .content(requestJson))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.code").value(ENTITY_IS_NOT_VALID.name()))
-                .andExpect(jsonPath("$.message").exists());
+                .andExpect(jsonPath("$.messages").exists());
     }
 
     @Test
@@ -112,7 +112,7 @@ class CardControllerTest extends IntegrationTestBase {
                         .content(requestJson))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.code").value(NOT_FOUND.name()))
-                .andExpect(jsonPath("$.message").exists());
+                .andExpect(jsonPath("$.messages").exists());
     }
 
     @Test
@@ -122,7 +122,7 @@ class CardControllerTest extends IntegrationTestBase {
         mockMvc.perform(get("/api/v1/cards/{CARD_ID}", CARD_ID))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.code").value(NOT_FOUND.name()))
-                .andExpect(jsonPath("$.message").exists());
+                .andExpect(jsonPath("$.messages").exists());
     }
 
     private CustomerDto getDtoWithId(Long id) {

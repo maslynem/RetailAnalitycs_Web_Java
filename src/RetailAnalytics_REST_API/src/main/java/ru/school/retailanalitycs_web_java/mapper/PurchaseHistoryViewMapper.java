@@ -10,7 +10,7 @@ import ru.school.retailanalitycs_web_java.entities.views.purchaseHistoryView.Pur
 public abstract class PurchaseHistoryViewMapper {
 
     @Mapping(target = "skuGroup", source = "groupId")
-    @Mapping(target = "transaction", source = "id.transactionId")
-    @Mapping(target = "customer", source = "id.customerId")
+    @Mapping(target = "transaction", source = "id.transaction")
+    @Mapping(target = "customer", source = "id.customer")
     public abstract PurchaseHistoryViewDto toDto(PurchaseHistoryView purchaseHistoryView);
 }

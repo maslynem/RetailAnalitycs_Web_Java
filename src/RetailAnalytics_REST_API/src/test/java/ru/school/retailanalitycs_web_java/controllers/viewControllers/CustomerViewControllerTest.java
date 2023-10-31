@@ -116,7 +116,7 @@ class CustomerViewControllerTest extends IntegrationTestBase {
         mockMvc.perform(get("/api/v1/views/customers/{NOT_EXISTING_ID}", NOT_EXISTING_ID))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.code").value(NOT_FOUND.name()))
-                .andExpect(jsonPath("$.message").exists());
+                .andExpect(jsonPath("$.messages").exists());
     }
 
     private CustomerDto getCustomerDtoWithId(Long id) {

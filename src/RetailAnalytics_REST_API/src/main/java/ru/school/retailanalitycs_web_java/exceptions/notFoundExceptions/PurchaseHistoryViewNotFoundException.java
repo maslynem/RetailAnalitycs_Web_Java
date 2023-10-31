@@ -4,6 +4,6 @@ import ru.school.retailanalitycs_web_java.entities.views.purchaseHistoryView.Pur
 
 public class PurchaseHistoryViewNotFoundException extends EntityNotFoundException {
     public PurchaseHistoryViewNotFoundException(PurchaseHistoryViewId id) {
-        super(String.format("Purchase History with customer id {%d} and transaction id {%d} not found", id.getCustomerId(), id.getTransactionId()));
+        super(String.format("Purchase History with customer id {%d} and transaction id {%d} not found", id.getCustomer().getId(), id.getTransaction().getId()));
     }
 }

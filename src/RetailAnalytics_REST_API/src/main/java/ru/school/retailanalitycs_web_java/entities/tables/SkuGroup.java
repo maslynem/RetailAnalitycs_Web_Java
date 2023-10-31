@@ -1,12 +1,10 @@
 package ru.school.retailanalitycs_web_java.entities.tables;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
 
+import java.io.Serializable;
 import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -14,10 +12,12 @@ import java.util.Set;
 @Getter
 @Setter
 @ToString
-@RequiredArgsConstructor
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 @Entity
 @Table(name = "groups_sku")
-public class SkuGroup {
+public class SkuGroup implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "group_id", nullable = false)
@@ -26,6 +26,7 @@ public class SkuGroup {
     @Column(name = "group_name", length = Integer.MAX_VALUE, unique = true)
     private String groupName;
 
+    @Builder.Default
     @OneToMany(mappedBy = "skuGroup", orphanRemoval = true)
     @ToString.Exclude
     private Set<Sku> skus = new LinkedHashSet<>();

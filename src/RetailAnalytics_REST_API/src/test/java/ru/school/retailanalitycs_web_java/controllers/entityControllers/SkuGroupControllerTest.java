@@ -70,7 +70,7 @@ class SkuGroupControllerTest extends IntegrationTestBase {
         mockMvc.perform(get("/api/v1/sku-groups/{NOT_EXISTING_ID}", NOT_EXISTING_SKU_GROUP_ID))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.code").value(NOT_FOUND.name()))
-                .andExpect(jsonPath("$.message").exists());
+                .andExpect(jsonPath("$.messages").exists());
     }
 
     @Test
@@ -95,7 +95,7 @@ class SkuGroupControllerTest extends IntegrationTestBase {
                         .content(requestJson))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.code").value(ENTITY_IS_NOT_VALID.name()))
-                .andExpect(jsonPath("$.message").exists());
+                .andExpect(jsonPath("$.messages").exists());
     }
 
     @Test
@@ -107,7 +107,7 @@ class SkuGroupControllerTest extends IntegrationTestBase {
                         .content(requestJson))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.code").value(DUPLICATE_VALUE.name()))
-                .andExpect(jsonPath("$.message").exists());
+                .andExpect(jsonPath("$.messages").exists());
     }
 
 // todo
@@ -142,7 +142,7 @@ class SkuGroupControllerTest extends IntegrationTestBase {
 //                        .contentType(APPLICATION_JSON)
 //                        .content(requestJson))
 //                .andExpect(status().isNotFound())
-//                .andExpect(jsonPath("$.message").exists());
+//                .andExpect(jsonPath("$.messages").exists());
 //    }
 
     @Test

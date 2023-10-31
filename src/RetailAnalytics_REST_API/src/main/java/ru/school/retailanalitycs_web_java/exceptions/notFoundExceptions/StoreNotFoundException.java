@@ -5,7 +5,7 @@ import ru.school.retailanalitycs_web_java.entities.tables.StoreId;
 public class StoreNotFoundException extends EntityNotFoundException {
     public StoreNotFoundException(StoreId storeId) {
         super(String.format("Store with transaction store id {%s} and sku id {%d} not found",
-                storeId.getTransactionStoreId(), storeId.getSkuId()));
+                storeId.getTransactionStoreId(), storeId.getSku().getId()));
     }
 
     public StoreNotFoundException(Long transactionStoreId) {

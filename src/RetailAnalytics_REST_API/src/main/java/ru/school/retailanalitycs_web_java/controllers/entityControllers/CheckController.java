@@ -14,6 +14,8 @@ import ru.school.retailanalitycs_web_java.dto.entityDto.checkDto.CheckCreateDto;
 import ru.school.retailanalitycs_web_java.dto.entityDto.checkDto.CheckReadDto;
 import ru.school.retailanalitycs_web_java.entities.tables.Check;
 import ru.school.retailanalitycs_web_java.entities.tables.CheckId;
+import ru.school.retailanalitycs_web_java.entities.tables.Sku;
+import ru.school.retailanalitycs_web_java.entities.tables.Transaction;
 import ru.school.retailanalitycs_web_java.exceptions.notFoundExceptions.CheckNotFoundException;
 import ru.school.retailanalitycs_web_java.mapper.CheckMapper;
 import ru.school.retailanalitycs_web_java.services.entityServices.CheckService;
@@ -90,6 +92,6 @@ public class CheckController {
     }
 
     private CheckId getId(Long trId, Long skuId) {
-        return new CheckId(trId, skuId);
+        return new CheckId(Transaction.builder().id(trId).build(), Sku.builder().id(skuId).build());
     }
 }

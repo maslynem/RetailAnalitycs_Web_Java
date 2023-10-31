@@ -79,7 +79,7 @@ class SkuControllerTest extends IntegrationTestBase {
         mockMvc.perform(get("/api/v1/skus/{NOT_EXISTING_SKU_ID}", NOT_EXISTING_SKU_ID))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.code").value(NOT_FOUND.name()))
-                .andExpect(jsonPath("$.message").exists());
+                .andExpect(jsonPath("$.messages").exists());
     }
 
     @Test
@@ -105,7 +105,7 @@ class SkuControllerTest extends IntegrationTestBase {
                         .content(requestJson))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.code").value(ENTITY_IS_NOT_VALID.name()))
-                .andExpect(jsonPath("$.message").exists());
+                .andExpect(jsonPath("$.messages").exists());
     }
 
     @Test
@@ -117,7 +117,7 @@ class SkuControllerTest extends IntegrationTestBase {
                         .content(requestJson))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.code").value(ENTITY_IS_NOT_VALID.name()))
-                .andExpect(jsonPath("$.message").exists());
+                .andExpect(jsonPath("$.messages").exists());
     }
 
     @Test
@@ -129,7 +129,7 @@ class SkuControllerTest extends IntegrationTestBase {
                         .content(requestJson))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.code").value(NOT_FOUND.name()))
-                .andExpect(jsonPath("$.message").exists());
+                .andExpect(jsonPath("$.messages").exists());
     }
 
     @Test
@@ -139,7 +139,7 @@ class SkuControllerTest extends IntegrationTestBase {
         mockMvc.perform(get("/api/v1/skus/{SKU_ID}", SKU_ID))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.code").value(NOT_FOUND.name()))
-                .andExpect(jsonPath("$.message").exists());
+                .andExpect(jsonPath("$.messages").exists());
     }
 
     private SkuGroupDto getDtoWithId(Long id) {

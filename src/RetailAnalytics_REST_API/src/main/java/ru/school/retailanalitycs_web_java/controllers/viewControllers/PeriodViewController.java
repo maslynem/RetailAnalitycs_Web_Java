@@ -3,6 +3,8 @@ package ru.school.retailanalitycs_web_java.controllers.viewControllers;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 import ru.school.retailanalitycs_web_java.dto.viewDto.PeriodViewDto;
+import ru.school.retailanalitycs_web_java.entities.tables.Customer;
+import ru.school.retailanalitycs_web_java.entities.tables.SkuGroup;
 import ru.school.retailanalitycs_web_java.entities.views.periodView.PeriodViewId;
 import ru.school.retailanalitycs_web_java.exceptions.notFoundExceptions.PeriodViewNotFoundException;
 import ru.school.retailanalitycs_web_java.mapper.PeriodViewMapper;
@@ -35,7 +37,7 @@ public class PeriodViewController {
     @GetMapping("/{customerId}/{groupId}")
     public PeriodViewDto findPeriodById(@PathVariable Long customerId,
                                         @PathVariable Long groupId) {
-        PeriodViewId id = new PeriodViewId(customerId, groupId);
+        PeriodViewId id = new PeriodViewId(Customer.builder().id(customerId).build(), SkuGroup.builder().id(groupId).build());
         return periodViewService.findById(id).map(periodViewMapper::toDto).orElseThrow(() -> new PeriodViewNotFoundException(id));
     }
 

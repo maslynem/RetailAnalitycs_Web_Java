@@ -1,12 +1,10 @@
 package ru.school.retailanalitycs_web_java.entities.tables;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.LinkedHashSet;
 import java.util.Objects;
@@ -16,9 +14,11 @@ import java.util.Set;
 @Setter
 @Entity
 @ToString
-@RequiredArgsConstructor
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 @Table(name = "transactions")
-public class Transaction {
+public class Transaction implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "transaction_id", nullable = false)
@@ -38,7 +38,8 @@ public class Transaction {
     @Column(name = "transaction_store_id")
     private Long transactionStoreId;
 
-    @OneToMany(mappedBy = "transaction", orphanRemoval = true)
+    @Builder.Default
+    @OneToMany(mappedBy = "id.transaction", orphanRemoval = true)
     @ToString.Exclude
     private Set<Check> checks = new LinkedHashSet<>();
 

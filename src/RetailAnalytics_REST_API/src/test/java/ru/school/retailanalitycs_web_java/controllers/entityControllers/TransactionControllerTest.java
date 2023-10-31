@@ -104,7 +104,7 @@ class TransactionControllerTest extends IntegrationTestBase {
         mockMvc.perform(get("/api/v1/transactions/{NOT_EXISTING_TRANSACTION_ID}", NOT_EXISTING_TRANSACTION_ID))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.code").value(NOT_FOUND.name()))
-                .andExpect(jsonPath("$.message").exists());
+                .andExpect(jsonPath("$.messages").exists());
     }
 
     @Test
@@ -141,7 +141,7 @@ class TransactionControllerTest extends IntegrationTestBase {
                         .content(requestJson))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.code").value(NOT_FOUND.name()))
-                .andExpect(jsonPath("$.message").exists());
+                .andExpect(jsonPath("$.messages").exists());
     }
 
     @Test
@@ -157,7 +157,7 @@ class TransactionControllerTest extends IntegrationTestBase {
                         .content(requestJson))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.code").value(ENTITY_IS_NOT_VALID.name()))
-                .andExpect(jsonPath("$.message").exists());
+                .andExpect(jsonPath("$.messages").exists());
     }
 
     @Test
@@ -173,7 +173,7 @@ class TransactionControllerTest extends IntegrationTestBase {
                         .content(requestJson))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.code").value(ENTITY_IS_NOT_VALID.name()))
-                .andExpect(jsonPath("$.message").exists());
+                .andExpect(jsonPath("$.messages").exists());
     }
 
     @Test
@@ -189,7 +189,7 @@ class TransactionControllerTest extends IntegrationTestBase {
                         .content(requestJson))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.code").value(ENTITY_IS_NOT_VALID.name()))
-                .andExpect(jsonPath("$.message").exists());
+                .andExpect(jsonPath("$.messages").exists());
     }
 
     @Test
@@ -206,7 +206,7 @@ class TransactionControllerTest extends IntegrationTestBase {
                         .content(requestJson))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.code").value(NOT_FOUND.name()))
-                .andExpect(jsonPath("$.message").exists());
+                .andExpect(jsonPath("$.messages").exists());
     }
 
     @Test
@@ -216,7 +216,7 @@ class TransactionControllerTest extends IntegrationTestBase {
         mockMvc.perform(get("/api/v1/cards/{TRANSACTION_ID}", TRANSACTION_ID))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.code").value(NOT_FOUND.name()))
-                .andExpect(jsonPath("$.message").exists());
+                .andExpect(jsonPath("$.messages").exists());
     }
 
     private CardReadDto getCardReadDtoWithId(Long id) {

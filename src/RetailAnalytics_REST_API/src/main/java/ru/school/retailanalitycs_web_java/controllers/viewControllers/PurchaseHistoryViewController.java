@@ -3,6 +3,8 @@ package ru.school.retailanalitycs_web_java.controllers.viewControllers;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 import ru.school.retailanalitycs_web_java.dto.viewDto.PurchaseHistoryViewDto;
+import ru.school.retailanalitycs_web_java.entities.tables.Customer;
+import ru.school.retailanalitycs_web_java.entities.tables.Transaction;
 import ru.school.retailanalitycs_web_java.entities.views.purchaseHistoryView.PurchaseHistoryViewId;
 import ru.school.retailanalitycs_web_java.exceptions.notFoundExceptions.PurchaseHistoryViewNotFoundException;
 import ru.school.retailanalitycs_web_java.mapper.PurchaseHistoryViewMapper;
@@ -35,7 +37,7 @@ public class PurchaseHistoryViewController {
     @GetMapping("/{customerId}/{transactionId}")
     public PurchaseHistoryViewDto findPurchaseHistoryById(@PathVariable Long customerId,
                                                           @PathVariable Long transactionId) {
-        PurchaseHistoryViewId id = new PurchaseHistoryViewId(customerId, transactionId);
+        PurchaseHistoryViewId id = new PurchaseHistoryViewId(Customer.builder().id(customerId).build(), Transaction.builder().id(transactionId).build());
         return purchaseHistoryViewService.findById(id).map(purchaseHistoryViewMapper::toDto).orElseThrow(() -> new PurchaseHistoryViewNotFoundException(id));
     }
 }

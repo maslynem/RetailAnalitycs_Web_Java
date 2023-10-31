@@ -39,7 +39,7 @@ END;
 $$
     LANGUAGE plpgsql;
 
-CREATE VIEW customers AS
+CREATE MATERIALIZED VIEW customers AS
     -- Получаем средний чек клиента и нумеруем от большего к меньшему
 WITH customer_avg_check AS (SELECT p.customer_id,
                                    avg(transaction_summ)                                   AS Customer_Average_Check,
@@ -172,3 +172,5 @@ FROM personal_data p
          LEFT JOIN customer_time_info ct ON ct.customer_id = p.customer_id
          LEFT JOIN main_store m ON m.customer_id = p.customer_id
 WHERE Customer_Average_Check IS NOT NULL;
+
+CREATE INDEX IF NOT EXISTS customer_view_idx ON customers USING btree (customer_id);

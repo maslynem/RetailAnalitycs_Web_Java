@@ -24,4 +24,8 @@ public abstract class SkuMapper {
     public Sku toDtoById(Long id) {
         return skuService.findById(id).orElseThrow(() -> new SkuNotFoundException(id));
     }
+
+    public Long map(Sku value) {
+        return value.getId();
+    }
 }

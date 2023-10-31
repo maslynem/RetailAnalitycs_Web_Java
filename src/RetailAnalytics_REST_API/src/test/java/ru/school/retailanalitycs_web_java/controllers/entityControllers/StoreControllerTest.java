@@ -12,6 +12,7 @@ import ru.school.retailanalitycs_web_java.IntegrationsTestConfiguration;
 import ru.school.retailanalitycs_web_java.dto.entityDto.skuDto.SkuReadDto;
 import ru.school.retailanalitycs_web_java.dto.entityDto.storeDto.StoreCreateDto;
 import ru.school.retailanalitycs_web_java.dto.entityDto.storeDto.StoreReadDto;
+import ru.school.retailanalitycs_web_java.entities.tables.Sku;
 import ru.school.retailanalitycs_web_java.entities.tables.StoreId;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON;
@@ -25,11 +26,11 @@ import static ru.school.retailanalitycs_web_java.exceptions.ExceptionCode.*;
 @Transactional
 class StoreControllerTest extends IntegrationTestBase {
 
-    private static final StoreId STORE_ID = new StoreId(1L, 2L);
+    private static final StoreId STORE_ID = new StoreId(1L, Sku.builder().id(2L).build());
     private static final Long TRANSACTION_STORE_ID = 1L;
     private static final Long SKU_ID = 1L;
     private static final Long NOT_EXISTING_SKU_ID = Long.MAX_VALUE;
-    private static final StoreId NOT_EXISTING_STORE_ID = new StoreId(Long.MAX_VALUE, Long.MAX_VALUE);
+    private static final StoreId NOT_EXISTING_STORE_ID = new StoreId(Long.MAX_VALUE, Sku.builder().id(Long.MAX_VALUE).build());
 
     @Autowired
     private MockMvc mockMvc;
@@ -75,10 +76,10 @@ class StoreControllerTest extends IntegrationTestBase {
     void findStoreById() throws Exception {
         StoreReadDto first = StoreReadDto.builder()
                 .transactionStoreId(STORE_ID.getTransactionStoreId())
-                .sku(getSkuDtoWithId(STORE_ID.getSkuId()))
+                .sku(getSkuDtoWithId(STORE_ID.getSku().getId()))
                 .skuPurchasePrice(78.0071743954938)
                 .skuRetailPrice(104.882359988255).build();
-        mockMvc.perform(get("/api/v1/stores/{trStoreId}/{skuId}", STORE_ID.getTransactionStoreId(), STORE_ID.getSkuId()))
+        mockMvc.perform(get("/api/v1/stores/{trStoreId}/{skuId}", STORE_ID.getTransactionStoreId(), STORE_ID.getSku().getId()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.transactionStoreId").value(first.getTransactionStoreId()))
                 .andExpect(jsonPath("$.sku.id").value(first.getSku().getId()))
@@ -88,10 +89,10 @@ class StoreControllerTest extends IntegrationTestBase {
 
     @Test
     void findNotExistingStore() throws Exception {
-        mockMvc.perform(get("/api/v1/stores/{trStoreId}/{skuId}", NOT_EXISTING_STORE_ID.getTransactionStoreId(), NOT_EXISTING_STORE_ID.getSkuId()))
+        mockMvc.perform(get("/api/v1/stores/{trStoreId}/{skuId}", NOT_EXISTING_STORE_ID.getTransactionStoreId(), NOT_EXISTING_STORE_ID.getSku().getId()))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.code").value(NOT_FOUND.name()))
-                .andExpect(jsonPath("$.message").exists());
+                .andExpect(jsonPath("$.messages").exists());
     }
 
     @Test
@@ -117,7 +118,7 @@ class StoreControllerTest extends IntegrationTestBase {
     void createWithDuplicatedStoreId_shouldReturnBadRequest() throws Exception {
         StoreCreateDto storeDto = StoreCreateDto.builder()
                 .transactionStoreId(STORE_ID.getTransactionStoreId())
-                .sku(STORE_ID.getSkuId())
+                .sku(STORE_ID.getSku().getId())
                 .skuPurchasePrice(0.1)
                 .skuRetailPrice(0.1).build();
 
@@ -127,7 +128,7 @@ class StoreControllerTest extends IntegrationTestBase {
                         .content(requestJson))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.code").value(DUPLICATE_VALUE.name()))
-                .andExpect(jsonPath("$.message").exists());
+                .andExpect(jsonPath("$.messages").exists());
     }
 
     @Test
@@ -142,7 +143,7 @@ class StoreControllerTest extends IntegrationTestBase {
                         .content(requestJson))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.code").value(ENTITY_IS_NOT_VALID.name()))
-                .andExpect(jsonPath("$.message").exists());
+                .andExpect(jsonPath("$.messages").exists());
     }
 
     @Test
@@ -157,7 +158,7 @@ class StoreControllerTest extends IntegrationTestBase {
                         .content(requestJson))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.code").value(ENTITY_IS_NOT_VALID.name()))
-                .andExpect(jsonPath("$.message").exists());
+                .andExpect(jsonPath("$.messages").exists());
     }
 
     @Test
@@ -172,7 +173,7 @@ class StoreControllerTest extends IntegrationTestBase {
                         .content(requestJson))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.code").value(ENTITY_IS_NOT_VALID.name()))
-                .andExpect(jsonPath("$.message").exists());
+                .andExpect(jsonPath("$.messages").exists());
     }
 
     @Test
@@ -187,7 +188,7 @@ class StoreControllerTest extends IntegrationTestBase {
                         .content(requestJson))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.code").value(ENTITY_IS_NOT_VALID.name()))
-                .andExpect(jsonPath("$.message").exists());
+                .andExpect(jsonPath("$.messages").exists());
     }
 
     @Test
@@ -203,17 +204,17 @@ class StoreControllerTest extends IntegrationTestBase {
                         .content(requestJson))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.code").value(NOT_FOUND.name()))
-                .andExpect(jsonPath("$.message").exists());
+                .andExpect(jsonPath("$.messages").exists());
     }
 
     @Test
     void deleteStore() throws Exception {
-        mockMvc.perform(delete("/api/v1/stores/{trStoreId}/{skuId}", STORE_ID.getTransactionStoreId(), STORE_ID.getSkuId()))
+        mockMvc.perform(delete("/api/v1/stores/{trStoreId}/{skuId}", STORE_ID.getTransactionStoreId(), STORE_ID.getSku().getId()))
                 .andExpect(status().isOk());
-        mockMvc.perform(get("/api/v1/stores/{trStoreId}/{skuId}", STORE_ID.getTransactionStoreId(), STORE_ID.getSkuId()))
+        mockMvc.perform(get("/api/v1/stores/{trStoreId}/{skuId}", STORE_ID.getTransactionStoreId(), STORE_ID.getSku().getId()))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.code").value(NOT_FOUND.name()))
-                .andExpect(jsonPath("$.message").exists());
+                .andExpect(jsonPath("$.messages").exists());
     }
 
     private SkuReadDto getSkuDtoWithId(Long id) {

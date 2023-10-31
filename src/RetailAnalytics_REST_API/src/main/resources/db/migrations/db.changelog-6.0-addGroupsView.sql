@@ -43,8 +43,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-DROP VIEW IF EXISTS groups;
-CREATE OR REPLACE VIEW groups AS
+CREATE MATERIALIZED VIEW groups AS
 WITH new_purchase_history AS (SELECT cards.Customer_ID                 AS Customer_ID,
                                      transactions.transaction_id       AS Transaction_ID,
                                      transactions.transaction_datetime AS Transaction_DateTime,
@@ -121,4 +120,7 @@ FROM periods p
          LEFT JOIN avgd ON p.Customer_ID = avgd.Customer_ID AND p.Group_ID = avgd.Group_ID
          LEFT JOIN get_margin(method := 'default', count := null) AS gm
                    ON p.Customer_ID = gm.Customer_ID AND p.Group_ID = gm.Group_ID;
+
+CREATE INDEX IF NOT EXISTS periods_view_idx ON periods USING btree (customer_id, group_id);
+
 

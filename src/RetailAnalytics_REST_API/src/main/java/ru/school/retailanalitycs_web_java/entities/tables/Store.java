@@ -1,21 +1,21 @@
 package ru.school.retailanalitycs_web_java.entities.tables;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.EmbeddedId;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.io.Serializable;
 
 @Getter
 @Setter
 @Entity
 @Table(name = "stores")
-public class Store {
+public class Store implements Serializable {
     @EmbeddedId
     private StoreId id;
-
-    @MapsId("skuId")
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
-    @JoinColumn(name = "sku_id", nullable = false)
-    private Sku sku;
 
     @Column(name = "sku_purchase_price", nullable = false)
     private Double skuPurchasePrice;

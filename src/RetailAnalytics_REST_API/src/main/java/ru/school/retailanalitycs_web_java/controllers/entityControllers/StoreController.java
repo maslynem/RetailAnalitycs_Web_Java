@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.school.retailanalitycs_web_java.dto.entityDto.storeDto.StoreCreateDto;
 import ru.school.retailanalitycs_web_java.dto.entityDto.storeDto.StoreReadDto;
+import ru.school.retailanalitycs_web_java.entities.tables.Sku;
 import ru.school.retailanalitycs_web_java.entities.tables.Store;
 import ru.school.retailanalitycs_web_java.entities.tables.StoreId;
 import ru.school.retailanalitycs_web_java.exceptions.notFoundExceptions.StoreNotFoundException;
@@ -90,6 +91,6 @@ public class StoreController {
     }
 
     private StoreId getId(Long trStoreId, Long skuId) {
-        return new StoreId(trStoreId, skuId);
+        return new StoreId(trStoreId, Sku.builder().id(skuId).build());
     }
 }

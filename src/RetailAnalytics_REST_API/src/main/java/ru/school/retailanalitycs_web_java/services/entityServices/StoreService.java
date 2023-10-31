@@ -2,6 +2,7 @@ package ru.school.retailanalitycs_web_java.services.entityServices;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.school.retailanalitycs_web_java.entities.tables.Store;
 import ru.school.retailanalitycs_web_java.entities.tables.StoreId;
 import ru.school.retailanalitycs_web_java.exceptions.duplicateValue.StoreDuplicateValueException;
@@ -10,6 +11,7 @@ import ru.school.retailanalitycs_web_java.repositories.entityRepositories.StoreR
 import java.util.List;
 
 @Service
+@Transactional
 public class StoreService extends BaseService<Store, StoreId> {
     private final StoreRepository repository;
 
@@ -19,6 +21,7 @@ public class StoreService extends BaseService<Store, StoreId> {
         this.repository = repository;
     }
 
+    @Transactional(readOnly = true)
     public boolean existsByTransactionalStoreId(Long transactionalStoreId) {
         return repository.existsByTransactionStoreId(transactionalStoreId);
     }
@@ -33,6 +36,7 @@ public class StoreService extends BaseService<Store, StoreId> {
         return super.save(entity);
     }
 
+    @Transactional(readOnly = true)
     public List<Store> getStoresWithTransactionalStoreId(Long customerPrimaryStore) {
         return repository.findById_TransactionStoreId(customerPrimaryStore);
     }

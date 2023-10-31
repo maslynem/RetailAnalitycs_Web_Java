@@ -1,7 +1,7 @@
 --liquibase formatted sql
 
 --changeset maslynem:1 splitStatements:false
-CREATE OR REPLACE VIEW purchase_history AS
+CREATE MATERIALIZED VIEW purchase_history AS
 SELECT cards.Customer_ID                                  AS Customer_ID,
        transactions.transaction_id                        AS Transaction_ID,
        transactions.transaction_datetime                  AS Transaction_DateTime,
@@ -15,3 +15,5 @@ FROM cards
          JOIN sku ON sku.sku_id = checks.sku_id
          JOIN stores ON sku.sku_id = stores.sku_id AND stores.transaction_store_id = transactions.transaction_store_id
 GROUP BY cards.Customer_ID, transactions.transaction_id, transactions.transaction_datetime, sku.group_id;
+
+CREATE INDEX IF NOT EXISTS purchase_history_view_idx ON purchase_history USING btree (customer_id, Transaction_ID);

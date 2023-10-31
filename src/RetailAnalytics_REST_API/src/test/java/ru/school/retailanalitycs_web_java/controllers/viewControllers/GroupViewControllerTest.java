@@ -10,6 +10,8 @@ import ru.school.retailanalitycs_web_java.IntegrationsTestConfiguration;
 import ru.school.retailanalitycs_web_java.dto.entityDto.customerDto.CustomerDto;
 import ru.school.retailanalitycs_web_java.dto.entityDto.skuGroupDto.SkuGroupDto;
 import ru.school.retailanalitycs_web_java.dto.viewDto.GroupViewDto;
+import ru.school.retailanalitycs_web_java.entities.tables.Customer;
+import ru.school.retailanalitycs_web_java.entities.tables.SkuGroup;
 import ru.school.retailanalitycs_web_java.entities.views.groupView.GroupViewId;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -20,8 +22,8 @@ import static ru.school.retailanalitycs_web_java.exceptions.ExceptionCode.NOT_FO
 @SpringBootTest(classes = IntegrationsTestConfiguration.class)
 @AutoConfigureMockMvc
 class GroupViewControllerTest extends IntegrationTestBase {
-    private static final GroupViewId GROUP_VIEW_ID = new GroupViewId(1L, 3L);
-    private static final GroupViewId NOT_EXISTING_GROUP_VIEW_ID = new GroupViewId(Long.MAX_VALUE, Long.MAX_VALUE);
+    private static final GroupViewId GROUP_VIEW_ID = new GroupViewId(Customer.builder().id(1L).build(), SkuGroup.builder().id(3L).build());
+    private static final GroupViewId NOT_EXISTING_GROUP_VIEW_ID = new GroupViewId(Customer.builder().id(Long.MAX_VALUE).build(), SkuGroup.builder().id(Long.MAX_VALUE).build());
 
     @Autowired
     private MockMvc mockMvc;
@@ -35,15 +37,15 @@ class GroupViewControllerTest extends IntegrationTestBase {
     @Test
     void findGroupsBy_page_1_size_2() throws Exception {
         GroupViewDto first = GroupViewDto.builder()
-                .customer(getCustomerDtoWithId(1L))
-                .skuGroup(getSkuGroupDtoWithId(3L))
-                .groupAffinityIndex(0.38461538461538464)
-                .groupChurnRate(1.8290650727814988)
-                .groupStabilityIndex(1.1838494338796948)
-                .groupMargin(-1724.2867369226253)
-                .groupDiscountShare(0.6)
-                .groupMinimumDiscount(0.30488100929709167)
-                .groupAverageDiscount(0.6845483598552724)
+                .customer(getCustomerDtoWithId(19L))
+                .skuGroup(getSkuGroupDtoWithId(2L))
+                .groupAffinityIndex(0.6)
+                .groupChurnRate(4.988283157268143)
+                .groupStabilityIndex(0.49704692087270047)
+                .groupMargin(-10.602518282680549)
+                .groupDiscountShare(0.6666666666666666)
+                .groupMinimumDiscount(0.15844591375296724)
+                .groupAverageDiscount(0.7917670281294505)
                 .build();
 
         GroupViewDto second = GroupViewDto.builder()
@@ -88,18 +90,18 @@ class GroupViewControllerTest extends IntegrationTestBase {
     @Test
     void findGroupById() throws Exception {
         GroupViewDto first = GroupViewDto.builder()
-                .customer(getCustomerDtoWithId(GROUP_VIEW_ID.getCustomerId()))
-                .skuGroup(getSkuGroupDtoWithId(GROUP_VIEW_ID.getSkuGroupId()))
+                .customer(getCustomerDtoWithId(GROUP_VIEW_ID.getCustomer().getId()))
+                .skuGroup(getSkuGroupDtoWithId(GROUP_VIEW_ID.getSkuGroup().getId()))
                 .groupAffinityIndex(0.38461538461538464)
                 .groupChurnRate(1.8290650727814988)
                 .groupStabilityIndex(1.1838494338796948)
-                .groupMargin(-1724.2867369226253)
+                .groupMargin(-1724.2867369226256)
                 .groupDiscountShare(0.6)
                 .groupMinimumDiscount(0.30488100929709167)
                 .groupAverageDiscount(0.6845483598552724)
                 .build();
 
-        mockMvc.perform(get("/api/v1/views/groups/{customer_id}/{group_id}", GROUP_VIEW_ID.getCustomerId(), GROUP_VIEW_ID.getSkuGroupId()))
+        mockMvc.perform(get("/api/v1/views/groups/{customer_id}/{group_id}", GROUP_VIEW_ID.getCustomer().getId(), GROUP_VIEW_ID.getSkuGroup().getId()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.customer.id").value(first.getCustomer().getId()))
                 .andExpect(jsonPath("$.skuGroup.id").value(first.getSkuGroup().getId()))
@@ -115,10 +117,10 @@ class GroupViewControllerTest extends IntegrationTestBase {
     @Test
     void findNotExistingGroup() throws Exception {
         mockMvc.perform(get("/api/v1/views/groups/{customer_id}/{group_id}",
-                        NOT_EXISTING_GROUP_VIEW_ID.getCustomerId(), NOT_EXISTING_GROUP_VIEW_ID.getSkuGroupId()))
+                        NOT_EXISTING_GROUP_VIEW_ID.getCustomer().getId(), NOT_EXISTING_GROUP_VIEW_ID.getSkuGroup().getId()))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.code").value(NOT_FOUND.name()))
-                .andExpect(jsonPath("$.message").exists());
+                .andExpect(jsonPath("$.messages").exists());
     }
 
     private CustomerDto getCustomerDtoWithId(Long id) {
