@@ -11,9 +11,37 @@
 
     <link rel="stylesheet" href="https://cdn-app.sberdevices.ru/shared-static/0.0.0/styles/SBSansDisplay.0.1.0.css"/>
     <link rel="stylesheet" href="/css/header.css">
+    <link href="/css/error_msg.css" rel="stylesheet">
 </head>
 <body>
 <header th:insert="~{header :: header}"></header>
+
+<div class="container">
+    <div class="row">
+        <div class="col-15 mt-2">
+            <h5>Обновить данные для формирования анализа</h5>
+        </div>
+    </div>
+    <div class="row">
+        <div>
+            <p>После изменения (добавления или удаления) записей необходимо обновить данные перед формированием анализа.<br>
+                В противном случае анализ будет проводиться по старым данным</p>
+        </div>
+    </div>
+    <div class="row">
+        <form action="#" th:action="@{/functions/update}" th:method="POST">
+            <button class="btn btn-primary" onclick="return confirm_update()" type="submit">Обновить</button>
+        </form>
+    </div>
+    <div th:if="${updated}">
+        <p class="error_message" th:text="${updated}">Error message</p>
+    </div>
+</div>
+
+<div th:if="${errors}">
+    <p class="error_message" th:each="error : ${errors}" th:text="${error}">Error message</p>
+</div>
+
 <div class="container">
     <div class="row">
         <div class="col-15 mt-2">
@@ -44,12 +72,12 @@
     <div class="row">
         <div>
             <p>Параметры функции:<br>
-                - метод расчета среднего чека (1 - за период, 2 - за количество)
-                - первая и последняя даты периода (для 1 метода)
-                - количество транзакций (для 2 метода)
-                - коэффициент увеличения среднего чека
-                - максимальный индекс оттока
-                - максимальная доля транзакций со скидкой (в процентах)
+                - метод расчета среднего чека (1 - за период, 2 - за количество)<br>
+                - первая и последняя даты периода (для 1 метода)<br>
+                - количество транзакций (для 2 метода)<br>
+                - коэффициент увеличения среднего чека<br>
+                - максимальный индекс оттока<br>
+                - максимальная доля транзакций со скидкой (в процентах)<br>
                 - допустимая доля маржи (в процентах)</p>
         </div>
     </div>
@@ -67,10 +95,10 @@
     <div class="row">
         <div>
             <p>Параметры функции:<br>
-                - количество групп
-                - максимальный индекс оттока
-                - максимальный индекс стабильности потребления
-                - максимальная доля SKU (в процентах)
+                - количество групп<br>
+                - максимальный индекс оттока<br>
+                - максимальный индекс стабильности потребления<br>
+                - максимальная доля SKU (в процентах)<br>
                 - допустимая доля маржи (в процентах)</p>
         </div>
     </div>

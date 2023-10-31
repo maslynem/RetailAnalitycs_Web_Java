@@ -1,16 +1,16 @@
 package ru.s21school.retailanalytics_web.controllers.operationsController;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.HttpClientErrorException;
 import ru.s21school.retailanalytics_web.controllers.operationsController.requestEntity.FrequencyOfVisitRequest;
 import ru.s21school.retailanalytics_web.controllers.operationsController.requestEntity.MarginGrowthOfferRequest;
 import ru.s21school.retailanalytics_web.controllers.operationsController.requestEntity.PersonalOfferByDatesRequest;
 import ru.s21school.retailanalytics_web.controllers.operationsController.requestEntity.PersonalOfferByTransactionsNumberRequest;
+import ru.s21school.retailanalytics_web.dto.ErrorDto;
 import ru.s21school.retailanalytics_web.dto.functionResultDto.FrequencyOfVisitDto;
 import ru.s21school.retailanalytics_web.dto.functionResultDto.MarginGrowthOfferDto;
 import ru.s21school.retailanalytics_web.dto.functionResultDto.PersonalOfferDto;
@@ -21,12 +21,28 @@ import java.util.List;
 @Controller
 @RequestMapping("functions")
 @RequiredArgsConstructor
+@Slf4j
 public class FunctionController {
 
     private final FunctionsService functionsService;
 
+    @ExceptionHandler(HttpClientErrorException.class)
+    public String handleSQLGrammarException(HttpClientErrorException exception, Model model) {
+        ErrorDto errorDto = exception.getResponseBodyAs(ErrorDto.class);
+        log.warn("handle exception: HttpClientErrorException. Code: {}. Message: {}", errorDto.getCode(), errorDto.getMessages().toString());
+        model.addAttribute("errors", errorDto.getMessages());
+        return "functions/functions";
+    }
+
     @GetMapping
     public String getFunctionsPage() {
+        return "functions/functions";
+    }
+
+    @PostMapping("update")
+    public String updateDataAnalysis(Model model) {
+        functionsService.updateDataAnalysis();
+        model.addAttribute("updated", "SUCCESS");
         return "functions/functions";
     }
 

@@ -28,6 +28,11 @@ public class FunctionsService {
 
     private final RestTemplate restTemplate;
 
+
+    public void updateDataAnalysis() {
+        restTemplate.postForLocation(FUNCTIONS_API_URL + "update", null);
+    }
+
     public List<FrequencyOfVisitDto> getFrequencyOfVisit(FrequencyOfVisitRequest request) throws HttpClientErrorException {
         HttpEntity<FrequencyOfVisitRequest> httpEntity = new HttpEntity<>(request);
         ResponseEntity<List<FrequencyOfVisitDto>> response =

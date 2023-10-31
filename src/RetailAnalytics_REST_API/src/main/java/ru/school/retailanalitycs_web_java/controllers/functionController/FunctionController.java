@@ -30,7 +30,7 @@ public class FunctionController {
     private final MarginGrowthOfferMapper marginGrowthOfferMapper;
     private final MarginGroupOfferService marginGroupOfferService;
 
-    @GetMapping("update")
+    @PostMapping("update")
     @ResponseStatus(OK)
     public void updateAnalysisFormation() {
         functionsService.updateAnalysisFormation();
@@ -54,6 +54,5 @@ public class FunctionController {
     @PostMapping("margin-growth-offer")
     public List<MarginGrowthOfferDto> getMarginGrowthOffer(@Valid @RequestBody MarginGrowthOfferRequest request) {
         return marginGroupOfferService.getMarginGroup(request).stream().map(marginGrowthOfferMapper::toDto).toList();
-//        return functionsService.getMarginGrowthOffer(request).stream().map(marginGrowthOfferMapper::toDto).toList();
     }
 }
