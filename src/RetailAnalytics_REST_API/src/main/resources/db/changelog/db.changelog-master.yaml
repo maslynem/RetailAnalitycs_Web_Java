@@ -19,5 +19,5 @@ databaseChangeLog:
       file: db/migrations/db.changelog-7.0-addFrequencyOfVisitsProcedure.sql
   - include:
       file: db/migrations/db.changelog-8.0-addPersonalOfferProcedure.sql
-  - include:
-      file: db/migrations/db.changelog-9.0-addMarginGrowthOffersProcedure.sql
+#  - include:
+#      file: db/migrations/db.changelog-9.0-addMarginGrowthOffersProcedure.sql

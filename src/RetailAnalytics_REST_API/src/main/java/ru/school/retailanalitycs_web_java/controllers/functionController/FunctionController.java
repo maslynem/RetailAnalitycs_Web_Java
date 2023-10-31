@@ -29,7 +29,6 @@ public class FunctionController {
     private final FrequencyOfVisitMapper frequencyOfVisitMapper;
     private final PersonalOfferMapper personalOfferMapper;
     private final MarginGrowthOfferMapper marginGrowthOfferMapper;
-    //todo
     private final MarginGroupOfferService marginGroupOfferService;
 
     @PostMapping("frequency-of-visits")
