@@ -8,16 +8,20 @@ databaseChangeLog:
   - include:
       file: db/migrations/db.changelog-10.0-updateSequences.sql
   - include:
-      file: db/migrations/db.changelog-3.0-addCustomerView.sql
+      file: db/migrations/db.changelog-3.0-addFunctionGetTotalSegment.sql
+  - include:
+      file: db/migrations/db.changelog-3.1-addCustomerView.sql
   - include:
       file: db/migrations/db.changelog-4.0-addPeriodsView.sql
   - include:
       file: db/migrations/db.changelog-5.0-addPurchaseHistoryView.sql
   - include:
-      file: db/migrations/db.changelog-6.0-addGroupsView.sql
+      file: db/migrations/db.changelog-6.0-addFunctionGetMargin.sql
   - include:
-      file: db/migrations/db.changelog-7.0-addFrequencyOfVisitsProcedure.sql
+      file: db/migrations/db.changelog-6.1-addGroupsView.sql
+  - include:
+      file: db/migrations/db.changelog-7.0-addViewsForFrequencyOfVisitsProcedure.sql
+  - include:
+      file: db/migrations/db.changelog-7.1-addFrequencyOfVisitsProcedure.sql
   - include:
       file: db/migrations/db.changelog-8.0-addPersonalOfferProcedure.sql
-#  - include:
-#      file: db/migrations/db.changelog-9.0-addMarginGrowthOffersProcedure.sql

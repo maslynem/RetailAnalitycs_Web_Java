@@ -2,10 +2,7 @@ package ru.school.retailanalitycs_web_java.controllers.functionController;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ru.school.retailanalitycs_web_java.controllers.functionController.requestEntity.FrequencyOfVisitRequest;
 import ru.school.retailanalitycs_web_java.controllers.functionController.requestEntity.MarginGrowthOfferRequest;
 import ru.school.retailanalitycs_web_java.controllers.functionController.requestEntity.PersonalOfferByDatesRequest;
@@ -21,6 +18,8 @@ import ru.school.retailanalitycs_web_java.services.MarginGroupOfferService;
 
 import java.util.List;
 
+import static org.springframework.http.HttpStatus.OK;
+
 @RestController
 @RequestMapping("api/v1/functions")
 @RequiredArgsConstructor
@@ -30,6 +29,12 @@ public class FunctionController {
     private final PersonalOfferMapper personalOfferMapper;
     private final MarginGrowthOfferMapper marginGrowthOfferMapper;
     private final MarginGroupOfferService marginGroupOfferService;
+
+    @GetMapping("update")
+    @ResponseStatus(OK)
+    public void updateAnalysisFormation() {
+        functionsService.updateAnalysisFormation();
+    }
 
     @PostMapping("frequency-of-visits")
     public List<FrequencyOfVisitDto> getFrequencyOfVisit(@Valid @RequestBody FrequencyOfVisitRequest request) {

@@ -1,46 +1,9 @@
 --liquibase formatted sql
 
 --changeset maslynem:1 splitStatements:false
-CREATE FUNCTION get_total_segment(segment1 VARCHAR,
-                                  segment2 VARCHAR,
-                                  segment3 VARCHAR) RETURNS INT AS
-$$
-DECLARE
-    "check"   INT;
-    frequency INT;
-    churn     INT;
-BEGIN
-    IF segment1 = 'Low' THEN
-        "check" := 0;
-    ELSIF segment1 = 'Medium' THEN
-        "check" := 9;
-    ELSIF segment1 = 'High' THEN
-        "check" := 18;
-    END IF;
-
-    IF segment2 = 'Rarely' THEN
-        frequency := 0;
-    ELSIF segment2 = 'Occasionally' THEN
-        frequency := 3;
-    ELSIF segment2 = 'Often' THEN
-        frequency := 6;
-    END IF;
-
-    IF segment3 = 'Low' THEN
-        churn := 1;
-    ELSIF segment3 = 'Medium' THEN
-        churn := 2;
-    ELSIF segment3 = 'High' THEN
-        churn := 3;
-    END IF;
-
-    RETURN churn + frequency + "check";
-END;
-$$
-    LANGUAGE plpgsql;
-
+DROP MATERIALIZED VIEW IF EXISTS customers;
+DROP INDEX IF EXISTS customer_view_idx;
 CREATE MATERIALIZED VIEW customers AS
-    -- Получаем средний чек клиента и нумеруем от большего к меньшему
 WITH customer_avg_check AS (SELECT p.customer_id,
                                    avg(transaction_summ)                                   AS Customer_Average_Check,
                                    row_number() over (order by avg(transaction_summ) desc) AS counter
@@ -49,7 +12,6 @@ WITH customer_avg_check AS (SELECT p.customer_id,
                                      LEFT JOIN transactions t on c.customer_card_id = t.customer_card_id
                             WHERE transaction_summ IS NOT NULL
                             GROUP BY p.customer_id),
-     -- Находим сегмент для среднего чека
      check_segment_info AS (SELECT c.customer_id,
                                    CASE
                                        WHEN c.counter * 100.0 / (SELECT max(counter) FROM customer_avg_check) <= 10
@@ -59,7 +21,6 @@ WITH customer_avg_check AS (SELECT p.customer_id,
                                        ELSE 'Low'
                                        END AS Customer_Average_Check_Segment
                             FROM customer_avg_check AS c),
-     -- Находим Customer_Frequency, нумеруем от меньшего к большему, находим Customer_Inactive_Period
      customer_time_info AS (SELECT p.customer_id,
                                    (EXTRACT(EPOCH FROM
                                             (max(transaction_datetime) - min(transaction_datetime)) /
@@ -113,7 +74,6 @@ WITH customer_avg_check AS (SELECT p.customer_id,
                                                 Customer_Churn_Segment) AS Customer_Segment
                        FROM frequency_churn_segment_info AS f
                                 LEFT JOIN check_segment_info c ON c.customer_id = f.customer_id),
-     -- Получаем в каких магазинах и сколько раз закупался клиент и дату последнего посещения
      customers_shop AS (SELECT p.customer_id,
                                t.transaction_store_id,
                                max(t.transaction_datetime)   AS last_tr,
@@ -123,8 +83,6 @@ WITH customer_avg_check AS (SELECT p.customer_id,
                                  LEFT JOIN transactions t on c.customer_card_id = t.customer_card_id
                         WHERE t.transaction_summ IS NOT NULL
                         GROUP BY p.customer_id, t.transaction_store_id),
-     -- Получаем информацию в каком магазине и когда закупался клиент, каждая строка для клиента пронумерована (каждая группа отсортирована по убыванию даты
-     -- Затем из этой информации для каждой группы оставляем по 3 первых записей и проверяем одинаковый ли там магазин (остальные отсеиваются)
      main_store_case1 AS (SELECT t.customer_id, t.transaction_store_id as Customer_Primary_Store
                           FROM (SELECT pd.customer_id,
                                        td.transaction_datetime,
@@ -138,16 +96,12 @@ WITH customer_avg_check AS (SELECT p.customer_id,
                           WHERE t.flag BETWEEN 1 AND 3
                           GROUP BY t.customer_id, t.transaction_store_id
                           HAVING count(t.transaction_store_id) = 3),
-     -- В таблице customers_shop группируем по клиенту, сортируем вначале по кол-ву транзакций, затем по дате и нумеруем
-     -- Так запись под №1 будет соответствовать наибольшему числу транзакций у клиента и при этом транзакция была последней
-     -- Получаем эти данные
      main_store_case2 AS (SELECT t.customer_id, t.transaction_store_id AS Customer_Primary_Store
                           FROM (SELECT *,
                                        row_number()
                                        over (partition by customer_id ORDER BY transaction_count DESC, last_tr DESC) AS flag
                                 FROM customers_shop) AS t
                           WHERE t.flag = 1),
-     -- Получаем данные из main_store_case2 за исключением клиентов указанных в main_store_case1 и добавляем клиентов из main_store_case1
      main_store AS (SELECT *
                     FROM main_store_case2
                     EXCEPT
