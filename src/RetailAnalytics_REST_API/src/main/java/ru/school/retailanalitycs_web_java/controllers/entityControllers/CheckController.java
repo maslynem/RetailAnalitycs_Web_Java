@@ -67,6 +67,17 @@ public class CheckController {
         return checkMapper.toDto(save);
     }
 
+    @PutMapping(value = "/{trId}/{skuId}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public CheckReadDto update(@PathVariable Long trId,
+                               @PathVariable Long skuId,
+                               @Valid @RequestBody CheckCreateDto dto) {
+        CheckId checkId = getId(trId, skuId);
+        Check check = checkService.findById(checkId).orElseThrow(() -> new CheckNotFoundException(checkId));
+        check = checkMapper.merge(check, dto);
+        Check save = checkService.update(check);
+        return checkMapper.toDto(save);
+    }
+
     @DeleteMapping("/{trId}/{skuId}")
     public void delete(@PathVariable Long trId,
                        @PathVariable Long skuId) {

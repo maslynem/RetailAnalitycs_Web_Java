@@ -3,7 +3,6 @@ package ru.school.retailanalitycs_web_java.mapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
-import org.mapstruct.NullValuePropertyMappingStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
 import ru.school.retailanalitycs_web_java.dto.entityDto.cardDto.CardCreateDto;
 import ru.school.retailanalitycs_web_java.dto.entityDto.cardDto.CardReadDto;
@@ -25,7 +24,7 @@ public abstract class CardMapper {
     public abstract Card toEntity(CardCreateDto dto);
 
     @Mapping(target = "transactions", ignore = true)
-    @Mapping(target = "id", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    @Mapping(target = "id", ignore = true)
     public abstract Card merge(@MappingTarget Card card, CardCreateDto dto);
 
     public Card toDtoById(Long cardID) {

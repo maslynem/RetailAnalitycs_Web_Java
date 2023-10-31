@@ -23,4 +23,8 @@ public class CheckService extends BaseService<Check, CheckId> {
                 });
         return super.save(entity);
     }
+
+    public Check update(Check entity) {
+        return super.save(entity);
+    }
 }

@@ -115,6 +115,70 @@ class CheckControllerTest extends IntegrationTestBase {
     }
 
     @Test
+    void update() throws Exception {
+        CheckCreateDto checkDto = CheckCreateDto.builder()
+                .transactionId(CHECK_ID.getTransaction().getId())
+                .skuId(CHECK_ID.getSku().getId())
+                .skuAmount(1.0)
+                .skuSum(1.0)
+                .skuSumPaid(1.0)
+                .skuDiscount(1.0)
+                .build();
+
+        String requestJson = objectMapper.writeValueAsString(checkDto);
+        mockMvc.perform(put("/api/v1/checks/{trCheckId}/{skuId}", CHECK_ID.getTransaction().getId(), CHECK_ID.getSku().getId())
+                        .contentType(APPLICATION_JSON)
+                        .content(requestJson))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.transaction.id").value(checkDto.getTransactionId()))
+                .andExpect(jsonPath("$.sku.id").value(checkDto.getSkuId()))
+                .andExpect(jsonPath("$.skuAmount").value(checkDto.getSkuAmount()))
+                .andExpect(jsonPath("$.skuSum").value(checkDto.getSkuSum()))
+                .andExpect(jsonPath("$.skuSumPaid").value(checkDto.getSkuSumPaid()))
+                .andExpect(jsonPath("$.skuDiscount").value(checkDto.getSkuDiscount()));
+    }
+
+    @Test
+    void updateNotExistingTransaction_ShouldReturnNotFound() throws Exception {
+        CheckCreateDto checkDto = CheckCreateDto.builder()
+                .transactionId(NOT_EXISTING_TRANSACTION_ID)
+                .skuId(SKU_ID)
+                .skuAmount(1.0)
+                .skuSum(1.0)
+                .skuSumPaid(1.0)
+                .skuDiscount(1.0)
+                .build();
+
+        String requestJson = objectMapper.writeValueAsString(checkDto);
+        mockMvc.perform(put("/api/v1/checks/{trCheckId}/{skuId}", NOT_EXISTING_TRANSACTION_ID, SKU_ID)
+                        .contentType(APPLICATION_JSON)
+                        .content(requestJson))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.code").value(NOT_FOUND.name()))
+                .andExpect(jsonPath("$.messages").exists());
+    }
+
+    @Test
+    void updateNotExistingSku_ShouldReturnNotFound() throws Exception {
+        CheckCreateDto checkDto = CheckCreateDto.builder()
+                .transactionId(NOT_EXISTING_TRANSACTION_ID)
+                .skuId(SKU_ID)
+                .skuAmount(1.0)
+                .skuSum(1.0)
+                .skuSumPaid(1.0)
+                .skuDiscount(1.0)
+                .build();
+
+        String requestJson = objectMapper.writeValueAsString(checkDto);
+        mockMvc.perform(put("/api/v1/checks/{trCheckId}/{skuId}", TRANSACTION_ID, NOT_EXISTING_SKU_ID)
+                        .contentType(APPLICATION_JSON)
+                        .content(requestJson))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.code").value(NOT_FOUND.name()))
+                .andExpect(jsonPath("$.messages").exists());
+    }
+
+    @Test
     void create() throws Exception {
         CheckCreateDto checkDto = CheckCreateDto.builder()
                 .transactionId(TRANSACTION_ID)
