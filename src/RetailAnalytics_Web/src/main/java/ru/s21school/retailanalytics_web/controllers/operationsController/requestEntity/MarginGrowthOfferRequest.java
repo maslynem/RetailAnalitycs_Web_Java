@@ -1,4 +1,4 @@
-package ru.s21school.retailanalytics_web.controllers.functionsController.requestEntity;
+package ru.s21school.retailanalytics_web.controllers.operationsController.requestEntity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

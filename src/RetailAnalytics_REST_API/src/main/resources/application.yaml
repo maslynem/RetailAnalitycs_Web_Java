@@ -14,5 +14,6 @@ spring:
           auto: validate
         format_sql: false
         show_sql: false
+    open-in-view: false
 
 server.port: ${SERVER_PORT:8081}

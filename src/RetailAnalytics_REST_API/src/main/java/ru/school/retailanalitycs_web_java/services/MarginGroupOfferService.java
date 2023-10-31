@@ -1,6 +1,7 @@
 package ru.school.retailanalitycs_web_java.services;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.school.retailanalitycs_web_java.controllers.functionController.requestEntity.MarginGrowthOfferRequest;
@@ -21,6 +22,7 @@ import java.util.Map.Entry;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class MarginGroupOfferService {
     private final GroupViewService groupViewService;
     private final StoreService storeService;
@@ -29,6 +31,7 @@ public class MarginGroupOfferService {
 
     @Transactional(readOnly = true)
     public List<MarginGrowthOffer> getMarginGroup(MarginGrowthOfferRequest request) {
+        log.info("getMarginGroup called. {}", request);
         List<MarginGrowthOffer> marginGrowthOffers = new ArrayList<>();
 
         // Выбрали группы, где Индекс оттока по группе не более заданного пользователем значения и Индекс стабильности потребления группы составляет менее заданного пользователем значения.
@@ -73,6 +76,7 @@ public class MarginGroupOfferService {
                 }
             }
         }
+        log.info("getMarginGroup executed. Result set size: {}", marginGrowthOffers.size());
         return marginGrowthOffers;
     }
 

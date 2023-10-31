@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Frequency Of Visits</title>
+    <link href="/css/clearing.css" rel="stylesheet">
+
+    <link crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" rel="stylesheet">
+
+    <link href="https://cdn-app.sberdevices.ru/shared-static/0.0.0/styles/SBSansDisplay.0.1.0.css" rel="stylesheet"/>
+    <link href="/css/header.css" rel="stylesheet">
+    <link href="/css/table.css" rel="stylesheet">
+    <link href="/css/error_msg.css" rel="stylesheet">
+</head>
+<body>
+<header th:insert="~{header :: header}"></header>
+
+<div class="container w-80 p-2">
+    <form action="/query" method="post">
+        <div class="mb-2">
+            <label class="form-label" for="query">SQL запрос:</label>
+            <textarea class="form-control" id="query" name="query" required="required"
+                      rows="3">SELECT * FROM CUSTOMERS;</textarea>
+        </div>
+        <input class="btn btn btn-primary btn-sm" onclick="return confirm_execute()" type="submit" value="Выполнить"/>
+    </form>
+    <div th:if="${errors}">
+        <p class="error_message" th:each="error : ${errors}" th:text="${error}">Error message</p>
+    </div>
+
+    <div style="max-height: 900px; overflow-x: auto;" th:if="${entities}">
+        <table class="table table-bordered table-striped table-href">
+            <caption></caption>
+            <thead class="table-dark">
+            <tr>
+                <td th:each="entity : ${entities.get(0)}"
+                    th:text="${entity.getKey()}"></td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="entitySet : ${entities}">
+                <td th:each="entity : ${entitySet.entrySet()}"
+                    th:text="${entity.getValue()}"
+                ></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>

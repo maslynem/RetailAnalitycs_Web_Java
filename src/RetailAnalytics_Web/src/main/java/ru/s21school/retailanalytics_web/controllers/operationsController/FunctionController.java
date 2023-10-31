@@ -1,4 +1,4 @@
-package ru.s21school.retailanalytics_web.controllers.functionsController;
+package ru.s21school.retailanalytics_web.controllers.operationsController;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -7,10 +7,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import ru.s21school.retailanalytics_web.controllers.functionsController.requestEntity.FrequencyOfVisitRequest;
-import ru.s21school.retailanalytics_web.controllers.functionsController.requestEntity.MarginGrowthOfferRequest;
-import ru.s21school.retailanalytics_web.controllers.functionsController.requestEntity.PersonalOfferByDatesRequest;
-import ru.s21school.retailanalytics_web.controllers.functionsController.requestEntity.PersonalOfferByTransactionsNumberRequest;
+import ru.s21school.retailanalytics_web.controllers.operationsController.requestEntity.FrequencyOfVisitRequest;
+import ru.s21school.retailanalytics_web.controllers.operationsController.requestEntity.MarginGrowthOfferRequest;
+import ru.s21school.retailanalytics_web.controllers.operationsController.requestEntity.PersonalOfferByDatesRequest;
+import ru.s21school.retailanalytics_web.controllers.operationsController.requestEntity.PersonalOfferByTransactionsNumberRequest;
 import ru.s21school.retailanalytics_web.dto.functionResultDto.FrequencyOfVisitDto;
 import ru.s21school.retailanalytics_web.dto.functionResultDto.MarginGrowthOfferDto;
 import ru.s21school.retailanalytics_web.dto.functionResultDto.PersonalOfferDto;
