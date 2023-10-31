@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -14,8 +15,31 @@ import java.util.Map;
 public class SqlQueryService {
     private final JdbcTemplate jdbcTemplate;
 
-    public List<Map<String, Object>> executeQuery(String sql) {
-        log.info("executeQuery called. SQL query: {}", sql);
+    public List<Map<String, Object>> executeQuery(String query) {
+        List<Map<String, Object>> result = null;
+        int updateResult;
+        if (query.toLowerCase().contains("select")) {
+            result = executeSelectQuery(query);
+            updateResult = result.size();
+        } else {
+            updateResult = executeUpdateQuery(query);
+        }
+        if (result == null) {
+            result = new ArrayList<>();
+            result.add(Map.of("updateCount", updateResult));
+        }
+        return result;
+    }
+
+    private List<Map<String, Object>> executeSelectQuery(String sql) {
+        log.info("executeSelectQuery called. SQL query: {}", sql);
         return jdbcTemplate.queryForList(sql);
     }
+
+    private int executeUpdateQuery(String sql) {
+        log.info("executeUpdateQuery called. SQL query: {}", sql);
+        return jdbcTemplate.update(sql);
+    }
+
+
 }
