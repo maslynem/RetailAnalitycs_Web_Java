@@ -1,7 +1,6 @@
 --liquibase formatted sql
 
 --changeset maslynem:1 splitStatements:false
-DROP MATERIALIZED VIEW IF EXISTS customers;
 DROP INDEX IF EXISTS customer_view_idx;
 CREATE MATERIALIZED VIEW customers AS
 WITH customer_avg_check AS (SELECT p.customer_id,

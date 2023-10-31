@@ -1,7 +1,6 @@
 --liquibase formatted sql
 
 --changeset maslynem:1 splitStatements:false
-DROP MATERIALIZED VIEW IF EXISTS groups;
 DROP INDEX IF EXISTS periods_view_idx;
 CREATE MATERIALIZED VIEW groups AS
 WITH new_purchase_history AS (SELECT cards.Customer_ID                 AS Customer_ID,

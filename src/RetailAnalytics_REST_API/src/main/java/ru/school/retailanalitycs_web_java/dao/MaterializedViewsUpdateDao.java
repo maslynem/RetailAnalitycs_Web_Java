@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ResourceUtils;
+import ru.school.retailanalitycs_web_java.exceptions.LoadSqlFileException;
 
 import java.io.File;
 import java.nio.file.Files;
@@ -14,6 +15,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Slf4j
 public class MaterializedViewsUpdateDao {
+    private static final String DROP_ALL_VIEWS_FILE = "classpath:db/dropAllMaterializeViews.sql";
     private static final String CUSTOMER_VIEW_FILE = "classpath:db/migrations/db.changelog-3.1-addCustomerView.sql";
     private static final String PERIODS_VIEW_FILE = "classpath:db/migrations/db.changelog-4.0-addPeriodsView.sql";
     private static final String PURCHASE_HISTORY_VIEW_FILE = "classpath:db/migrations/db.changelog-5.0-addPurchaseHistoryView.sql";
@@ -23,6 +25,7 @@ public class MaterializedViewsUpdateDao {
     private final JdbcTemplate jdbcTemplate;
 
     public void updateMaterializeViews() {
+        jdbcTemplate.update(loadQuery(DROP_ALL_VIEWS_FILE));
         jdbcTemplate.update(loadQuery(CUSTOMER_VIEW_FILE));
         jdbcTemplate.update(loadQuery(PERIODS_VIEW_FILE));
         jdbcTemplate.update(loadQuery(PURCHASE_HISTORY_VIEW_FILE));
@@ -32,14 +35,14 @@ public class MaterializedViewsUpdateDao {
 
     private String loadQuery(String path) {
         try {
-            File file = ResourceUtils.getFile(CUSTOMER_VIEW_FILE);
+            File file = ResourceUtils.getFile(path);
             return Files.readAllLines(file.toPath())
                     .stream()
                     .filter(s -> !s.startsWith("--"))
                     .collect(Collectors.joining(" "));
         } catch (Exception e) {
             log.error("Failed to load query {}: {}", path, e.getMessage(), e);
-            throw new RuntimeException();
+            throw new LoadSqlFileException(String.format("Failed to load query. Message: [%s]", e.getMessage()));
         }
     }
 }
