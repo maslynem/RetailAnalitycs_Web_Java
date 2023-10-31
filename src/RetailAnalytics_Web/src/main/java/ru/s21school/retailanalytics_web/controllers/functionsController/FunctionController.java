@@ -70,6 +70,6 @@ public class FunctionController {
     public String getMarginGrowthOffer(@ModelAttribute MarginGrowthOfferRequest request, Model model) {
         List<MarginGrowthOfferDto> marginGrowthOffer = functionsService.getMarginGrowthOffer(request);
         model.addAttribute("entities", marginGrowthOffer);
-        return "functions/personalOfferGrowth";
+        return "functions/marginGrowthOffer";
     }
 }

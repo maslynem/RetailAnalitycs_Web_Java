@@ -48,9 +48,6 @@
                     Transaction Id
                 </th>
                 <th class="text-center">
-                    Customer full name
-                </th>
-                <th class="text-center">
                     Sku name and group
                 </th>
                 <th class="text-center">
@@ -71,7 +68,6 @@
             <tbody>
             <tr th:each="entity : ${entities}">
                 <td th:text="${entity.getTransaction().getId()}"></td>
-                <td th:text="${entity.getTransaction().getCustomerCard().getCustomer().getCustomerName()} + ' ' + ${entity.getTransaction().getCustomerCard().getCustomer().getCustomerSurname()}"></td>
                 <td th:text="${entity.getSku().getSkuName()} + ' ' + ${entity.getSku().getSkuGroup().getGroupName()}"></td>
                 <td th:text="${entity.getSkuAmount()}"></td>
                 <td th:text="${entity.getSkuSum()}"></td>

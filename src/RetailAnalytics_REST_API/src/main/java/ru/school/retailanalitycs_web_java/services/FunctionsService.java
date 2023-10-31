@@ -4,14 +4,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.school.retailanalitycs_web_java.controllers.functionController.requestEntity.FrequencyOfVisitRequest;
-import ru.school.retailanalitycs_web_java.controllers.functionController.requestEntity.MarginGrowthOfferRequest;
 import ru.school.retailanalitycs_web_java.controllers.functionController.requestEntity.PersonalOfferByDatesRequest;
 import ru.school.retailanalitycs_web_java.controllers.functionController.requestEntity.PersonalOfferByTransactionsNumberRequest;
 import ru.school.retailanalitycs_web_java.dao.FrequencyOfVisitProcedure;
-import ru.school.retailanalitycs_web_java.dao.MarginGrowthOfferProcedure;
 import ru.school.retailanalitycs_web_java.dao.PersonalOfferGrowthProcedure;
 import ru.school.retailanalitycs_web_java.entities.functionResults.FrequencyOfVisit;
-import ru.school.retailanalitycs_web_java.entities.functionResults.MarginGrowthOffer;
 import ru.school.retailanalitycs_web_java.entities.functionResults.PersonalOffer;
 
 import java.util.List;
@@ -22,7 +19,6 @@ import java.util.List;
 public class FunctionsService {
     private final FrequencyOfVisitProcedure frequencyOfVisitProcedure;
     private final PersonalOfferGrowthProcedure personalOfferGrowthProcedure;
-    private final MarginGrowthOfferProcedure marginGrowthOfferProcedure;
 
     public List<FrequencyOfVisit> getFrequencyOfVisit(FrequencyOfVisitRequest request) {
         return frequencyOfVisitProcedure.getFrequencyOfVisit(
@@ -51,15 +47,6 @@ public class FunctionsService {
                 request.getMaxChurnIndex(),
                 request.getMaxShareOfTransactionsWithDiscount(),
                 request.getAllowableShareOfMargin());
-    }
-
-    public List<MarginGrowthOffer> getMarginGrowthOffer(MarginGrowthOfferRequest request) {
-        return marginGrowthOfferProcedure.getFrequencyOfVisit(
-                request.getGroupsNumber(),
-                request.getMaxChurnIndex(),
-                request.getMaxStabilityIndex(),
-                request.getMaxSkuShare(),
-                request.getAllowableMarginShare());
     }
 
 }
