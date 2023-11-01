@@ -66,10 +66,9 @@ public class SkuGroupController {
 
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     public SkuGroupDto update(@PathVariable Long id, @Valid @RequestBody SkuGroupDto skuGroupDto) {
-        SkuGroup skuGroup = skuGroupService.findById(id).orElseThrow(() -> new SkuGroupNotFoundException(id));
-        skuGroup = skuGroupMapper.merge(skuGroup, skuGroupDto);
-        SkuGroup save = skuGroupService.save(skuGroup);
-        return skuGroupMapper.toDto(save);
+        SkuGroup skuGroup = skuGroupMapper.toEntity(skuGroupDto);
+        SkuGroup updated = skuGroupService.update(id, skuGroup);
+        return skuGroupMapper.toDto(updated);
     }
 
     @DeleteMapping("/{id}")

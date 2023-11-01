@@ -96,6 +96,76 @@ class StoreControllerTest extends IntegrationTestBase {
     }
 
     @Test
+    void update() throws Exception {
+        StoreCreateDto storeDto = StoreCreateDto.builder()
+                .transactionStoreId(STORE_ID.getTransactionStoreId())
+                .sku(STORE_ID.getSku().getId())
+                .skuPurchasePrice(0.1)
+                .skuRetailPrice(0.1).build();
+
+        String requestJson = objectMapper.writeValueAsString(storeDto);
+        mockMvc.perform(put("/api/v1/stores/{trStoreId}/{skuId}", STORE_ID.getTransactionStoreId(), STORE_ID.getSku().getId())
+                        .contentType(APPLICATION_JSON)
+                        .content(requestJson))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.transactionStoreId").value(STORE_ID.getTransactionStoreId()))
+                .andExpect(jsonPath("$.sku.id").value(STORE_ID.getSku().getId()))
+                .andExpect(jsonPath("$.skuPurchasePrice").value(storeDto.getSkuPurchasePrice()))
+                .andExpect(jsonPath("$.skuRetailPrice").value(storeDto.getSkuRetailPrice()));
+    }
+
+    @Test
+    void updateWithNotExistingStore_shouldReturnNotFound() throws Exception {
+        StoreCreateDto storeDto = StoreCreateDto.builder()
+                .transactionStoreId(STORE_ID.getTransactionStoreId())
+                .sku(STORE_ID.getSku().getId())
+                .skuPurchasePrice(0.1)
+                .skuRetailPrice(0.1).build();
+
+        String requestJson = objectMapper.writeValueAsString(storeDto);
+        mockMvc.perform(put("/api/v1/stores/{trStoreId}/{skuId}", NOT_EXISTING_STORE_ID.getTransactionStoreId(), NOT_EXISTING_STORE_ID.getSku().getId())
+                        .contentType(APPLICATION_JSON)
+                        .content(requestJson))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.code").value(NOT_FOUND.name()))
+                .andExpect(jsonPath("$.messages").exists());
+    }
+
+    @Test
+    void updateWithNotExistingSkuId_shouldReturnNotFound() throws Exception {
+        StoreCreateDto storeDto = StoreCreateDto.builder()
+                .transactionStoreId(STORE_ID.getTransactionStoreId())
+                .sku(STORE_ID.getSku().getId())
+                .skuPurchasePrice(0.1)
+                .skuRetailPrice(0.1).build();
+
+        String requestJson = objectMapper.writeValueAsString(storeDto);
+        mockMvc.perform(put("/api/v1/stores/{trStoreId}/{skuId}", STORE_ID.getTransactionStoreId(), NOT_EXISTING_SKU_ID)
+                        .contentType(APPLICATION_JSON)
+                        .content(requestJson))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.code").value(NOT_FOUND.name()))
+                .andExpect(jsonPath("$.messages").exists());
+    }
+
+    @Test
+    void updateWithNotExistingTransactionStoreId_shouldReturnNotFound() throws Exception {
+        StoreCreateDto storeDto = StoreCreateDto.builder()
+                .transactionStoreId(STORE_ID.getTransactionStoreId())
+                .sku(STORE_ID.getSku().getId())
+                .skuPurchasePrice(0.1)
+                .skuRetailPrice(0.1).build();
+
+        String requestJson = objectMapper.writeValueAsString(storeDto);
+        mockMvc.perform(put("/api/v1/stores/{trStoreId}/{skuId}", NOT_EXISTING_STORE_ID.getTransactionStoreId(), STORE_ID.getSku().getId())
+                        .contentType(APPLICATION_JSON)
+                        .content(requestJson))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.code").value(NOT_FOUND.name()))
+                .andExpect(jsonPath("$.messages").exists());
+    }
+
+    @Test
     void create() throws Exception {
         StoreCreateDto storeDto = StoreCreateDto.builder()
                 .transactionStoreId(TRANSACTION_STORE_ID)

@@ -66,6 +66,16 @@ public class StoreController {
         return storeMapper.toDto(save);
     }
 
+    @PutMapping(value = "/{trStoreId}/{skuId}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public StoreReadDto update(@PathVariable Long trStoreId,
+                               @PathVariable Long skuId,
+                               @Valid @RequestBody StoreCreateDto dto) {
+        StoreId checkId = getId(trStoreId, skuId);
+        Store entity = storeMapper.toEntity(dto);
+        Store updated = storeService.update(checkId, entity);
+        return storeMapper.toDto(updated);
+    }
+
     @DeleteMapping("/{trStoreId}/{skuId}")
     public void delete(@PathVariable Long trStoreId,
                        @PathVariable Long skuId) {

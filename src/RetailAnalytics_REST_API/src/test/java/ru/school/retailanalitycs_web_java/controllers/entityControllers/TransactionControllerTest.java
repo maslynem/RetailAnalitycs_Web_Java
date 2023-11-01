@@ -108,6 +108,77 @@ class TransactionControllerTest extends IntegrationTestBase {
     }
 
     @Test
+    void update() throws Exception {
+        TransactionCreateDto transactionDto = TransactionCreateDto.builder()
+                .customerCard(13L)
+                .transactionSum(1.0)
+                .transactionDatetime(LocalDateTime.now())
+                .transactionStoreId(2L)
+                .build();
+        String requestJson = objectMapper.writeValueAsString(transactionDto);
+        mockMvc.perform(put("/api/v1/transactions/" + TRANSACTION_ID)
+                        .contentType(APPLICATION_JSON)
+                        .content(requestJson))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(TRANSACTION_ID))
+                .andExpect(jsonPath("$.customerCard.id").value(transactionDto.getCustomerCard()))
+                .andExpect(jsonPath("$.transactionSum").value(transactionDto.getTransactionSum()))
+                .andExpect(jsonPath("$.transactionDatetime").exists())
+                .andExpect(jsonPath("$.transactionStoreId").value(transactionDto.getTransactionStoreId()));
+    }
+
+    @Test
+    void updateNotExistingTransaction_shouldReturnNotFound() throws Exception {
+        TransactionCreateDto transactionDto = TransactionCreateDto.builder()
+                .customerCard(13L)
+                .transactionSum(1.0)
+                .transactionDatetime(LocalDateTime.now())
+                .transactionStoreId(2L)
+                .build();
+        String requestJson = objectMapper.writeValueAsString(transactionDto);
+        mockMvc.perform(put("/api/v1/transactions/" + NOT_EXISTING_TRANSACTION_ID)
+                        .contentType(APPLICATION_JSON)
+                        .content(requestJson))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.code").value(NOT_FOUND.name()))
+                .andExpect(jsonPath("$.messages").exists());
+    }
+
+    @Test
+    void updateWithNotExistingStoreID_shouldReturnNotFound() throws Exception {
+        TransactionCreateDto transactionDto = TransactionCreateDto.builder()
+                .customerCard(13L)
+                .transactionSum(1.0)
+                .transactionDatetime(LocalDateTime.now())
+                .transactionStoreId(NOT_EXISTING_STORE_ID)
+                .build();
+        String requestJson = objectMapper.writeValueAsString(transactionDto);
+        mockMvc.perform(put("/api/v1/transactions/" + TRANSACTION_ID)
+                        .contentType(APPLICATION_JSON)
+                        .content(requestJson))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.code").value(NOT_FOUND.name()))
+                .andExpect(jsonPath("$.messages").exists());
+    }
+
+    @Test
+    void updateWithNotExistingCustomerCard_shouldReturnNotFound() throws Exception {
+        TransactionCreateDto transactionDto = TransactionCreateDto.builder()
+                .customerCard(NOT_EXISTING_CARD_ID)
+                .transactionSum(1.0)
+                .transactionDatetime(LocalDateTime.now())
+                .transactionStoreId(2L)
+                .build();
+        String requestJson = objectMapper.writeValueAsString(transactionDto);
+        mockMvc.perform(put("/api/v1/transactions/" + TRANSACTION_ID)
+                        .contentType(APPLICATION_JSON)
+                        .content(requestJson))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.code").value(NOT_FOUND.name()))
+                .andExpect(jsonPath("$.messages").exists());
+    }
+
+    @Test
     void create() throws Exception {
         TransactionCreateDto transactionDto = TransactionCreateDto.builder()
                 .customerCard(13L)

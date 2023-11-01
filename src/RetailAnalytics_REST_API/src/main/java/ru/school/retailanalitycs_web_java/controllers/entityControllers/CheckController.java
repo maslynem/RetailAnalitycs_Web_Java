@@ -72,10 +72,9 @@ public class CheckController {
                                @PathVariable Long skuId,
                                @Valid @RequestBody CheckCreateDto dto) {
         CheckId checkId = getId(trId, skuId);
-        Check check = checkService.findById(checkId).orElseThrow(() -> new CheckNotFoundException(checkId));
-        check = checkMapper.toEntity(dto);
-        Check save = checkService.update(check);
-        return checkMapper.toDto(save);
+        Check check = checkMapper.toEntity(dto);
+        Check updated = checkService.update(checkId, check);
+        return checkMapper.toDto(updated);
     }
 
     @DeleteMapping("/{trId}/{skuId}")

@@ -1,5 +1,6 @@
 package ru.school.retailanalitycs_web_java.services.entityServices;
 
+import jakarta.persistence.EntityManager;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -12,8 +13,10 @@ import java.util.Optional;
 @Transactional
 public abstract class BaseService<E, K> {
     protected final JpaRepository<E, K> repository;
+    private final EntityManager entityManager;
 
-    protected BaseService(JpaRepository<E, K> repository) {
+    protected BaseService(JpaRepository<E, K> repository, EntityManager entityManager) {
+        this.entityManager = entityManager;
         this.repository = repository;
     }
 
@@ -21,9 +24,7 @@ public abstract class BaseService<E, K> {
         return repository.save(entity);
     }
 
-    public E update(E entity) {
-        return repository.save(entity);
-    }
+    public abstract E update(K id, E entity);
 
     public void save(Iterable<E> entities) {
         repository.saveAll(entities);
@@ -47,5 +48,9 @@ public abstract class BaseService<E, K> {
     public Page<E> findAllByPage(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         return repository.findAll(pageable);
+    }
+
+    protected E merge(E entity) {
+        return entityManager.merge(entity);
     }
 }

@@ -64,10 +64,9 @@ public class SkuController {
 
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     public SkuReadDto update(@PathVariable Long id, @Valid @RequestBody SkuCreateDto skuDto) {
-        Sku card = skuService.findById(id).orElseThrow(() -> new SkuNotFoundException(id));
-        card = skuMapper.merge(card, skuDto);
-        Sku save = skuService.save(card);
-        return skuMapper.toDto(save);
+        Sku sku = skuMapper.toEntity(skuDto);
+        Sku updated = skuService.update(id, sku);
+        return skuMapper.toDto(updated);
     }
 
     @DeleteMapping("/{id}")

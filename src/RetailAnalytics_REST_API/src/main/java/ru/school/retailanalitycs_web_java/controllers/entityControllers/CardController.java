@@ -64,10 +64,9 @@ public class CardController {
 
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     public CardReadDto update(@PathVariable Long id, @Valid @RequestBody CardCreateDto cardDto) {
-        Card card = cardService.findById(id).orElseThrow(() -> new CardNotFoundException(id));
-        card = cardMapper.merge(card, cardDto);
-        Card save = cardService.save(card);
-        return cardMapper.toReadDto(save);
+        Card card = cardMapper.toEntity(cardDto);
+        Card updated = cardService.update(id, card);
+        return cardMapper.toReadDto(updated);
     }
 
     @DeleteMapping("/{id}")

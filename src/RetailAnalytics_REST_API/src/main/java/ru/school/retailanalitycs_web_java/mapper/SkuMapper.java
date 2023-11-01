@@ -2,7 +2,6 @@ package ru.school.retailanalitycs_web_java.mapper;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
 import org.springframework.beans.factory.annotation.Autowired;
 import ru.school.retailanalitycs_web_java.dto.entityDto.skuDto.SkuCreateDto;
 import ru.school.retailanalitycs_web_java.dto.entityDto.skuDto.SkuReadDto;
@@ -31,6 +30,4 @@ public abstract class SkuMapper {
         return value.getId();
     }
 
-    @Mapping(target = "id", ignore = true)
-    public abstract Sku merge(@MappingTarget Sku card, SkuCreateDto skuDto);
 }

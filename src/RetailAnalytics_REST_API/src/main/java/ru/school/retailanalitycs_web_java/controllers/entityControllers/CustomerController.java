@@ -66,10 +66,9 @@ public class CustomerController {
 
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     public CustomerDto update(@PathVariable Long id, @Valid @RequestBody CustomerDto customerDto) {
-        Customer customer = customerService.findById(id).orElseThrow(() -> new CustomerNotFoundException(id));
-        customer = customerMapper.merge(customer, customerDto);
-        Customer save = customerService.save(customer);
-        return customerMapper.toDto(save);
+        Customer customer = customerMapper.toEntity(customerDto);
+        Customer updated = customerService.update(id, customer);
+        return customerMapper.toDto(updated);
     }
 
     @DeleteMapping("/{id}")

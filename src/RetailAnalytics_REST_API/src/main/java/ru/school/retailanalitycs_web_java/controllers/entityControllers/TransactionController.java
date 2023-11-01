@@ -62,6 +62,13 @@ public class TransactionController {
         return transactionMapper.toDto(save);
     }
 
+    @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public TransactionReadDto update(@PathVariable Long id, @Valid @RequestBody TransactionCreateDto dto) {
+        Transaction entity = transactionMapper.toEntity(dto);
+        Transaction updated = transactionService.update(id, entity);
+        return transactionMapper.toDto(updated);
+    }
+
     @DeleteMapping("/{id}")
     public void delete(@PathVariable("id") Long id) {
         transactionService.deleteById(id);
