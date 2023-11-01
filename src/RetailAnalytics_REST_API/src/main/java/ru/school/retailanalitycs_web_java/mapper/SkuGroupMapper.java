@@ -2,6 +2,7 @@ package ru.school.retailanalitycs_web_java.mapper;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 import org.springframework.beans.factory.annotation.Autowired;
 import ru.school.retailanalitycs_web_java.dto.entityDto.skuGroupDto.SkuGroupDto;
 import ru.school.retailanalitycs_web_java.entities.tables.SkuGroup;
@@ -21,4 +22,8 @@ public abstract class SkuGroupMapper {
     public SkuGroup toDtoById(Long skuGroupId) {
         return skuGroupService.findById(skuGroupId).orElseThrow(() -> new SkuGroupNotFoundException(skuGroupId));
     }
+
+    @Mapping(target = "skus", ignore = true)
+    @Mapping(target = "id", ignore = true)
+    public abstract SkuGroup merge(@MappingTarget SkuGroup skuGroup, SkuGroupDto skuGroupDto);
 }

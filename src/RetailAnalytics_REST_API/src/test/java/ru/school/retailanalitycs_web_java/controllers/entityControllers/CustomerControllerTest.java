@@ -86,6 +86,43 @@ class CustomerControllerTest extends IntegrationTestBase {
     }
 
     @Test
+    void update() throws Exception {
+        CustomerDto customerDto = CustomerDto.builder()
+                .customerName("test")
+                .customerSurname("test")
+                .customerPrimaryEmail("test@mail.ru")
+                .customerPrimaryPhone("+74957609115").build();
+
+        String requestJson = objectMapper.writeValueAsString(customerDto);
+        mockMvc.perform(put("/api/v1/customers/" + CUSTOMER_ID)
+                        .contentType(APPLICATION_JSON)
+                        .content(requestJson))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(CUSTOMER_ID))
+                .andExpect(jsonPath("$.customerName").value(customerDto.getCustomerName()))
+                .andExpect(jsonPath("$.customerSurname").value(customerDto.getCustomerSurname()))
+                .andExpect(jsonPath("$.customerPrimaryEmail").value(customerDto.getCustomerPrimaryEmail()))
+                .andExpect(jsonPath("$.customerPrimaryPhone").value(customerDto.getCustomerPrimaryPhone()));
+    }
+
+    @Test
+    void updateNotExistingCustomer_ShouldReturnNotFound() throws Exception {
+        CustomerDto customerDto = CustomerDto.builder()
+                .customerName("test")
+                .customerSurname("test")
+                .customerPrimaryEmail("test@mail.ru")
+                .customerPrimaryPhone("+74957609115").build();
+
+        String requestJson = objectMapper.writeValueAsString(customerDto);
+        mockMvc.perform(put("/api/v1/customers/" + NOT_EXISTING_ID)
+                        .contentType(APPLICATION_JSON)
+                        .content(requestJson))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.code").value(NOT_FOUND.name()))
+                .andExpect(jsonPath("$.messages").exists());
+    }
+
+    @Test
     void create() throws Exception {
         CustomerDto customerDto = CustomerDto.builder().customerName("test").customerSurname("test").customerPrimaryEmail("test@mail.ru").customerPrimaryPhone("+74957609115").build();
 
@@ -202,41 +239,6 @@ class CustomerControllerTest extends IntegrationTestBase {
                 .andExpect(jsonPath("$.code").value(ENTITY_IS_NOT_VALID.name()))
                 .andExpect(jsonPath("$.messages").exists());
     }
-
-// todo
-//    @Test
-//    void update() throws Exception {
-//        CustomerCreateEditDto customerDto = CustomerCreateEditDto.builder()
-//                .name("test")
-//                .email("test@mail.ru")
-//                .companyName("IvanCorp")
-//                .age(19)
-//                .build();
-//        String requestJson = objectMapper.writeValueAsString(customerDto);
-//        mockMvc.perform(put("/api/v1/customers/{CUSTOMER_ID}", CUSTOMER_ID)
-//                        .contentType(APPLICATION_JSON)
-//                        .content(requestJson))
-//                .andExpect(status().isOk())
-//                .andExpect(jsonPath("$.id").value(CUSTOMER_ID))
-//                .andExpect(jsonPath("$.name").value("test"))
-//                .andExpect(jsonPath("$.email").value("test@mail.ru"))
-//                .andExpect(jsonPath("$.age").value(19));
-//    }
-// todo
-//    @Test
-//    void updateNotExistingCustomer() throws Exception {
-//        CustomerCreateEditDto customerDto = CustomerCreateEditDto.builder()
-//                .name("test")
-//                .email("test@mail.ru")
-//                .age(19)
-//                .build();
-//        String requestJson = objectMapper.writeValueAsString(customerDto);
-//        mockMvc.perform(put("/api/v1/customers/{NOT_EXISTING_ID}", NOT_EXISTING_ID)
-//                        .contentType(APPLICATION_JSON)
-//                        .content(requestJson))
-//                .andExpect(status().isNotFound())
-//                .andExpect(jsonPath("$.messages").exists());
-//    }
 
     @Test
     void deleteCustomer() throws Exception {

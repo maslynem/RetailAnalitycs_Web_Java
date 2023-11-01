@@ -83,6 +83,45 @@ class SkuControllerTest extends IntegrationTestBase {
     }
 
     @Test
+    void update() throws Exception {
+        SkuCreateDto skuDto = SkuCreateDto.builder().skuName("test").skuGroup(1L).build();
+
+        String requestJson = objectMapper.writeValueAsString(skuDto);
+        mockMvc.perform(put("/api/v1/skus/" + SKU_ID)
+                        .contentType(APPLICATION_JSON)
+                        .content(requestJson))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(SKU_ID))
+                .andExpect(jsonPath("$.skuName").value("test"))
+                .andExpect(jsonPath("$.skuGroup.id").value(CUSTOMER_ID));
+    }
+
+    @Test
+    void updateNotExistingSku_ShouldReturnNotFound() throws Exception {
+        SkuCreateDto skuDto = SkuCreateDto.builder().skuName("test").skuGroup(1L).build();
+
+        String requestJson = objectMapper.writeValueAsString(skuDto);
+        mockMvc.perform(put("/api/v1/skus/" + NOT_EXISTING_SKU_ID)
+                        .contentType(APPLICATION_JSON)
+                        .content(requestJson))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.code").value(NOT_FOUND.name()))
+                .andExpect(jsonPath("$.messages").exists());
+    }
+
+    @Test
+    void updateWithNotExistingSkuGroup_shouldReturnNotFound() throws Exception {
+        SkuCreateDto skuDto = SkuCreateDto.builder().skuName("test").skuGroup(NOT_EXISTING_SKU_GROUP_ID).build();
+        String requestJson = objectMapper.writeValueAsString(skuDto);
+        mockMvc.perform(put("/api/v1/skus/" + SKU_ID)
+                        .contentType(APPLICATION_JSON)
+                        .content(requestJson))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.code").value(NOT_FOUND.name()))
+                .andExpect(jsonPath("$.messages").exists());
+    }
+
+    @Test
     void create() throws Exception {
         SkuCreateDto skuDto = SkuCreateDto.builder().skuName("test").skuGroup(1L).build();
 

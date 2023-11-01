@@ -74,6 +74,45 @@ class SkuGroupControllerTest extends IntegrationTestBase {
     }
 
     @Test
+    void update() throws Exception {
+        SkuGroupDto skuGroupDto = SkuGroupDto.builder().groupName("test").build();
+
+        String requestJson = objectMapper.writeValueAsString(skuGroupDto);
+        mockMvc.perform(put("/api/v1/sku-groups/" + SKU_GROUP_ID)
+                        .contentType(APPLICATION_JSON)
+                        .content(requestJson))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(SKU_GROUP_ID))
+                .andExpect(jsonPath("$.groupName").value(skuGroupDto.getGroupName()));
+    }
+
+    @Test
+    void updateNotExistingSkuGroup_ShouldReturnNotFound() throws Exception {
+        SkuGroupDto skuGroupDto = SkuGroupDto.builder().groupName("test").build();
+
+        String requestJson = objectMapper.writeValueAsString(skuGroupDto);
+        mockMvc.perform(put("/api/v1/sku-groups/" + NOT_EXISTING_SKU_GROUP_ID)
+                        .contentType(APPLICATION_JSON)
+                        .content(requestJson))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.code").value(NOT_FOUND.name()))
+                .andExpect(jsonPath("$.messages").exists());
+    }
+
+    @Test
+    void updateWithExistingGroupName_shouldReturnBadRequest() throws Exception {
+        SkuGroupDto skuGroupDto = SkuGroupDto.builder().groupName(EXISTING_GROUP_NAME).build();
+
+        String requestJson = objectMapper.writeValueAsString(skuGroupDto);
+        mockMvc.perform(put("/api/v1/sku-groups/" + 2)
+                        .contentType(APPLICATION_JSON)
+                        .content(requestJson))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.code").value(DUPLICATE_VALUE.name()))
+                .andExpect(jsonPath("$.messages").exists());
+    }
+
+    @Test
     void create() throws Exception {
         SkuGroupDto skuGroupDto = SkuGroupDto.builder().groupName("test").build();
 
@@ -109,41 +148,6 @@ class SkuGroupControllerTest extends IntegrationTestBase {
                 .andExpect(jsonPath("$.code").value(DUPLICATE_VALUE.name()))
                 .andExpect(jsonPath("$.messages").exists());
     }
-
-// todo
-//    @Test
-//    void update() throws Exception {
-//        SkuGroupCreateEditDto SkuGroupDto = SkuGroupCreateEditDto.builder()
-//                .name("test")
-//                .email("test@mail.ru")
-//                .companyName("IvanCorp")
-//                .age(19)
-//                .build();
-//        String requestJson = objectMapper.writeValueAsString(SkuGroupDto);
-//        mockMvc.perform(put("/api/v1/sku-groups/{SkuGroup_ID}", SkuGroup_ID)
-//                        .contentType(APPLICATION_JSON)
-//                        .content(requestJson))
-//                .andExpect(status().isOk())
-//                .andExpect(jsonPath("$.id").value(SkuGroup_ID))
-//                .andExpect(jsonPath("$.name").value("test"))
-//                .andExpect(jsonPath("$.email").value("test@mail.ru"))
-//                .andExpect(jsonPath("$.age").value(19));
-//    }
-// todo
-//    @Test
-//    void updateNotExistingSkuGroup() throws Exception {
-//        SkuGroupCreateEditDto SkuGroupDto = SkuGroupCreateEditDto.builder()
-//                .name("test")
-//                .email("test@mail.ru")
-//                .age(19)
-//                .build();
-//        String requestJson = objectMapper.writeValueAsString(SkuGroupDto);
-//        mockMvc.perform(put("/api/v1/sku-groups/{NOT_EXISTING_ID}", NOT_EXISTING_ID)
-//                        .contentType(APPLICATION_JSON)
-//                        .content(requestJson))
-//                .andExpect(status().isNotFound())
-//                .andExpect(jsonPath("$.messages").exists());
-//    }
 
     @Test
     void deleteSkuGroup() throws Exception {

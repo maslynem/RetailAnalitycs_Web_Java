@@ -24,6 +24,7 @@ public class CheckService extends BaseService<Check, CheckId> {
         return super.save(entity);
     }
 
+    @Override
     public Check update(Check entity) {
         return super.save(entity);
     }

@@ -62,6 +62,14 @@ public class SkuController {
         return skuMapper.toDto(save);
     }
 
+    @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public SkuReadDto update(@PathVariable Long id, @Valid @RequestBody SkuCreateDto skuDto) {
+        Sku card = skuService.findById(id).orElseThrow(() -> new SkuNotFoundException(id));
+        card = skuMapper.merge(card, skuDto);
+        Sku save = skuService.save(card);
+        return skuMapper.toDto(save);
+    }
+
     @DeleteMapping("/{id}")
     public void delete(@PathVariable("id") Long id) {
         skuService.deleteById(id);

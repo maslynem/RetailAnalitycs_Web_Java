@@ -2,6 +2,7 @@ package ru.school.retailanalitycs_web_java.mapper;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 import org.springframework.beans.factory.annotation.Autowired;
 import ru.school.retailanalitycs_web_java.dto.entityDto.skuDto.SkuCreateDto;
 import ru.school.retailanalitycs_web_java.dto.entityDto.skuDto.SkuReadDto;
@@ -19,6 +20,7 @@ public abstract class SkuMapper {
     @Mapping(target = "skuGroup", source = "skuGroup.id")
     public abstract SkuCreateDto toCreateDto(Sku sku);
 
+    @Mapping(target = "id", ignore = true)
     public abstract Sku toEntity(SkuCreateDto dto);
 
     public Sku toDtoById(Long id) {
@@ -28,4 +30,7 @@ public abstract class SkuMapper {
     public Long map(Sku value) {
         return value.getId();
     }
+
+    @Mapping(target = "id", ignore = true)
+    public abstract Sku merge(@MappingTarget Sku card, SkuCreateDto skuDto);
 }

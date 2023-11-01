@@ -73,7 +73,7 @@ public class CheckController {
                                @Valid @RequestBody CheckCreateDto dto) {
         CheckId checkId = getId(trId, skuId);
         Check check = checkService.findById(checkId).orElseThrow(() -> new CheckNotFoundException(checkId));
-        check = checkMapper.merge(check, dto);
+        check = checkMapper.toEntity(dto);
         Check save = checkService.update(check);
         return checkMapper.toDto(save);
     }

@@ -64,6 +64,14 @@ public class SkuGroupController {
         return skuGroupDto;
     }
 
+    @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public SkuGroupDto update(@PathVariable Long id, @Valid @RequestBody SkuGroupDto skuGroupDto) {
+        SkuGroup skuGroup = skuGroupService.findById(id).orElseThrow(() -> new SkuGroupNotFoundException(id));
+        skuGroup = skuGroupMapper.merge(skuGroup, skuGroupDto);
+        SkuGroup save = skuGroupService.save(skuGroup);
+        return skuGroupMapper.toDto(save);
+    }
+
     @DeleteMapping("/{id}")
     public void delete(@PathVariable("id") Long id) {
         skuGroupService.deleteById(id);

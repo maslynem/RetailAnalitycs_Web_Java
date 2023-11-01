@@ -21,6 +21,10 @@ public abstract class BaseService<E, K> {
         return repository.save(entity);
     }
 
+    public E update(E entity) {
+        return repository.save(entity);
+    }
+
     public void save(Iterable<E> entities) {
         repository.saveAll(entities);
     }
