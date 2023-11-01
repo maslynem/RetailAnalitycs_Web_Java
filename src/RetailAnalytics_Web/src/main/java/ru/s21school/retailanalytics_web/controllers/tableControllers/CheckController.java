@@ -3,6 +3,7 @@ package ru.s21school.retailanalytics_web.controllers.tableControllers;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -44,12 +45,14 @@ public class CheckController {
     }
 
     @GetMapping("new")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public String getCreateCheckPage(Model model) {
         model.addAttribute("check", new CheckCreateDto());
         return "tables/checks/new";
     }
 
     @PostMapping
+    @PreAuthorize("hasAuthority('ADMIN')")
     public String createCheck(@Valid @ModelAttribute("check") CheckCreateDto check, Model model) {
         try {
             checkService.performSaveCheckRequest(check);
@@ -63,6 +66,7 @@ public class CheckController {
     }
 
     @GetMapping("{trId}/{skuId}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public String getUpdateCardPage(@PathVariable Long trId,
                                     @PathVariable Long skuId,
                                     Model model) {
@@ -72,6 +76,7 @@ public class CheckController {
     }
 
     @PutMapping("{trId}/{skuId}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public String updateCard(@PathVariable Long trId,
                              @PathVariable Long skuId,
                              @ModelAttribute("check") CheckCreateDto check,
@@ -89,6 +94,7 @@ public class CheckController {
 
 
     @DeleteMapping("/{trId}/{skuId}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public String delete(@PathVariable Long trId,
                          @PathVariable Long skuId) {
         checkService.performDeleteByIdRequest(trId, skuId);
@@ -101,6 +107,7 @@ public class CheckController {
     }
 
     @PostMapping("/import")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public String importFromCsv(@RequestParam MultipartFile file, Model model) {
         try {
             checkService.performImportFromCsv(file.getInputStream());

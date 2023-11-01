@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>Functions</title>
@@ -16,7 +16,7 @@
 <body>
 <header th:insert="~{header :: header}"></header>
 
-<div class="container">
+<div class="container" sec:authorize="hasRole('ADMIN')">
     <div class="row">
         <div class="col-15 mt-2">
             <h5>Обновить данные для формирования анализа</h5>
@@ -38,9 +38,7 @@
     </div>
 </div>
 
-<div th:if="${errors}">
-    <p class="error_message" th:each="error : ${errors}" th:text="${error}">Error message</p>
-</div>
+<div th:insert="~{errorTemplate :: error}"></div>
 
 <div class="container">
     <div class="row">

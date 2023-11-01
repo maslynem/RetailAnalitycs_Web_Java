@@ -25,9 +25,9 @@
         </div>
         <input class="btn btn btn-primary btn-sm" onclick="return confirm_execute()" type="submit" value="Выполнить"/>
     </form>
-    <div th:if="${errors}">
-        <p class="error_message" th:each="error : ${errors}" th:text="${error}">Error message</p>
-    </div>
+
+    <div th:insert="~{errorTemplate :: error}"></div>
+
 
     <div style="max-height: 900px; overflow-x: auto;" th:if="${entities}">
         <table class="table table-bordered table-striped table-href">

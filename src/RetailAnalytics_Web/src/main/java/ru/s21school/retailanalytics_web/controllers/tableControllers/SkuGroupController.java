@@ -3,6 +3,7 @@ package ru.s21school.retailanalytics_web.controllers.tableControllers;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -41,12 +42,14 @@ public class SkuGroupController {
     }
 
     @GetMapping("new")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public String getCreateSkuGroupPage(Model model) {
         model.addAttribute("skuGroup", new SkuGroupDto());
         return "tables/skuGroups/new";
     }
 
     @PostMapping
+    @PreAuthorize("hasAuthority('ADMIN')")
     public String createSkuGroup(@Valid @ModelAttribute("skuGroup") SkuGroupDto skuGroup, Model model) {
         try {
             skuGroupService.performSaveSkuGroupRequest(skuGroup);
@@ -60,6 +63,7 @@ public class SkuGroupController {
     }
 
     @GetMapping("{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public String getUpdateSkuGroupPage(@PathVariable Long id, Model model) {
         SkuGroupDto skuGroup = skuGroupService.performFindByIdRequest(id);
         model.addAttribute("skuGroup", skuGroup);
@@ -67,6 +71,7 @@ public class SkuGroupController {
     }
 
     @PutMapping("{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public String updateSkuGroup(@PathVariable Long id,
                                  @ModelAttribute("skuGroup") SkuGroupDto skuGroup,
                                  Model model) {
@@ -82,6 +87,7 @@ public class SkuGroupController {
     }
     
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public String delete(@PathVariable Long id) {
         skuGroupService.performDeleteByIdRequest(id);
         return "redirect:/data/sku-groups";
@@ -93,6 +99,7 @@ public class SkuGroupController {
     }
 
     @PostMapping("/import")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public String importFromCsv(@RequestParam MultipartFile file, Model model) {
         try {
             skuGroupService.performImportFromCsv(file.getInputStream());

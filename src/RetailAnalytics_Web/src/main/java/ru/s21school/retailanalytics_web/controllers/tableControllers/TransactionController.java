@@ -3,6 +3,7 @@ package ru.s21school.retailanalytics_web.controllers.tableControllers;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -44,12 +45,14 @@ public class TransactionController {
     }
 
     @GetMapping("new")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public String getCreateTransactionPage(Model model) {
         model.addAttribute("transaction", new TransactionCreateDto());
         return "tables/transactions/new";
     }
 
     @GetMapping("{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public String getUpdateTransactionPage(@PathVariable Long id, Model model) {
         TransactionReadDto transactionReadDto = transactionService.performFindByIdRequest(id);
         model.addAttribute("transaction", mapper.map(transactionReadDto));
@@ -57,6 +60,7 @@ public class TransactionController {
     }
 
     @PutMapping("{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public String updateTransaction(@PathVariable Long id,
                                     @ModelAttribute("transaction") TransactionCreateDto transaction,
                                     Model model) {
@@ -72,6 +76,7 @@ public class TransactionController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAuthority('ADMIN')")
     public String createTransaction(@Valid @ModelAttribute("transaction") TransactionCreateDto transaction, Model model) {
         try {
             transactionService.performSaveTransactionRequest(transaction);
@@ -85,6 +90,7 @@ public class TransactionController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public String delete(@PathVariable Long id) {
         transactionService.performDeleteByIdRequest(id);
         return "redirect:/data/transactions";
@@ -96,6 +102,7 @@ public class TransactionController {
     }
 
     @PostMapping("/import")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public String importFromCsv(@RequestParam MultipartFile file, Model model) {
         try {
             transactionService.performImportFromCsv(file.getInputStream());

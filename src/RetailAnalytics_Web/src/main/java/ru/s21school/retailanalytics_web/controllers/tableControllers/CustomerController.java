@@ -4,6 +4,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -43,12 +44,14 @@ public class CustomerController {
     }
 
     @GetMapping("new")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public String getCreateCustomerPage(Model model) {
         model.addAttribute("customer", new CustomerDto());
         return "tables/customers/new";
     }
 
     @PostMapping
+    @PreAuthorize("hasAuthority('ADMIN')")
     public String createCustomer(@Valid @ModelAttribute("customer") CustomerDto customer, Model model) {
         try {
             customerService.performSaveCustomerRequest(customer);
@@ -62,6 +65,7 @@ public class CustomerController {
     }
 
     @GetMapping("{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public String getUpdateCustomerPage(@PathVariable Long id, Model model) {
         CustomerDto customer = customerService.performFindByIdRequest(id);
         model.addAttribute("customer", customer);
@@ -69,6 +73,7 @@ public class CustomerController {
     }
 
     @PutMapping("{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public String updateCustomer(@PathVariable Long id,
                                  @ModelAttribute("customer") CustomerDto customer,
                                  Model model) {
@@ -84,6 +89,7 @@ public class CustomerController {
     }
     
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public String delete(@PathVariable Long id) {
         customerService.performDeleteByIdRequest(id);
         return "redirect:/data/customers";
@@ -95,6 +101,7 @@ public class CustomerController {
     }
 
     @PostMapping("/import")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public String importFromCsv(@RequestParam MultipartFile file, Model model) {
         try {
             customerService.performImportFromCsv(file.getInputStream());

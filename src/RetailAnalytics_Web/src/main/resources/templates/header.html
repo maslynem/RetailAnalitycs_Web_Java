@@ -1,4 +1,4 @@
-<div th:fragment="header">
+<div th:fragment="header" xmlns:sec="http://www.w3.org/1999/xhtml">
     <div class="row1">
         <div class="logo">
             <a href="/"><img alt="" height="88px" src="/img/welcome_page_logo.png" width="94px"></a>
@@ -39,7 +39,7 @@
                 <a class="header__text" th:href="@{/functions}">Аналитика</a>
             </div>
         </div>
-        <div class="column_item">
+        <div class="column_item" sec:authorize="hasRole('ADMIN')">
             <div class="item__ref data__submenu">
                 <a class="header__text" th:href="@{/query}">SQL запрос</a>
             </div>

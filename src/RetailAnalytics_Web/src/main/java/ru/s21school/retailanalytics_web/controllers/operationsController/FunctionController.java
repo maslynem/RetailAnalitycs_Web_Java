@@ -3,6 +3,7 @@ package ru.s21school.retailanalytics_web.controllers.operationsController;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -42,6 +43,7 @@ public class FunctionController {
     }
 
     @PostMapping("update")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public String updateDataAnalysis(Model model) {
         functionsService.updateDataAnalysis();
         model.addAttribute("updated", "SUCCESS");

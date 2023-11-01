@@ -4,6 +4,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -47,12 +48,14 @@ public class CardController {
     }
 
     @GetMapping("new")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public String getCreateCardPage(Model model) {
         model.addAttribute("card", new CardCreateDto());
         return "tables/cards/new";
     }
 
     @GetMapping("{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public String getUpdateCardPage(@PathVariable Long id, Model model) {
         CardReadDto cardReadDto = cardService.performFindByIdRequest(id);
         model.addAttribute("cardCreateDto", mapper.map(cardReadDto));
@@ -60,6 +63,7 @@ public class CardController {
     }
 
     @PutMapping("{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public String updateCard(@PathVariable Long id,
                              @ModelAttribute("cardCreateDto") CardCreateDto card,
                              Model model) {
@@ -75,6 +79,7 @@ public class CardController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAuthority('ADMIN')")
     public String createCard(@Valid @ModelAttribute("card") CardCreateDto card, Model model) {
         try {
             cardService.performSaveCardRequest(card);
@@ -88,6 +93,7 @@ public class CardController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public String delete(@PathVariable Long id) {
         cardService.performDeleteByIdRequest(id);
         return "redirect:/data/cards";
@@ -99,6 +105,7 @@ public class CardController {
     }
 
     @PostMapping("/import")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public String importFromCsv(@RequestParam MultipartFile file, Model model) {
         try {
             cardService.performImportFromCsv(file.getInputStream());
