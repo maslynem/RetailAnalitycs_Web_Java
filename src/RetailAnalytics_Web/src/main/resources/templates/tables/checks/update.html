@@ -19,52 +19,54 @@
 <div class="container">
     <div class="row">
         <div class="col align-self-start">
-            <form action="#" th:action="@{/data/checks}" th:method="POST" th:object="${check}">
+            <form action="#"
+                  th:action="@{/data/checks/{trCheckId}/{skuId}(trCheckId=${check.transactionId}, skuId=${check.skuId})}"
+                  th:method="PUT" th:object="${check}">
                 <div class="form-group row mt-5">
                     <label class="col-sm-2 col-form-label" for="checkSum">Transaction Id</label>
                     <input class="form-control mb-4 col-4" id="checkSum"
-                           placeholder="Transaction Id" th:field="*{transactionId}"
-                           type="number">
+                           placeholder="Transaction Id" readonly
+                           th:field="*{transactionId}" type="number">
                 </div>
                 <div class="form-group row mt-5">
                     <label class="col-sm-2 col-form-label" for="skuId">Sku Id</label>
                     <input class="form-control mb-4 col-4"
                            id="skuId"
-                           placeholder="Sku Id" th:field="*{skuId}"
-                           type="number">
+                           placeholder="Sku Id" readonly
+                           th:field="*{skuId}" type="number">
                 </div>
                 <div class="form-group row mt-5">
                     <label class="col-sm-2 col-form-label" for="skuAmount">Sku Amount</label>
                     <input class="form-control mb-4 col-4"
                            id="skuAmount"
-                           placeholder="Sku Amount" th:field="*{skuAmount}"
-                           step="any" type="number">
+                           placeholder="Sku Amount" step="any"
+                           th:field="*{skuAmount}" type="number">
                 </div>
                 <div class="form-group row mt-5">
                     <label class="col-sm-2 col-form-label" for="skuSum">Sku Sum</label>
                     <input class="form-control mb-4 col-4"
                            id="skuSum"
-                           placeholder="Sku Sum" th:field="*{skuSum}"
-                           step="any" type="number">
+                           placeholder="Sku Sum" step="any"
+                           th:field="*{skuSum}" type="number">
                 </div>
                 <div class="form-group row mt-5">
                     <label class="col-sm-2 col-form-label" for="skuSumPaid">Sku Sum Paid</label>
                     <input class="form-control mb-4 col-4"
                            id="skuSumPaid"
-                           placeholder="Sku Sum Paid" th:field="*{skuSumPaid}"
-                           step="any" type="number">
+                           placeholder="Sku Sum Paid" step="any"
+                           th:field="*{skuSumPaid}" type="number">
                 </div>
                 <div class="form-group row mt-5">
                     <label class="col-sm-2 col-form-label" for="skuDiscount">Sku Discount</label>
                     <input class="form-control mb-4 col-4"
                            id="skuDiscount"
-                           placeholder="Sku Discount" th:field="*{skuDiscount}"
-                           step="any" type="number">
+                           placeholder="Sku Discount" step="any"
+                           th:field="*{skuDiscount}" type="number">
                 </div>
 
                 <div th:insert="~{errorTemplate :: error}"></div>
 
-                <button class="btn btn-info col-2" onclick="return confirm_save()" type="submit">Добавить</button>
+                <button class="btn btn-info col-2" onclick="return confirm_update()" type="submit">Обновить</button>
             </form>
         </div>
     </div>

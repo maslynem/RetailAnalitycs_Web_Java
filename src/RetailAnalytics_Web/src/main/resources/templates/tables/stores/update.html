@@ -19,38 +19,40 @@
 <div class="container">
     <div class="row">
         <div class="col align-self-start">
-            <form action="#" th:action="@{/data/stores}" th:method="POST" th:object="${store}">
+            <form action="#"
+                  th:action="@{/data/stores/{trStoreId}/{skuId}(trStoreId=${store.transactionStoreId}, skuId=${store.sku})}"
+                  th:method="PUT" th:object="${store}">
                 <div class="form-group row mt-5">
                     <label class="col-sm-2 col-form-label" for="storeSum">Transaction Store Id</label>
                     <input class="form-control mb-4 col-4" id="storeSum"
-                           placeholder="Transaction Store Id" th:field="*{transactionStoreId}"
-                           type="number">
+                           placeholder="Transaction Store Id" readonly
+                           th:field="*{transactionStoreId}" type="number">
                 </div>
                 <div class="form-group row mt-5">
                     <label class="col-sm-2 col-form-label" for="storeDatetime">Sku Id</label>
                     <input class="form-control mb-4 col-4"
                            id="storeDatetime"
-                           placeholder="Sku Id" th:field="*{sku}"
-                           type="number">
+                           placeholder="Sku Id" readonly
+                           th:field="*{sku}" type="number">
                 </div>
                 <div class="form-group row mt-5">
                     <label class="col-sm-2 col-form-label" for="skuPurchasePrice">Sku Purchase Price</label>
                     <input class="form-control mb-4 col-4"
                            id="skuPurchasePrice"
-                           placeholder="Sku Purchase Price" th:field="*{skuPurchasePrice}"
-                           type="number">
+                           placeholder="Sku Purchase Price" step="any"
+                           th:field="*{skuPurchasePrice}" type="number">
                 </div>
                 <div class="form-group row mt-5">
                     <label class="col-sm-2 col-form-label" for="skuRetailPrice">Sku Retail Price</label>
                     <input class="form-control mb-4 col-4"
                            id="skuRetailPrice"
-                           placeholder="Sku Retail Price" th:field="*{skuRetailPrice}"
-                           type="number">
+                           placeholder="Sku Retail Price" step="any"
+                           th:field="*{skuRetailPrice}" type="number">
                 </div>
 
                 <div th:insert="~{errorTemplate :: error}"></div>
 
-                <button class="btn btn-info col-2" onclick="return confirm_save()" type="submit">Добавить</button>
+                <button class="btn btn-info col-2" onclick="return confirm_update()" type="submit">Обновить</button>
             </form>
         </div>
     </div>

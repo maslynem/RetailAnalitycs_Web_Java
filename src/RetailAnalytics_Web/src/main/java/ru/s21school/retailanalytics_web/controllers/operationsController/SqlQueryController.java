@@ -17,7 +17,6 @@ import java.util.Map;
 @RequestMapping("query")
 @RequiredArgsConstructor
 @Slf4j
-@ControllerAdvice
 public class SqlQueryController {
 
     private final SqlQueryService sqlQueryService;

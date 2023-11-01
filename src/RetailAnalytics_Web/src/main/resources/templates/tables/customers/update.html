@@ -19,42 +19,52 @@
 <div class="container">
     <div class="row">
         <div class="col align-self-start">
-            <form action="#" th:action="@{/data/customers}" th:method="POST">
+            <form action="#" th:action="@{/data/customers/{id}(id=${customer.id})}" th:method="PUT"
+                  th:object="${customer}">
+                <div class="form-group row mt-5">
+                    <label class="col-sm-2 col-form-label" for="customer_id">Customer Id</label>
+                    <input class="form-control mb-4 col-4"
+                           id="customer_id"
+                           placeholder="Customer Id"
+                           readonly
+                           th:field="*{id}" type="number">
+                </div>
+
                 <div class="form-group row mt-5">
                     <label class="col-sm-2 col-form-label" for="customer_name">Customer Name</label>
                     <input class="form-control mb-4 col-4"
                            id="customer_name"
-                           name="customerName"
                            placeholder="Customer Name"
+                           th:field="*{customerName}"
                            type="text">
                 </div>
                 <div class="form-group row mt-5">
                     <label class="col-sm-2 col-form-label" for="customer_surname">Customer Surname</label>
                     <input class="form-control mb-4 col-4"
                            id="customer_surname"
-                           name="customerSurname"
                            placeholder="Customer Surname"
+                           th:field="*{customerSurname}"
                            type="text">
                 </div>
                 <div class="form-group row mt-5">
                     <label class="col-sm-2 col-form-label" for="customer_primary_email">Customer Primary Email</label>
                     <input class="form-control mb-4 col-4"
                            id="customer_primary_email"
-                           name="customerPrimaryEmail"
                            placeholder="Customer Primary Email"
+                           th:field="*{customerPrimaryEmail}"
                            type="text">
                 </div>
                 <div class="form-group row mt-5">
                     <label class="col-sm-2 col-form-label" for="customer_primary_phone">Customer Primary Phone</label>
                     <input class="form-control mb-4 col-4"
                            id="customer_primary_phone"
-                           name="customerPrimaryPhone"
                            placeholder="Customer Primary Phone"
+                           th:field="*{customerPrimaryPhone}"
                            type="text">
                 </div>
                 <div th:insert="~{errorTemplate :: error}"></div>
 
-                <button class="btn btn-info col-2" onclick="return confirm_save()" type="submit">Добавить</button>
+                <button class="btn btn-info col-2" onclick="return confirm_update()" type="submit">Обновить</button>
             </form>
         </div>
     </div>

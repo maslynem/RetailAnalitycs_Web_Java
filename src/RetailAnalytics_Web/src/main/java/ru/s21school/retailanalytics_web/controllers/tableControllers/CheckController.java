@@ -3,48 +3,37 @@ package ru.s21school.retailanalytics_web.controllers.tableControllers;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 import ru.s21school.retailanalytics_web.dto.ErrorDto;
 import ru.s21school.retailanalytics_web.dto.entityDto.checkDto.CheckCreateDto;
 import ru.s21school.retailanalytics_web.dto.entityDto.checkDto.CheckPageDto;
+import ru.s21school.retailanalytics_web.dto.entityDto.checkDto.CheckReadDto;
+import ru.s21school.retailanalytics_web.mappers.CheckMapper;
+import ru.s21school.retailanalytics_web.services.tableServices.CheckService;
 
 import java.io.IOException;
-import java.util.LinkedHashMap;
-import java.util.Optional;
 
 @Controller
 @RequestMapping("data/checks")
 @Slf4j
 public class CheckController {
-    private static final String CHECKS_API_URL = "http://localhost:8081/api/v1/checks";
+    private final CheckService checkService;
+    private final CheckMapper mapper;
 
-    private final RestTemplate restTemplate;
-    private final ImportExportHandler importExportHandler;
-
-    public CheckController(RestTemplate restTemplate) {
-        this.restTemplate = restTemplate;
-        this.importExportHandler = new ImportExportHandler(CHECKS_API_URL, "checks", restTemplate);
+    public CheckController(CheckService checkService, CheckMapper mapper) {
+        this.checkService = checkService;
+        this.mapper = mapper;
     }
 
     @GetMapping
     public String getChecksPage(@RequestParam(defaultValue = "0") int page,
                                 @RequestParam(defaultValue = "30") int size,
                                 Model model) {
-        ResponseEntity<CheckPageDto> response =
-                restTemplate.exchange(CHECKS_API_URL + String.format("?page=%d&size=%d", page, size),
-                        HttpMethod.GET, null, new ParameterizedTypeReference<>() {
-                        });
-        CheckPageDto checksPage = Optional.ofNullable(response.getBody()).orElse(new CheckPageDto());
+        CheckPageDto checksPage = checkService.performGetPageRequest(page, size);
         model.addAttribute("entities", checksPage.getContent());
         model.addAttribute("totalPages", checksPage.getTotalPages());
         model.addAttribute("totalElements", checksPage.getTotalElements());
@@ -62,13 +51,7 @@ public class CheckController {
     @PostMapping
     public String createCheck(@Valid @ModelAttribute("check") CheckCreateDto check, Model model) {
         try {
-            HttpEntity<CheckCreateDto> httpEntity = new HttpEntity<>(check);
-            ResponseEntity<LinkedHashMap<String, Object>> response =
-                    restTemplate.exchange(CHECKS_API_URL,
-                            HttpMethod.POST, httpEntity, new ParameterizedTypeReference<>() {
-                            });
-            LinkedHashMap<String, Object> map = response.getBody();
-            log.info("New check was saved. Id: {}", map.get("id"));
+            checkService.performSaveCheckRequest(check);
             return "redirect:/data/checks";
         } catch (HttpClientErrorException exception) {
             ErrorDto errorDto = exception.getResponseBodyAs(ErrorDto.class);
@@ -78,21 +61,47 @@ public class CheckController {
         }
     }
 
+    @GetMapping("{trId}/{skuId}")
+    public String getUpdateCardPage(@PathVariable Long trId,
+                                    @PathVariable Long skuId,
+                                    Model model) {
+        CheckReadDto checkReadDto = checkService.performFindByIdRequest(trId, skuId);
+        model.addAttribute("check", mapper.map(checkReadDto));
+        return "tables/checks/update";
+    }
+
+    @PutMapping("{trId}/{skuId}")
+    public String updateCard(@PathVariable Long trId,
+                             @PathVariable Long skuId,
+                             @ModelAttribute("check") CheckCreateDto check,
+                             Model model) {
+        try {
+            checkService.performUpdateCheckRequest(trId, skuId, check);
+            return "redirect:/data/checks";
+        } catch (HttpClientErrorException exception) {
+            ErrorDto errorDto = exception.getResponseBodyAs(ErrorDto.class);
+            log.warn(errorDto.getMessages().toString());
+            model.addAttribute("errors", errorDto.getMessages());
+            return "tables/checks/update";
+        }
+    }
+
+
     @DeleteMapping("/{trId}/{skuId}")
     public String delete(@PathVariable Long trId,
                          @PathVariable Long skuId) {
-        restTemplate.delete(CHECKS_API_URL + String.format("/%d/%d", trId, skuId));
+        checkService.performDeleteByIdRequest(trId, skuId);
         return "redirect:/data/checks";
     }
 
     @GetMapping("/export")
     public void exportToCsv(HttpServletResponse servletResponse) throws IOException {
-        importExportHandler.exportToCsv(servletResponse);
+        checkService.performExportToCsv(servletResponse);
     }
 
     @PostMapping("/import")
     public String importFromCsv(@RequestParam MultipartFile file) {
-        importExportHandler.importFromCsv(file);
+        checkService.performImportFromCsv(file);
         return "redirect:/data/checks";
     }
 }

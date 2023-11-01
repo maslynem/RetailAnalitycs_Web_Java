@@ -19,18 +19,25 @@
 <div class="container">
     <div class="row">
         <div class="col align-self-start">
-            <form action="#" th:action="@{/data/transactions}" th:method="POST" th:object="${transaction}">
+            <form action="#" th:action="@{/data/transactions/{id}(id=${transaction.id})}" th:method="PUT"
+                  th:object="${transaction}">
+                <div class="form-group row mt-5">
+                    <label class="col-sm-2 col-form-label" for="transactionId">Transaction ID</label>
+                    <input class="form-control mb-4 col-4" id="transactionId"
+                           placeholder="Transaction ID" readonly
+                           th:field="*{id}" type="number">
+                </div>
                 <div class="form-group row mt-5">
                     <label class="col-sm-2 col-form-label" for="customerCard">Customer Card ID</label>
                     <input class="form-control mb-4 col-4" id="customerCard"
-                           placeholder="Customer Card ID" th:field="*{customerCard}"
-                           type="number">
+                           placeholder="Customer Card ID" readonly
+                           th:field="*{customerCard}" type="number">
                 </div>
                 <div class="form-group row mt-5">
                     <label class="col-sm-2 col-form-label" for="transactionSum">Transaction Sum</label>
                     <input class="form-control mb-4 col-4" id="transactionSum"
-                           placeholder="Transaction Sum" th:field="*{transactionSum}"
-                           type="number">
+                           placeholder="Transaction Sum" step="any"
+                           th:field="*{transactionSum}" type="number">
                 </div>
                 <div class="form-group row mt-5">
                     <label class="col-sm-2 col-form-label" for="transactionDatetime">Transaction Date Time</label>
@@ -47,7 +54,7 @@
                            type="number">
                 </div>
                 <div th:insert="~{errorTemplate :: error}"></div>
-                <button class="btn btn-info col-2" onclick="return confirm_save()" type="submit">Добавить</button>
+                <button class="btn btn-info col-2" onclick="return confirm_update()" type="submit">Обновить</button>
             </form>
         </div>
     </div>

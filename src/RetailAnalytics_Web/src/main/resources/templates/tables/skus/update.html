@@ -19,7 +19,13 @@
 <div class="container">
     <div class="row">
         <div class="col align-self-start">
-            <form action="#" th:action="@{/data/skus}" th:method="POST" th:object="${sku}">
+            <form action="#" th:action="@{/data/skus/{id}(id=${sku.id})}" th:method="PUT" th:object="${sku}">
+                <div class="form-group row mt-5">
+                    <label class="col-sm-2 col-form-label" for="skuId">Sku Id</label>
+                    <input class="form-control mb-4 col-4" id="skuId"
+                           placeholder="Sku Id" readonly
+                           th:field="*{id}" type="text">
+                </div>
                 <div class="form-group row mt-5">
                     <label class="col-sm-2 col-form-label" for="skuSum">Sku Name</label>
                     <input class="form-control mb-4 col-4" id="skuSum"
@@ -35,7 +41,7 @@
                 </div>
                 <div th:insert="~{errorTemplate :: error}"></div>
 
-                <button class="btn btn-info col-2" onclick="return confirm_save()" type="submit">Добавить</button>
+                <button class="btn btn-info col-2" onclick="return confirm_update()" type="submit">Добавить</button>
             </form>
         </div>
     </div>

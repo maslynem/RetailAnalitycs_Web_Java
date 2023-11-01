@@ -39,6 +39,8 @@
 </div>
 
 <div class="container w-80 p-2">
+    <div th:insert="~{errorTemplate :: error}"></div>
+
     <div style="max-height: 700px; overflow-x: auto;">
         <table class="table table-bordered table-striped table-href">
             <caption></caption>
@@ -58,7 +60,11 @@
                 <td th:text="${entity.getId()}"></td>
                 <td th:text="${entity.getGroupName()}"></td>
                 <td class="text-center">
-                    <form action="#" th:action="@{/data/sku-groups/{id}(id=${entity.getId()})}" th:method="DELETE"
+                    <a class="btn btn-primary" th:href="@{/data/sku-groups/{id}(id=${entity.id})}">Update</a>
+                </td>
+
+                <td class="text-center">
+                    <form action="#" th:action="@{/data/sku-groups/{id}(id=${entity.id})}" th:method="DELETE"
                           th:object="${entity}">
                         <button class="btn btn-danger" onclick="return confirm_delete()" type="submit">Delete</button>
                     </form>
@@ -80,6 +86,7 @@
 <!--sec:authorize="hasRole('ROLE_USER')"-->
 <a class="btn btn-primary btn-sm mb-3" th:href="@{/data/sku-groups/new}"> Добавить группу SKU </a>
 
+<script src="/js/confirm_CUD.js" type="text/javascript"></script>
 
 <script src="/js/pagination_script.js" type="text/javascript"></script>
 <script src="/js/confirm_CUD.js" type="text/javascript"></script>

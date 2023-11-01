@@ -1,0 +1,5 @@
+<div th:fragment="error">
+    <div th:if="${errors}">
+        <p class="error_message" th:each="error : ${errors}" th:text="${error}">Error message</p>
+    </div>
+</div>
