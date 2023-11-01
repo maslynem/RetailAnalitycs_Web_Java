@@ -16,7 +16,7 @@
 <header th:insert="~{header :: header}"></header>
 
 <div class="container w-80 p-2">
-    <form action="/functions/frequency-of-visits" method="post">
+    <form method="post" th:action="@{/functions/frequency-of-visits}">
         <div class="mb-2">
             <label for="firstDate" class="form-label">Начальная дата периода:</label>
             <input name="firstDate" class="form-control" id="firstDate" type="datetime-local" value="2022-08-18T00:00"
@@ -59,7 +59,7 @@
             <div class="row">
                 <div class="col">
                     <p class="fs-3">Выгрузить TSV</p>
-                    <form action="/functions/frequency-of-visits/export" enctype="multipart/form-data">
+                    <form enctype="multipart/form-data" th:action="@{/functions/frequency-of-visits/export}">
                         <div>
                             <input class="btn btn-primary btn-sm" type="submit" value="Выгрузить"/>
                         </div>

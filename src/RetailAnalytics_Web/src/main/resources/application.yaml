@@ -2,3 +2,6 @@ server.port: ${SERVER_PORT:8080}
 spring:
   main:
     allow-circular-references: true
+logging:
+  level:
+    root: debug

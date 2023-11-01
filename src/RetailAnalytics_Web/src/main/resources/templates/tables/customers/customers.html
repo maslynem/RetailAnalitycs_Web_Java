@@ -20,7 +20,7 @@
     <div class="row">
         <div class="col">
             <p class="fs-3">Выгрузить TSV</p>
-            <form action="/data/customers/export" enctype="multipart/form-data">
+            <form enctype="multipart/form-data" th:action="@{/data/customers/export}">
                 <div>
                     <input class="btn btn-primary btn-sm" type="submit" value="Выгрузить"/>
                 </div>
@@ -28,7 +28,7 @@
         </div>
         <div class="col">
             <p class="fs-3">Загрузить TSV</p>
-            <form action="/data/customers/import" enctype="multipart/form-data" method="POST">
+            <form enctype="multipart/form-data" method="POST" th:action="@{/data/customers/import}">
                 <div>
                     <input accept=".tsv" class="btn btn-light btn-sm" name="file" required="required" type="file">
                     <input class="btn btn btn-primary btn-sm" type="submit" value="Загрузить"/>

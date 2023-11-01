@@ -19,7 +19,7 @@
     <div class="row">
         <div class="col">
             <p class="fs-3">Выгрузить TSV</p>
-            <form action="/views/groups/export" enctype="multipart/form-data">
+            <form enctype="multipart/form-data" th:action="@{/views/groups/export}">
                 <div>
                     <input class="btn btn-primary btn-sm" type="submit" value="Выгрузить"/>
                 </div>

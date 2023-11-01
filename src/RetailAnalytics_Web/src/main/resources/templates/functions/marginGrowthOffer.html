@@ -16,7 +16,7 @@
 <header th:insert="~{header :: header}"></header>
 
 <div class="container w-80 p-2">
-    <form action="/functions/margin-growth-offer" method="post">
+    <form method="post" th:action="@{/functions/margin-growth-offer}">
         <div class="mb-2">
             <label for="groupsNumber" class="form-label">Количество групп:</label>
             <input name="groupsNumber" class="form-control" id="groupsNumber" type="number" value="5" min="0"
@@ -54,7 +54,7 @@
             <div class="row">
                 <div class="col">
                     <p class="fs-3">Выгрузить TSV</p>
-                    <form action="/functions/margin-growth-offer/export" enctype="multipart/form-data">
+                    <form enctype="multipart/form-data" th:action="@{/functions/margin-growth-offer/export}">
                         <div>
                             <input class="btn btn-primary btn-sm" type="submit" value="Выгрузить"/>
                         </div>

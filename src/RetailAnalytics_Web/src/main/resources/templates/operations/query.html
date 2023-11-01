@@ -17,7 +17,7 @@
 <header th:insert="~{header :: header}"></header>
 
 <div class="container w-80 p-2">
-    <form action="/query" method="post">
+    <form method="post" th:action="@{/query}">
         <div class="mb-2">
             <label class="form-label" for="query">SQL запрос:</label>
             <textarea class="form-control" id="query" name="query" required="required"
