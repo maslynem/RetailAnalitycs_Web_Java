@@ -20,6 +20,8 @@ public abstract class SkuMapper {
     public abstract SkuCreateDto toCreateDto(Sku sku);
 
     @Mapping(target = "id", ignore = true)
+    @Mapping(target = "stores", ignore = true)
+    @Mapping(target = "checks", ignore = true)
     public abstract Sku toEntity(SkuCreateDto dto);
 
     public Sku toDtoById(Long id) {

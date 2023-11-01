@@ -5,7 +5,9 @@ import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
 
 import java.io.Serializable;
+import java.util.LinkedHashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -26,6 +28,12 @@ public class Sku implements Serializable {
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "group_id", nullable = false)
     private SkuGroup skuGroup;
+
+    @OneToMany(mappedBy = "id.sku", orphanRemoval = true)
+    private Set<Store> stores = new LinkedHashSet<>();
+
+    @OneToMany(mappedBy = "id.sku", orphanRemoval = true)
+    private Set<Check> checks = new LinkedHashSet<>();
 
     @Override
     public final boolean equals(Object object) {
