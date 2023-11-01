@@ -8,28 +8,45 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.multipart.MultipartFile;
-import ru.s21school.retailanalytics_web.controllers.tableControllers.ImportExportHandler;
 import ru.s21school.retailanalytics_web.dto.entityDto.customerDto.CustomerDto;
 import ru.s21school.retailanalytics_web.dto.entityDto.customerDto.CustomerPageDto;
 import ru.s21school.retailanalytics_web.exceptions.EmptyResponseBodyException;
+import ru.s21school.retailanalytics_web.utils.CsvReader;
+import ru.s21school.retailanalytics_web.utils.CsvWriter;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.util.List;
 
 @Service
 @Slf4j
 public class CustomerService {
     private static final String CUSTOMER_API_URL = "http://localhost:8081/api/v1/customers";
-    private final ImportExportHandler importExportHandler;
     private final RestTemplate restTemplate;
     private final String PAGE_URL_TEMPLATE;
     private final String ID_URL_TEMPLATE;
+    private final CsvReader<CustomerDto> csvReader;
+    private final CsvWriter<CustomerDto> csvWriter;
 
-    public CustomerService(RestTemplate restTemplate) {
-        this.importExportHandler = new ImportExportHandler(CUSTOMER_API_URL, "customers", restTemplate);
+    public CustomerService(RestTemplate restTemplate, CsvReader<CustomerDto> csvReader, CsvWriter<CustomerDto> csvWriter) {
         this.restTemplate = restTemplate;
+        this.csvReader = csvReader;
+        this.csvWriter = csvWriter;
         PAGE_URL_TEMPLATE = CUSTOMER_API_URL + "?page=%d&size=%d";
         ID_URL_TEMPLATE = CUSTOMER_API_URL + "/%d";
+    }
+
+    public List<CustomerDto> performGetAll() {
+        ResponseEntity<List<CustomerDto>> response =
+                restTemplate.exchange(CUSTOMER_API_URL,
+                        HttpMethod.GET, null, new ParameterizedTypeReference<>() {
+                        });
+        List<CustomerDto> body = response.getBody();
+        if (body == null) {
+            log.error("Error after request to [{}]. Response status code is [{}]. But response body is null", CUSTOMER_API_URL, response.getStatusCode());
+            throw new EmptyResponseBodyException();
+        }
+        return body;
     }
 
     public CustomerPageDto performGetPageRequest(int page, int size) {
@@ -58,6 +75,14 @@ public class CustomerService {
             throw new EmptyResponseBodyException();
         }
         return body;
+    }
+
+    public void performSaveCustomersRequest(List<CustomerDto> customers) {
+        HttpEntity<List<CustomerDto>> httpEntity = new HttpEntity<>(customers);
+        restTemplate.exchange(CUSTOMER_API_URL + "/all",
+                HttpMethod.POST, httpEntity, new ParameterizedTypeReference<>() {
+                });
+        log.info("Customers was saved. Size: {}", customers.size());
     }
 
     public void performSaveCustomerRequest(CustomerDto customer) {
@@ -94,10 +119,15 @@ public class CustomerService {
     }
 
     public void performExportToCsv(HttpServletResponse servletResponse) throws IOException {
-        importExportHandler.exportToCsv(servletResponse);
+        List<CustomerDto> customers = performGetAll();
+        servletResponse.setContentType("text/csv");
+        servletResponse.addHeader("Content-Disposition", "attachment; filename=customers.csv");
+        servletResponse.setCharacterEncoding("UTF-8");
+        csvWriter.exportCsv(servletResponse.getWriter(), customers, CustomerDto.class);
     }
 
-    public void performImportFromCsv(MultipartFile file) {
-        importExportHandler.importFromCsv(file);
+    public void performImportFromCsv(InputStream is) {
+        List<CustomerDto> customers = csvReader.importCsv(is, CustomerDto.class);
+        performSaveCustomersRequest(customers);
     }
 }

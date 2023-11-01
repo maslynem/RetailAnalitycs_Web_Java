@@ -17,6 +17,7 @@ import ru.s21school.retailanalytics_web.mappers.SkuMapper;
 import ru.s21school.retailanalytics_web.services.tableServices.SkuService;
 
 import java.io.IOException;
+import java.util.Collections;
 
 @Controller
 @RequestMapping("data/skus")
@@ -94,12 +95,21 @@ public class SkuController {
     @GetMapping("/export")
     public void exportToCsv(HttpServletResponse servletResponse) throws IOException {
         skuService.performExportToCsv(servletResponse);
-
     }
 
     @PostMapping("/import")
-    public String importFromCsv(@RequestParam MultipartFile file) {
-        skuService.performImportFromCsv(file);
-        return "redirect:/data/skus";
+    public String importFromCsv(@RequestParam MultipartFile file, Model model) {
+        try {
+            skuService.performImportFromCsv(file.getInputStream());
+            return "redirect:/data/skus";
+        } catch (IOException e) {
+            log.warn("IOException when importFromCsv called");
+            model.addAttribute("errors", Collections.singletonList("Error during import. Try again"));
+        } catch (HttpClientErrorException exception) {
+            ErrorDto errorDto = exception.getResponseBodyAs(ErrorDto.class);
+            log.warn(errorDto.getMessages().toString());
+            model.addAttribute("errors", errorDto.getMessages());
+        }
+        return "tables/skus/skus";
     }
 }

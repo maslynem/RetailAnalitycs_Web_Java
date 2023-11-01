@@ -14,6 +14,7 @@ import ru.s21school.retailanalytics_web.dto.entityDto.skuGroupDto.SkuGroupPageDt
 import ru.s21school.retailanalytics_web.services.tableServices.SkuGroupService;
 
 import java.io.IOException;
+import java.util.Collections;
 
 @Controller
 @RequestMapping("data/sku-groups")
@@ -89,13 +90,21 @@ public class SkuGroupController {
     @GetMapping("/export")
     public void exportToCsv(HttpServletResponse servletResponse) throws IOException {
         skuGroupService.performExportToCsv(servletResponse);
-
     }
 
     @PostMapping("/import")
-    public String importFromCsv(@RequestParam MultipartFile file) {
-        skuGroupService.performImportFromCsv(file);
-
-        return "redirect:/data/sku-groups";
+    public String importFromCsv(@RequestParam MultipartFile file, Model model) {
+        try {
+            skuGroupService.performImportFromCsv(file.getInputStream());
+            return "redirect:/data/skuGroups";
+        } catch (IOException e) {
+            log.warn("IOException when importFromCsv called");
+            model.addAttribute("errors", Collections.singletonList("Error during import. Try again"));
+        } catch (HttpClientErrorException exception) {
+            ErrorDto errorDto = exception.getResponseBodyAs(ErrorDto.class);
+            log.warn(errorDto.getMessages().toString());
+            model.addAttribute("errors", errorDto.getMessages());
+        }
+        return "tables/skuGroups/skuGroups";
     }
 }

@@ -1,8 +1,5 @@
 package ru.school.retailanalitycs_web_java.dto.entityDto.transactionDto;
 
-import com.opencsv.bean.CsvBindByName;
-import com.opencsv.bean.CsvBindByPosition;
-import com.opencsv.bean.CsvDate;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,29 +14,18 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class TransactionCreateDto {
-    @CsvBindByName(column = "transaction_id", required = true)
-    @CsvBindByPosition(position = 0)
     private Long id;
 
     @NotNull(message = "Customer card is mandatory")
-    @CsvBindByName(column = "customer_card_id", required = true)
-    @CsvBindByPosition(position = 1)
     private Long customerCard;
 
     @NotNull(message = "Transaction sum is mandatory")
-    @CsvBindByName(column = "transaction_summ", required = true)
-    @CsvBindByPosition(position = 2)
     private Double transactionSum;
 
     @NotNull(message = "Transaction date time is mandatory")
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-    @CsvBindByName(column = "transaction_datetime", required = true)
-    @CsvBindByPosition(position = 3)
-    @CsvDate(value = "dd.MM.yyyy H:mm:ss")
     private LocalDateTime transactionDatetime;
 
     @NotNull(message = "Transaction store id is mandatory")
-    @CsvBindByName(column = "transaction_store_id", required = true)
-    @CsvBindByPosition(position = 4)
     private Long transactionStoreId;
 }

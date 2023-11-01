@@ -16,6 +16,7 @@ import ru.s21school.retailanalytics_web.mappers.CheckMapper;
 import ru.s21school.retailanalytics_web.services.tableServices.CheckService;
 
 import java.io.IOException;
+import java.util.Collections;
 
 @Controller
 @RequestMapping("data/checks")
@@ -100,8 +101,18 @@ public class CheckController {
     }
 
     @PostMapping("/import")
-    public String importFromCsv(@RequestParam MultipartFile file) {
-        checkService.performImportFromCsv(file);
-        return "redirect:/data/checks";
+    public String importFromCsv(@RequestParam MultipartFile file, Model model) {
+        try {
+            checkService.performImportFromCsv(file.getInputStream());
+            return "redirect:/data/checks";
+        } catch (IOException e) {
+            log.warn("IOException when importFromCsv called");
+            model.addAttribute("errors", Collections.singletonList("Error during import. Try again"));
+        } catch (HttpClientErrorException exception) {
+            ErrorDto errorDto = exception.getResponseBodyAs(ErrorDto.class);
+            log.warn(errorDto.getMessages().toString());
+            model.addAttribute("errors", errorDto.getMessages());
+        }
+        return "tables/checks/checks";
     }
 }

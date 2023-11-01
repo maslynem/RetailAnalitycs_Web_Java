@@ -51,6 +51,14 @@
             <artifactId>spring-data-commons</artifactId>
         </dependency>
 
+        <!-- CSV HANDLER -->
+
+        <dependency>
+            <groupId>com.opencsv</groupId>
+            <artifactId>opencsv</artifactId>
+            <version>5.7.1</version>
+        </dependency>
+
         <!-- MAPPER -->
 
         <dependency>

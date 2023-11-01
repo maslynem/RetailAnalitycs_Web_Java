@@ -8,31 +8,52 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.multipart.MultipartFile;
-import ru.s21school.retailanalytics_web.controllers.tableControllers.ImportExportHandler;
 import ru.s21school.retailanalytics_web.dto.entityDto.transactionDto.TransactionCreateDto;
 import ru.s21school.retailanalytics_web.dto.entityDto.transactionDto.TransactionPageDto;
 import ru.s21school.retailanalytics_web.dto.entityDto.transactionDto.TransactionReadDto;
 import ru.s21school.retailanalytics_web.exceptions.EmptyResponseBodyException;
+import ru.s21school.retailanalytics_web.mappers.TransactionMapper;
+import ru.s21school.retailanalytics_web.utils.CsvReader;
+import ru.s21school.retailanalytics_web.utils.CsvWriter;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.util.List;
 
 @Service
 @Slf4j
 public class TransactionService {
     private static final String TRANSACTION_API_URL = "http://localhost:8081/api/v1/transactions";
-    private final ImportExportHandler importExportHandler;
     private final RestTemplate restTemplate;
     private final String PAGE_URL_TEMPLATE;
     private final String ID_URL_TEMPLATE;
+    private final TransactionMapper transactionMapper;
+    private final CsvReader<TransactionCreateDto> csvReader;
+    private final CsvWriter<TransactionCreateDto> csvWriter;
 
-    public TransactionService(RestTemplate restTemplate) {
-        this.importExportHandler = new ImportExportHandler(TRANSACTION_API_URL, "transactions", restTemplate);
+    public TransactionService(RestTemplate restTemplate, TransactionMapper transactionMapper, CsvReader<TransactionCreateDto> csvReader, CsvWriter<TransactionCreateDto> csvWriter) {
         this.restTemplate = restTemplate;
+        this.transactionMapper = transactionMapper;
+        this.csvReader = csvReader;
+        this.csvWriter = csvWriter;
         PAGE_URL_TEMPLATE = TRANSACTION_API_URL + "?page=%d&size=%d";
         ID_URL_TEMPLATE = TRANSACTION_API_URL + "/%d";
     }
 
+    public List<TransactionReadDto> performGetAll() {
+        ResponseEntity<List<TransactionReadDto>> response =
+                restTemplate.exchange(TRANSACTION_API_URL,
+                        HttpMethod.GET, null, new ParameterizedTypeReference<>() {
+                        });
+        List<TransactionReadDto> body = response.getBody();
+        if (body == null) {
+            log.error("Error after request to [{}]. Response status code is [{}]. But response body is null", TRANSACTION_API_URL, response.getStatusCode());
+            throw new EmptyResponseBodyException();
+        }
+        return body;
+    }
+    
+    
     public TransactionPageDto performGetPageRequest(int page, int size) {
         final String URL_REQUEST = String.format(PAGE_URL_TEMPLATE, page, size);
         ResponseEntity<TransactionPageDto> response =
@@ -75,6 +96,14 @@ public class TransactionService {
         log.info("New transaction was saved. Id: {}", body.getId());
     }
 
+    public void performSaveTransactionsRequest(List<TransactionCreateDto> transactions) {
+        HttpEntity<List<TransactionCreateDto>> httpEntity = new HttpEntity<>(transactions);
+        restTemplate.exchange(TRANSACTION_API_URL + "/all",
+                HttpMethod.POST, httpEntity, new ParameterizedTypeReference<>() {
+                });
+        log.info("Transactions was saved. Size: {}", transactions.size());
+    }
+
     public void performUpdateTransactionRequest(Long id, TransactionCreateDto transaction) {
         final String URL_REQUEST = String.format(ID_URL_TEMPLATE, id);
         HttpEntity<TransactionCreateDto> httpEntity = new HttpEntity<>(transaction);
@@ -95,10 +124,15 @@ public class TransactionService {
     }
 
     public void performExportToCsv(HttpServletResponse servletResponse) throws IOException {
-        importExportHandler.exportToCsv(servletResponse);
+        List<TransactionCreateDto> transactions = performGetAll().stream().map(transactionMapper::map).toList();
+        servletResponse.setContentType("text/csv");
+        servletResponse.addHeader("Content-Disposition", "attachment; filename=transactions.csv");
+        servletResponse.setCharacterEncoding("UTF-8");
+        csvWriter.exportCsv(servletResponse.getWriter(), transactions, TransactionCreateDto.class);
     }
 
-    public void performImportFromCsv(MultipartFile file) {
-        importExportHandler.importFromCsv(file);
+    public void performImportFromCsv(InputStream is) {
+        List<TransactionCreateDto> customers = csvReader.importCsv(is, TransactionCreateDto.class);
+        performSaveTransactionsRequest(customers);
     }
 }

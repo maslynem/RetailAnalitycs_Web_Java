@@ -15,6 +15,7 @@ import ru.s21school.retailanalytics_web.dto.entityDto.customerDto.CustomerPageDt
 import ru.s21school.retailanalytics_web.services.tableServices.CustomerService;
 
 import java.io.IOException;
+import java.util.Collections;
 
 @Controller
 @RequestMapping("data/customers")
@@ -94,8 +95,18 @@ public class CustomerController {
     }
 
     @PostMapping("/import")
-    public String importFromCsv(@RequestParam MultipartFile file) {
-        customerService.performImportFromCsv(file);
-        return "redirect:/data/customers";
+    public String importFromCsv(@RequestParam MultipartFile file, Model model) {
+        try {
+            customerService.performImportFromCsv(file.getInputStream());
+            return "redirect:/data/customers";
+        } catch (IOException e) {
+            log.warn("IOException when importFromCsv called");
+            model.addAttribute("errors", Collections.singletonList("Error during import. Try again"));
+        } catch (HttpClientErrorException exception) {
+            ErrorDto errorDto = exception.getResponseBodyAs(ErrorDto.class);
+            log.warn(errorDto.getMessages().toString());
+            model.addAttribute("errors", errorDto.getMessages());
+        }
+        return "tables/customers/customers";
     }
 }

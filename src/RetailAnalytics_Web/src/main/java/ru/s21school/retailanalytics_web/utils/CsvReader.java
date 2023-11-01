@@ -1,9 +1,9 @@
-package ru.school.retailanalitycs_web_java.utils;
+package ru.s21school.retailanalytics_web.utils;
 
 import com.opencsv.bean.CsvToBeanBuilder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-import ru.school.retailanalitycs_web_java.exceptions.csvExceptions.CsvReadException;
+import ru.s21school.retailanalytics_web.exceptions.csvExceptions.CsvReadException;
 
 import java.io.BufferedReader;
 import java.io.InputStream;

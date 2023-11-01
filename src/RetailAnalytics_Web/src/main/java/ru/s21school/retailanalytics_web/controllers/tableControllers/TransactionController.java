@@ -16,6 +16,7 @@ import ru.s21school.retailanalytics_web.mappers.TransactionMapper;
 import ru.s21school.retailanalytics_web.services.tableServices.TransactionService;
 
 import java.io.IOException;
+import java.util.Collections;
 
 @Controller
 @RequestMapping("data/transactions")
@@ -96,8 +97,18 @@ public class TransactionController {
     }
 
     @PostMapping("/import")
-    public String importFromCsv(@RequestParam MultipartFile file) {
-        transactionService.performImportFromCsv(file);
-        return "redirect:/data/transactions";
+    public String importFromCsv(@RequestParam MultipartFile file, Model model) {
+        try {
+            transactionService.performImportFromCsv(file.getInputStream());
+            return "redirect:/data/transactions";
+        } catch (IOException e) {
+            log.warn("IOException when importFromCsv called");
+            model.addAttribute("errors", Collections.singletonList("Error during import. Try again"));
+        } catch (HttpClientErrorException exception) {
+            ErrorDto errorDto = exception.getResponseBodyAs(ErrorDto.class);
+            log.warn(errorDto.getMessages().toString());
+            model.addAttribute("errors", errorDto.getMessages());
+        }
+        return "tables/transactions/transactions";
     }
 }

@@ -8,29 +8,49 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.multipart.MultipartFile;
-import ru.s21school.retailanalytics_web.controllers.tableControllers.ImportExportHandler;
 import ru.s21school.retailanalytics_web.dto.entityDto.checkDto.CheckCreateDto;
 import ru.s21school.retailanalytics_web.dto.entityDto.checkDto.CheckPageDto;
 import ru.s21school.retailanalytics_web.dto.entityDto.checkDto.CheckReadDto;
 import ru.s21school.retailanalytics_web.exceptions.EmptyResponseBodyException;
+import ru.s21school.retailanalytics_web.mappers.CheckMapper;
+import ru.s21school.retailanalytics_web.utils.CsvReader;
+import ru.s21school.retailanalytics_web.utils.CsvWriter;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.util.List;
 
 @Service
 @Slf4j
 public class CheckService {
     private static final String CHECKS_API_URL = "http://localhost:8081/api/v1/checks";
-    private final ImportExportHandler importExportHandler;
     private final RestTemplate restTemplate;
     private final String PAGE_URL_TEMPLATE;
     private final String ID_URL_TEMPLATE;
+    private final CheckMapper checkMapper;
+    private final CsvReader<CheckCreateDto> csvReader;
+    private final CsvWriter<CheckCreateDto> csvWriter;
 
-    public CheckService(RestTemplate restTemplate) {
-        this.importExportHandler = new ImportExportHandler(CHECKS_API_URL, "checks", restTemplate);
+    public CheckService(RestTemplate restTemplate, CheckMapper checkMapper, CsvReader<CheckCreateDto> csvReader, CsvWriter<CheckCreateDto> csvWriter) {
         this.restTemplate = restTemplate;
+        this.checkMapper = checkMapper;
+        this.csvReader = csvReader;
+        this.csvWriter = csvWriter;
         PAGE_URL_TEMPLATE = CHECKS_API_URL + "?page=%d&size=%d";
         ID_URL_TEMPLATE = CHECKS_API_URL + "/%d/%d";
+    }
+
+    public List<CheckReadDto> performGetAll() {
+        ResponseEntity<List<CheckReadDto>> response =
+                restTemplate.exchange(CHECKS_API_URL,
+                        HttpMethod.GET, null, new ParameterizedTypeReference<>() {
+                        });
+        List<CheckReadDto> body = response.getBody();
+        if (body == null) {
+            log.error("Error after request to [{}]. Response status code is [{}]. But response body is null", CHECKS_API_URL, response.getStatusCode());
+            throw new EmptyResponseBodyException();
+        }
+        return body;
     }
 
     public CheckPageDto performGetPageRequest(int page, int size) {
@@ -75,6 +95,15 @@ public class CheckService {
         log.info("New check was saved: {}", body);
     }
 
+    public void performSaveChecksRequest(List<CheckCreateDto> checks) {
+        HttpEntity<List<CheckCreateDto>> httpEntity = new HttpEntity<>(checks);
+        restTemplate.exchange(CHECKS_API_URL + "/all",
+                HttpMethod.POST, httpEntity, new ParameterizedTypeReference<>() {
+                });
+        log.info("Checks was saved. Size: {}", checks.size());
+    }
+
+
     public void performUpdateCheckRequest(Long trId, Long skuId, CheckCreateDto check) {
         final String URL_REQUEST = String.format(ID_URL_TEMPLATE, trId, skuId);
         HttpEntity<CheckCreateDto> httpEntity = new HttpEntity<>(check);
@@ -95,10 +124,15 @@ public class CheckService {
     }
 
     public void performExportToCsv(HttpServletResponse servletResponse) throws IOException {
-        importExportHandler.exportToCsv(servletResponse);
+        List<CheckCreateDto> checks = performGetAll().stream().map(checkMapper::map).toList();
+        servletResponse.setContentType("text/csv");
+        servletResponse.addHeader("Content-Disposition", "attachment; filename=checks.csv");
+        servletResponse.setCharacterEncoding("UTF-8");
+        csvWriter.exportCsv(servletResponse.getWriter(), checks, CheckCreateDto.class);
     }
 
-    public void performImportFromCsv(MultipartFile file) {
-        importExportHandler.importFromCsv(file);
+    public void performImportFromCsv(InputStream is) {
+        List<CheckCreateDto> customers = csvReader.importCsv(is, CheckCreateDto.class);
+        performSaveChecksRequest(customers);
     }
 }

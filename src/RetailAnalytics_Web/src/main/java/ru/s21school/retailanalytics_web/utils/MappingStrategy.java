@@ -1,4 +1,4 @@
-package ru.school.retailanalitycs_web_java.utils;
+package ru.s21school.retailanalytics_web.utils;
 
 import com.opencsv.bean.ColumnPositionMappingStrategy;
 import com.opencsv.bean.CsvBindByName;

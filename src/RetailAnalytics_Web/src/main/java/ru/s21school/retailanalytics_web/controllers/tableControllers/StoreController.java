@@ -17,6 +17,7 @@ import ru.s21school.retailanalytics_web.mappers.StoreMapper;
 import ru.s21school.retailanalytics_web.services.tableServices.StoreService;
 
 import java.io.IOException;
+import java.util.Collections;
 
 @Controller
 @RequestMapping("data/stores")
@@ -99,12 +100,21 @@ public class StoreController {
     @GetMapping("/export")
     public void exportToCsv(HttpServletResponse servletResponse) throws IOException {
         storeService.performExportToCsv(servletResponse);
-
     }
 
     @PostMapping("/import")
-    public String importFromCsv(@RequestParam MultipartFile file) {
-        storeService.performImportFromCsv(file);
-        return "redirect:/data/stores";
+    public String importFromCsv(@RequestParam MultipartFile file, Model model) {
+        try {
+            storeService.performImportFromCsv(file.getInputStream());
+            return "redirect:/data/stores";
+        } catch (IOException e) {
+            log.warn("IOException when importFromCsv called");
+            model.addAttribute("errors", Collections.singletonList("Error during import. Try again"));
+        } catch (HttpClientErrorException exception) {
+            ErrorDto errorDto = exception.getResponseBodyAs(ErrorDto.class);
+            log.warn(errorDto.getMessages().toString());
+            model.addAttribute("errors", errorDto.getMessages());
+        }
+        return "tables/stores/stores";
     }
 }

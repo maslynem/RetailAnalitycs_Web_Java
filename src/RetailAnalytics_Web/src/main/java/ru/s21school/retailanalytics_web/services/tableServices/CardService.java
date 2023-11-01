@@ -8,29 +8,49 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.multipart.MultipartFile;
-import ru.s21school.retailanalytics_web.controllers.tableControllers.ImportExportHandler;
 import ru.s21school.retailanalytics_web.dto.entityDto.cardDto.CardCreateDto;
 import ru.s21school.retailanalytics_web.dto.entityDto.cardDto.CardPageDto;
 import ru.s21school.retailanalytics_web.dto.entityDto.cardDto.CardReadDto;
 import ru.s21school.retailanalytics_web.exceptions.EmptyResponseBodyException;
+import ru.s21school.retailanalytics_web.mappers.CardMapper;
+import ru.s21school.retailanalytics_web.utils.CsvReader;
+import ru.s21school.retailanalytics_web.utils.CsvWriter;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.util.List;
 
 @Service
 @Slf4j
 public class CardService {
     private static final String CARD_API_URL = "http://localhost:8081/api/v1/cards";
-    private final ImportExportHandler importExportHandler;
     private final RestTemplate restTemplate;
     private final String PAGE_URL_TEMPLATE;
     private final String ID_URL_TEMPLATE;
+    private final CardMapper cardMapper;
+    private final CsvReader<CardCreateDto> csvReader;
+    private final CsvWriter<CardCreateDto> csvWriter;
 
-    public CardService(RestTemplate restTemplate) {
-        this.importExportHandler = new ImportExportHandler(CARD_API_URL, "cards", restTemplate);
+    public CardService(RestTemplate restTemplate, CardMapper cardMapper, CsvReader<CardCreateDto> csvReader, CsvWriter<CardCreateDto> csvWriter) {
         this.restTemplate = restTemplate;
+        this.cardMapper = cardMapper;
+        this.csvReader = csvReader;
+        this.csvWriter = csvWriter;
         PAGE_URL_TEMPLATE = CARD_API_URL + "?page=%d&size=%d";
         ID_URL_TEMPLATE = CARD_API_URL + "/%d";
+    }
+
+    public List<CardReadDto> performGetAll() {
+        ResponseEntity<List<CardReadDto>> response =
+                restTemplate.exchange(CARD_API_URL,
+                        HttpMethod.GET, null, new ParameterizedTypeReference<>() {
+                        });
+        List<CardReadDto> body = response.getBody();
+        if (body == null) {
+            log.error("Error after request to [{}]. Response status code is [{}]. But response body is null", CARD_API_URL, response.getStatusCode());
+            throw new EmptyResponseBodyException();
+        }
+        return body;
     }
 
     public CardPageDto performGetPageRequest(int page, int size) {
@@ -75,6 +95,14 @@ public class CardService {
         log.info("New card was saved. Id: {}", body.getId());
     }
 
+    public void performSaveCardsRequest(List<CardCreateDto> cards) {
+        HttpEntity<List<CardCreateDto>> httpEntity = new HttpEntity<>(cards);
+        restTemplate.exchange(CARD_API_URL + "/all",
+                HttpMethod.POST, httpEntity, new ParameterizedTypeReference<>() {
+                });
+        log.info("Cards was saved. Size: {}", cards.size());
+    }
+
     public void performUpdateCardRequest(Long id, CardCreateDto card) {
         final String URL_REQUEST = String.format(ID_URL_TEMPLATE, id);
         HttpEntity<CardCreateDto> httpEntity = new HttpEntity<>(card);
@@ -95,10 +123,15 @@ public class CardService {
     }
 
     public void performExportToCsv(HttpServletResponse servletResponse) throws IOException {
-        importExportHandler.exportToCsv(servletResponse);
+        List<CardCreateDto> cards = performGetAll().stream().map(cardMapper::map).toList();
+        servletResponse.setContentType("text/csv");
+        servletResponse.addHeader("Content-Disposition", "attachment; filename=cards.csv");
+        servletResponse.setCharacterEncoding("UTF-8");
+        csvWriter.exportCsv(servletResponse.getWriter(), cards, CardCreateDto.class);
     }
 
-    public void performImportFromCsv(MultipartFile file) {
-        importExportHandler.importFromCsv(file);
+    public void performImportFromCsv(InputStream is) {
+        List<CardCreateDto> customers = csvReader.importCsv(is, CardCreateDto.class);
+        performSaveCardsRequest(customers);
     }
 }

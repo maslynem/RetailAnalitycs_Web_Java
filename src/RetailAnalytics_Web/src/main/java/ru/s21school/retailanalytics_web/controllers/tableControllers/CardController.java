@@ -17,6 +17,7 @@ import ru.s21school.retailanalytics_web.mappers.CardMapper;
 import ru.s21school.retailanalytics_web.services.tableServices.CardService;
 
 import java.io.IOException;
+import java.util.Collections;
 
 @Controller
 @RequestMapping("data/cards")
@@ -98,8 +99,18 @@ public class CardController {
     }
 
     @PostMapping("/import")
-    public String importFromCsv(@RequestParam MultipartFile file) {
-        cardService.performImportFromCsv(file);
-        return "redirect:/data/cards";
+    public String importFromCsv(@RequestParam MultipartFile file, Model model) {
+        try {
+            cardService.performImportFromCsv(file.getInputStream());
+            return "redirect:/data/cards";
+        } catch (IOException e) {
+            log.warn("IOException when importFromCsv called");
+            model.addAttribute("errors", Collections.singletonList("Error during import. Try again"));
+        } catch (HttpClientErrorException exception) {
+            ErrorDto errorDto = exception.getResponseBodyAs(ErrorDto.class);
+            log.warn(errorDto.getMessages().toString());
+            model.addAttribute("errors", errorDto.getMessages());
+        }
+        return "tables/cards/cards";
     }
 }
