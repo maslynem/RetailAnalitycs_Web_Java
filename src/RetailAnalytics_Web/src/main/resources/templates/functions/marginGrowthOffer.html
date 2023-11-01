@@ -50,6 +50,18 @@
     </form>
 
     <div th:if="${entities}" style="max-height: 900px; overflow-x: auto;">
+        <div class="container w-80 p-2">
+            <div class="row">
+                <div class="col">
+                    <p class="fs-3">Выгрузить TSV</p>
+                    <form action="/functions/margin-growth-offer/export" enctype="multipart/form-data">
+                        <div>
+                            <input class="btn btn-primary btn-sm" type="submit" value="Выгрузить"/>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
         <table class="table table-bordered table-striped table-href">
             <caption></caption>
             <thead class="table-dark">

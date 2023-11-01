@@ -1,5 +1,6 @@
 package ru.s21school.retailanalytics_web.controllers.operationsController;
 
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -14,8 +15,9 @@ import ru.s21school.retailanalytics_web.dto.ErrorDto;
 import ru.s21school.retailanalytics_web.dto.functionResultDto.FrequencyOfVisitDto;
 import ru.s21school.retailanalytics_web.dto.functionResultDto.MarginGrowthOfferDto;
 import ru.s21school.retailanalytics_web.dto.functionResultDto.PersonalOfferDto;
-import ru.s21school.retailanalytics_web.services.FunctionsService;
+import ru.s21school.retailanalytics_web.services.functionServices.FunctionsService;
 
+import java.io.IOException;
 import java.util.List;
 
 @Controller
@@ -51,6 +53,11 @@ public class FunctionController {
         return "functions/frequencyOfVisits";
     }
 
+    @GetMapping("frequency-of-visits/export")
+    public void getFrequencyOfVisits(HttpServletResponse servletResponse) throws IOException {
+        functionsService.exportFrequencyOfVisit(servletResponse);
+    }
+
     @PostMapping("frequency-of-visits")
     public String getFrequencyOfVisit(@ModelAttribute FrequencyOfVisitRequest request, Model model) {
         List<FrequencyOfVisitDto> frequencyOfVisit = functionsService.getFrequencyOfVisit(request);
@@ -61,6 +68,11 @@ public class FunctionController {
     @GetMapping("personal-offer-growth")
     public String getPersonalOfferGrowsPage() {
         return "functions/personalOfferGrowth";
+    }
+
+    @GetMapping("personal-offer-growth/export")
+    public void getPersonalOffer(HttpServletResponse servletResponse) throws IOException {
+        functionsService.exportPersonalOffer(servletResponse);
     }
 
     @PostMapping("personal-offer-growth-by-dates")
@@ -77,6 +89,7 @@ public class FunctionController {
         return "functions/personalOfferGrowth";
     }
 
+
     @GetMapping("margin-growth-offer")
     public String getMarginGrowthOfferPage() {
         return "functions/marginGrowthOffer";
@@ -87,5 +100,10 @@ public class FunctionController {
         List<MarginGrowthOfferDto> marginGrowthOffer = functionsService.getMarginGrowthOffer(request);
         model.addAttribute("entities", marginGrowthOffer);
         return "functions/marginGrowthOffer";
+    }
+
+    @GetMapping("margin-growth-offer/export")
+    public void getMarginGrowthOffer(HttpServletResponse servletResponse) throws IOException {
+        functionsService.exportMarginGrowthOffer(servletResponse);
     }
 }
