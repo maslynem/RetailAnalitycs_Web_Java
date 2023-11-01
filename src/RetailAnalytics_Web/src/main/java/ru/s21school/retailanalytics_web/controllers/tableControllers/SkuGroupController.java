@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.multipart.MultipartFile;
 import ru.s21school.retailanalytics_web.dto.ErrorDto;
+import ru.s21school.retailanalytics_web.dto.PageDto;
 import ru.s21school.retailanalytics_web.dto.entityDto.skuGroupDto.SkuGroupDto;
-import ru.s21school.retailanalytics_web.dto.entityDto.skuGroupDto.SkuGroupPageDto;
 import ru.s21school.retailanalytics_web.services.tableServices.SkuGroupService;
 
 import java.io.IOException;
@@ -31,7 +31,7 @@ public class SkuGroupController {
     public String getSkuGroupsPage(@RequestParam(defaultValue = "0") int page,
                                    @RequestParam(defaultValue = "30") int size,
                                    Model model) {
-        SkuGroupPageDto skuGroupPage = skuGroupService.performGetPageRequest(page, size);
+        PageDto<SkuGroupDto> skuGroupPage = skuGroupService.performGetPageRequest(page, size);
         model.addAttribute("entities", skuGroupPage.getContent());
         model.addAttribute("totalPages", skuGroupPage.getTotalPages());
         model.addAttribute("totalElements", skuGroupPage.getTotalElements());

@@ -1,4 +1,4 @@
-package ru.s21school.retailanalytics_web.dto.entityDto.customerDto;
+package ru.s21school.retailanalytics_web.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,8 +10,8 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CustomerPageDto {
-    private List<CustomerDto> content = Collections.emptyList();
+public class PageDto<E> {
+    private List<E> content = Collections.emptyList();
     private int totalPages = 0;
     private int totalElements = 0;
 }

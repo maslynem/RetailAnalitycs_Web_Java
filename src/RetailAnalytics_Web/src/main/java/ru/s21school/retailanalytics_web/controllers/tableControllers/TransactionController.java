@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.multipart.MultipartFile;
 import ru.s21school.retailanalytics_web.dto.ErrorDto;
+import ru.s21school.retailanalytics_web.dto.PageDto;
 import ru.s21school.retailanalytics_web.dto.entityDto.transactionDto.TransactionCreateDto;
-import ru.s21school.retailanalytics_web.dto.entityDto.transactionDto.TransactionPageDto;
 import ru.s21school.retailanalytics_web.dto.entityDto.transactionDto.TransactionReadDto;
 import ru.s21school.retailanalytics_web.mappers.TransactionMapper;
 import ru.s21school.retailanalytics_web.services.tableServices.TransactionService;
@@ -34,8 +34,7 @@ public class TransactionController {
     public String getTransactionsPage(@RequestParam(defaultValue = "0") int page,
                                       @RequestParam(defaultValue = "30") int size,
                                       Model model) {
-        TransactionPageDto transactionPage = transactionService.performGetPageRequest(page, size);
-
+        PageDto<TransactionReadDto> transactionPage = transactionService.performGetPageRequest(page, size);
         model.addAttribute("entities", transactionPage.getContent());
         model.addAttribute("totalPages", transactionPage.getTotalPages());
         model.addAttribute("totalElements", transactionPage.getTotalElements());

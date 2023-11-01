@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.multipart.MultipartFile;
 import ru.s21school.retailanalytics_web.dto.ErrorDto;
+import ru.s21school.retailanalytics_web.dto.PageDto;
 import ru.s21school.retailanalytics_web.dto.entityDto.customerDto.CustomerDto;
-import ru.s21school.retailanalytics_web.dto.entityDto.customerDto.CustomerPageDto;
 import ru.s21school.retailanalytics_web.services.tableServices.CustomerService;
 
 import java.io.IOException;
@@ -33,7 +33,7 @@ public class CustomerController {
     public String getCustomersPage(@RequestParam(defaultValue = "0") int page,
                                    @RequestParam(defaultValue = "30") int size,
                                    Model model) {
-        CustomerPageDto customerPage = customerService.performGetPageRequest(page, size);
+        PageDto<CustomerDto> customerPage = customerService.performGetPageRequest(page, size);
         model.addAttribute("entities", customerPage.getContent());
         model.addAttribute("totalPages", customerPage.getTotalPages());
         model.addAttribute("totalElements", customerPage.getTotalElements());

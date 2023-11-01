@@ -1,44 +1,45 @@
 package ru.s21school.retailanalytics_web.controllers.viewControllers;
 
-import lombok.RequiredArgsConstructor;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.client.RestTemplate;
-import ru.s21school.retailanalytics_web.dto.entityDto.PageDto;
+import ru.s21school.retailanalytics_web.dto.PageDto;
 import ru.s21school.retailanalytics_web.dto.viewDto.PurchaseHistoryViewDto;
+import ru.s21school.retailanalytics_web.services.viewServices.PurchaseHistoryViewService;
 
-import java.util.Optional;
+import java.io.IOException;
 
 @Controller
 @RequestMapping("views/purchase-histories")
-@RequiredArgsConstructor
 @Slf4j
 public class PurchaseHistoryViewController {
-    private static final String PH_API_URL = "http://localhost:8081/api/v1/views/purchase-histories";
+    private final PurchaseHistoryViewService purchaseHistoryViewService;
 
-    private final RestTemplate restTemplate;
+    @Autowired
+    public PurchaseHistoryViewController(PurchaseHistoryViewService purchaseHistoryViewService) {
+        this.purchaseHistoryViewService = purchaseHistoryViewService;
+    }
 
     @GetMapping
     public String getPurchaseHistoryViewPage(@RequestParam(defaultValue = "0") int page,
                                              @RequestParam(defaultValue = "30") int size,
                                              Model model) {
-        ResponseEntity<PageDto<PurchaseHistoryViewDto>> response =
-                restTemplate.exchange(PH_API_URL + String.format("?page=%d&size=%d", page, size),
-                        HttpMethod.GET, null, new ParameterizedTypeReference<>() {
-                        });
-        PageDto<PurchaseHistoryViewDto> customersPage = Optional.ofNullable(response.getBody()).orElseThrow();
-        model.addAttribute("entities", customersPage.getContent());
-        model.addAttribute("totalPages", customersPage.getTotalPages());
-        model.addAttribute("totalElements", customersPage.getTotalElements());
+        PageDto<PurchaseHistoryViewDto> purchaseHistoriesPage = purchaseHistoryViewService.performGetPageRequest(page, size);
+        model.addAttribute("entities", purchaseHistoriesPage.getContent());
+        model.addAttribute("totalPages", purchaseHistoriesPage.getTotalPages());
+        model.addAttribute("totalElements", purchaseHistoriesPage.getTotalElements());
         model.addAttribute("currentPage", page);
         model.addAttribute("pageSize", size);
         return "views/purchaseHistory";
+    }
+
+    @GetMapping("export")
+    public void exportToCsv(HttpServletResponse servletResponse) throws IOException {
+        purchaseHistoryViewService.performExportToCsv(servletResponse);
     }
 }

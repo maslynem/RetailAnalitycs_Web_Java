@@ -8,8 +8,8 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import ru.s21school.retailanalytics_web.dto.PageDto;
 import ru.s21school.retailanalytics_web.dto.entityDto.transactionDto.TransactionCreateDto;
-import ru.s21school.retailanalytics_web.dto.entityDto.transactionDto.TransactionPageDto;
 import ru.s21school.retailanalytics_web.dto.entityDto.transactionDto.TransactionReadDto;
 import ru.s21school.retailanalytics_web.exceptions.EmptyResponseBodyException;
 import ru.s21school.retailanalytics_web.mappers.TransactionMapper;
@@ -52,15 +52,15 @@ public class TransactionService {
         }
         return body;
     }
-    
-    
-    public TransactionPageDto performGetPageRequest(int page, int size) {
+
+
+    public PageDto<TransactionReadDto> performGetPageRequest(int page, int size) {
         final String URL_REQUEST = String.format(PAGE_URL_TEMPLATE, page, size);
-        ResponseEntity<TransactionPageDto> response =
+        ResponseEntity<PageDto<TransactionReadDto>> response =
                 restTemplate.exchange(URL_REQUEST,
                         HttpMethod.GET, null, new ParameterizedTypeReference<>() {
                         });
-        TransactionPageDto body = response.getBody();
+        PageDto<TransactionReadDto> body = response.getBody();
         if (body == null) {
             log.error("Error after request to [{}]. Response status code is [{}]. But response body is null", URL_REQUEST, response.getStatusCode());
             throw new EmptyResponseBodyException();

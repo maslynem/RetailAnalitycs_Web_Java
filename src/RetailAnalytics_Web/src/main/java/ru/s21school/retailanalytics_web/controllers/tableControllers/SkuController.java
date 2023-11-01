@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.multipart.MultipartFile;
 import ru.s21school.retailanalytics_web.dto.ErrorDto;
+import ru.s21school.retailanalytics_web.dto.PageDto;
 import ru.s21school.retailanalytics_web.dto.entityDto.skuDto.SkuCreateDto;
-import ru.s21school.retailanalytics_web.dto.entityDto.skuDto.SkuPageDto;
 import ru.s21school.retailanalytics_web.dto.entityDto.skuDto.SkuReadDto;
 import ru.s21school.retailanalytics_web.mappers.SkuMapper;
 import ru.s21school.retailanalytics_web.services.tableServices.SkuService;
@@ -36,7 +36,7 @@ public class SkuController {
     public String getSkusPage(@RequestParam(defaultValue = "0") int page,
                               @RequestParam(defaultValue = "30") int size,
                               Model model) {
-        SkuPageDto skuPage = skuService.performGetPageRequest(page, size);
+        PageDto<SkuReadDto> skuPage = skuService.performGetPageRequest(page, size);
         model.addAttribute("entities", skuPage.getContent());
         model.addAttribute("totalPages", skuPage.getTotalPages());
         model.addAttribute("totalElements", skuPage.getTotalElements());

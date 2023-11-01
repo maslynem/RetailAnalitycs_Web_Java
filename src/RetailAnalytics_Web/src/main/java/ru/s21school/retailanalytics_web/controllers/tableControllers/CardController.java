@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.multipart.MultipartFile;
 import ru.s21school.retailanalytics_web.dto.ErrorDto;
+import ru.s21school.retailanalytics_web.dto.PageDto;
 import ru.s21school.retailanalytics_web.dto.entityDto.cardDto.CardCreateDto;
-import ru.s21school.retailanalytics_web.dto.entityDto.cardDto.CardPageDto;
 import ru.s21school.retailanalytics_web.dto.entityDto.cardDto.CardReadDto;
 import ru.s21school.retailanalytics_web.mappers.CardMapper;
 import ru.s21school.retailanalytics_web.services.tableServices.CardService;
@@ -37,7 +37,7 @@ public class CardController {
     public String getCardsPage(@RequestParam(defaultValue = "0") int page,
                                @RequestParam(defaultValue = "30") int size,
                                Model model) {
-        CardPageDto cardPage = cardService.performGetPageRequest(page, size);
+        PageDto<CardReadDto> cardPage = cardService.performGetPageRequest(page, size);
         model.addAttribute("entities", cardPage.getContent());
         model.addAttribute("totalPages", cardPage.getTotalPages());
         model.addAttribute("totalElements", cardPage.getTotalElements());

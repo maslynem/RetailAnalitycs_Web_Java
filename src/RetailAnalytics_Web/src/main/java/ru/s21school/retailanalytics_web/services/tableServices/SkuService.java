@@ -8,8 +8,8 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import ru.s21school.retailanalytics_web.dto.PageDto;
 import ru.s21school.retailanalytics_web.dto.entityDto.skuDto.SkuCreateDto;
-import ru.s21school.retailanalytics_web.dto.entityDto.skuDto.SkuPageDto;
 import ru.s21school.retailanalytics_web.dto.entityDto.skuDto.SkuReadDto;
 import ru.s21school.retailanalytics_web.exceptions.EmptyResponseBodyException;
 import ru.s21school.retailanalytics_web.mappers.SkuMapper;
@@ -52,14 +52,14 @@ public class SkuService {
         }
         return body;
     }
-    
-    public SkuPageDto performGetPageRequest(int page, int size) {
+
+    public PageDto<SkuReadDto> performGetPageRequest(int page, int size) {
         final String URL_REQUEST = String.format(PAGE_URL_TEMPLATE, page, size);
-        ResponseEntity<SkuPageDto> response =
+        ResponseEntity<PageDto<SkuReadDto>> response =
                 restTemplate.exchange(URL_REQUEST,
                         HttpMethod.GET, null, new ParameterizedTypeReference<>() {
                         });
-        SkuPageDto body = response.getBody();
+        PageDto<SkuReadDto> body = response.getBody();
         if (body == null) {
             log.error("Error after request to [{}]. Response status code is [{}]. But response body is null", URL_REQUEST, response.getStatusCode());
             throw new EmptyResponseBodyException();

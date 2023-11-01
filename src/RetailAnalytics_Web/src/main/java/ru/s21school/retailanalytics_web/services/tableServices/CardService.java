@@ -8,8 +8,8 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import ru.s21school.retailanalytics_web.dto.PageDto;
 import ru.s21school.retailanalytics_web.dto.entityDto.cardDto.CardCreateDto;
-import ru.s21school.retailanalytics_web.dto.entityDto.cardDto.CardPageDto;
 import ru.s21school.retailanalytics_web.dto.entityDto.cardDto.CardReadDto;
 import ru.s21school.retailanalytics_web.exceptions.EmptyResponseBodyException;
 import ru.s21school.retailanalytics_web.mappers.CardMapper;
@@ -53,13 +53,13 @@ public class CardService {
         return body;
     }
 
-    public CardPageDto performGetPageRequest(int page, int size) {
+    public PageDto<CardReadDto> performGetPageRequest(int page, int size) {
         final String URL_REQUEST = String.format(PAGE_URL_TEMPLATE, page, size);
-        ResponseEntity<CardPageDto> response =
+        ResponseEntity<PageDto<CardReadDto>> response =
                 restTemplate.exchange(URL_REQUEST,
                         HttpMethod.GET, null, new ParameterizedTypeReference<>() {
                         });
-        CardPageDto body = response.getBody();
+        PageDto<CardReadDto> body = response.getBody();
         if (body == null) {
             log.error("Error after request to [{}]. Response status code is [{}]. But response body is null", URL_REQUEST, response.getStatusCode());
             throw new EmptyResponseBodyException();

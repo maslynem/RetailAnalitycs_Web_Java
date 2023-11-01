@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.multipart.MultipartFile;
 import ru.s21school.retailanalytics_web.dto.ErrorDto;
+import ru.s21school.retailanalytics_web.dto.PageDto;
 import ru.s21school.retailanalytics_web.dto.entityDto.checkDto.CheckCreateDto;
-import ru.s21school.retailanalytics_web.dto.entityDto.checkDto.CheckPageDto;
 import ru.s21school.retailanalytics_web.dto.entityDto.checkDto.CheckReadDto;
 import ru.s21school.retailanalytics_web.mappers.CheckMapper;
 import ru.s21school.retailanalytics_web.services.tableServices.CheckService;
@@ -34,7 +34,7 @@ public class CheckController {
     public String getChecksPage(@RequestParam(defaultValue = "0") int page,
                                 @RequestParam(defaultValue = "30") int size,
                                 Model model) {
-        CheckPageDto checksPage = checkService.performGetPageRequest(page, size);
+        PageDto<CheckReadDto> checksPage = checkService.performGetPageRequest(page, size);
         model.addAttribute("entities", checksPage.getContent());
         model.addAttribute("totalPages", checksPage.getTotalPages());
         model.addAttribute("totalElements", checksPage.getTotalElements());

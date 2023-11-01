@@ -8,8 +8,8 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import ru.s21school.retailanalytics_web.dto.PageDto;
 import ru.s21school.retailanalytics_web.dto.entityDto.customerDto.CustomerDto;
-import ru.s21school.retailanalytics_web.dto.entityDto.customerDto.CustomerPageDto;
 import ru.s21school.retailanalytics_web.exceptions.EmptyResponseBodyException;
 import ru.s21school.retailanalytics_web.utils.CsvReader;
 import ru.s21school.retailanalytics_web.utils.CsvWriter;
@@ -49,13 +49,13 @@ public class CustomerService {
         return body;
     }
 
-    public CustomerPageDto performGetPageRequest(int page, int size) {
+    public PageDto<CustomerDto> performGetPageRequest(int page, int size) {
         final String URL_REQUEST = String.format(PAGE_URL_TEMPLATE, page, size);
-        ResponseEntity<CustomerPageDto> response =
+        ResponseEntity<PageDto<CustomerDto>> response =
                 restTemplate.exchange(URL_REQUEST,
                         HttpMethod.GET, null, new ParameterizedTypeReference<>() {
                         });
-        CustomerPageDto body = response.getBody();
+        PageDto<CustomerDto> body = response.getBody();
         if (body == null) {
             log.error("Error after request to [{}]. Response status code is [{}]. But response body is null", URL_REQUEST, response.getStatusCode());
             throw new EmptyResponseBodyException();

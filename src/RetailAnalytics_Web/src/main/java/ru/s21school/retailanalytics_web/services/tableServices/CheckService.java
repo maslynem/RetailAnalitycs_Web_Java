@@ -8,8 +8,8 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import ru.s21school.retailanalytics_web.dto.PageDto;
 import ru.s21school.retailanalytics_web.dto.entityDto.checkDto.CheckCreateDto;
-import ru.s21school.retailanalytics_web.dto.entityDto.checkDto.CheckPageDto;
 import ru.s21school.retailanalytics_web.dto.entityDto.checkDto.CheckReadDto;
 import ru.s21school.retailanalytics_web.exceptions.EmptyResponseBodyException;
 import ru.s21school.retailanalytics_web.mappers.CheckMapper;
@@ -53,13 +53,13 @@ public class CheckService {
         return body;
     }
 
-    public CheckPageDto performGetPageRequest(int page, int size) {
+    public PageDto<CheckReadDto> performGetPageRequest(int page, int size) {
         final String URL_REQUEST = String.format(PAGE_URL_TEMPLATE, page, size);
-        ResponseEntity<CheckPageDto> response =
+        ResponseEntity<PageDto<CheckReadDto>> response =
                 restTemplate.exchange(URL_REQUEST,
                         HttpMethod.GET, null, new ParameterizedTypeReference<>() {
                         });
-        CheckPageDto body = response.getBody();
+        PageDto<CheckReadDto> body = response.getBody();
         if (body == null) {
             log.error("Error after request to [{}]. Response status code is [{}]. But response body is null", URL_REQUEST, response.getStatusCode());
             throw new EmptyResponseBodyException();
