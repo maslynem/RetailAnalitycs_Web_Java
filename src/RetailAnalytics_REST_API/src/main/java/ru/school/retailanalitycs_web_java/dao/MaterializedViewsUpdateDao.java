@@ -2,13 +2,14 @@ package ru.school.retailanalitycs_web_java.dao;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
-import org.springframework.util.ResourceUtils;
 import ru.school.retailanalitycs_web_java.exceptions.LoadSqlFileException;
 
-import java.io.File;
-import java.nio.file.Files;
+import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.stream.Collectors;
 
 @Component
@@ -23,6 +24,7 @@ public class MaterializedViewsUpdateDao {
     private static final String FUNCTIONS_VIEW_FILE = "classpath:db/migrations/db.changelog-7.0-addViewsForFrequencyOfVisitsProcedure.sql";
 
     private final JdbcTemplate jdbcTemplate;
+    private final ResourceLoader resourceLoader;
 
     public void updateMaterializeViews() {
         jdbcTemplate.update(loadQuery(DROP_ALL_VIEWS_FILE));
@@ -35,9 +37,8 @@ public class MaterializedViewsUpdateDao {
 
     private String loadQuery(String path) {
         try {
-            File file = ResourceUtils.getFile(path);
-            return Files.readAllLines(file.toPath())
-                    .stream()
+            Resource resource = resourceLoader.getResource(path);
+            return Arrays.stream(resource.getContentAsString(StandardCharsets.UTF_8).split("\n"))
                     .filter(s -> !s.startsWith("--"))
                     .collect(Collectors.joining(" "));
         } catch (Exception e) {
