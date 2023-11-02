@@ -13,8 +13,8 @@ import ru.school.retailanalitycs_web_java.dto.functionResultDto.PersonalOfferDto
 import ru.school.retailanalitycs_web_java.mapper.FrequencyOfVisitMapper;
 import ru.school.retailanalitycs_web_java.mapper.MarginGrowthOfferMapper;
 import ru.school.retailanalitycs_web_java.mapper.PersonalOfferMapper;
-import ru.school.retailanalitycs_web_java.services.FunctionsService;
-import ru.school.retailanalitycs_web_java.services.MarginGroupOfferService;
+import ru.school.retailanalitycs_web_java.services.functionServices.FunctionsService;
+import ru.school.retailanalitycs_web_java.services.functionServices.MarginGroupOfferService;
 
 import java.util.List;
 

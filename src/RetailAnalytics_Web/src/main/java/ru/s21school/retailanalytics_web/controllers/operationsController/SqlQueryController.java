@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
 import ru.s21school.retailanalytics_web.controllers.operationsController.requestEntity.SqlQueryRequest;
 import ru.s21school.retailanalytics_web.dto.ErrorDto;
-import ru.s21school.retailanalytics_web.services.SqlQueryService;
+import ru.s21school.retailanalytics_web.services.functionServices.SqlQueryService;
 
 import java.util.List;
 import java.util.Map;

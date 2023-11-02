@@ -1,4 +1,4 @@
-package ru.s21school.retailanalytics_web.services;
+package ru.s21school.retailanalytics_web.services.functionServices;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
