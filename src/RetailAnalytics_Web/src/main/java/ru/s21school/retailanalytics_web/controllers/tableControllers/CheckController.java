@@ -45,14 +45,14 @@ public class CheckController {
     }
 
     @GetMapping("new")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public String getCreateCheckPage(Model model) {
         model.addAttribute("check", new CheckCreateDto());
         return "tables/checks/new";
     }
 
     @PostMapping
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public String createCheck(@Valid @ModelAttribute("check") CheckCreateDto check, Model model) {
         try {
             checkService.performSaveCheckRequest(check);
@@ -66,7 +66,7 @@ public class CheckController {
     }
 
     @GetMapping("{trId}/{skuId}")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public String getUpdateCardPage(@PathVariable Long trId,
                                     @PathVariable Long skuId,
                                     Model model) {
@@ -76,7 +76,7 @@ public class CheckController {
     }
 
     @PutMapping("{trId}/{skuId}")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public String updateCard(@PathVariable Long trId,
                              @PathVariable Long skuId,
                              @ModelAttribute("check") CheckCreateDto check,
@@ -94,7 +94,7 @@ public class CheckController {
 
 
     @DeleteMapping("/{trId}/{skuId}")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public String delete(@PathVariable Long trId,
                          @PathVariable Long skuId) {
         checkService.performDeleteByIdRequest(trId, skuId);
@@ -107,7 +107,7 @@ public class CheckController {
     }
 
     @PostMapping("/import")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public String importFromCsv(@RequestParam MultipartFile file, Model model) {
         try {
             checkService.performImportFromCsv(file.getInputStream());

@@ -48,14 +48,14 @@ public class CardController {
     }
 
     @GetMapping("new")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public String getCreateCardPage(Model model) {
         model.addAttribute("card", new CardCreateDto());
         return "tables/cards/new";
     }
 
     @GetMapping("{id}")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public String getUpdateCardPage(@PathVariable Long id, Model model) {
         CardReadDto cardReadDto = cardService.performFindByIdRequest(id);
         model.addAttribute("cardCreateDto", mapper.map(cardReadDto));
@@ -63,7 +63,7 @@ public class CardController {
     }
 
     @PutMapping("{id}")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public String updateCard(@PathVariable Long id,
                              @ModelAttribute("cardCreateDto") CardCreateDto card,
                              Model model) {
@@ -79,7 +79,7 @@ public class CardController {
     }
 
     @PostMapping
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public String createCard(@Valid @ModelAttribute("card") CardCreateDto card, Model model) {
         try {
             cardService.performSaveCardRequest(card);
@@ -93,7 +93,7 @@ public class CardController {
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public String delete(@PathVariable Long id) {
         cardService.performDeleteByIdRequest(id);
         return "redirect:/data/cards";
@@ -105,7 +105,7 @@ public class CardController {
     }
 
     @PostMapping("/import")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public String importFromCsv(@RequestParam MultipartFile file, Model model) {
         try {
             cardService.performImportFromCsv(file.getInputStream());

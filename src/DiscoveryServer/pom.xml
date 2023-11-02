@@ -15,7 +15,6 @@
     <description>DiscoveryServer</description>
 
     <dependencies>
-
         <!--Eureka-->
         <dependency>
             <groupId>org.springframework.cloud</groupId>

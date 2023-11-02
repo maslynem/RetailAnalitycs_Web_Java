@@ -47,14 +47,14 @@ public class SkuController {
     }
 
     @GetMapping("new")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public String getCreateSkuPage(Model model) {
         model.addAttribute("sku", new SkuCreateDto());
         return "tables/skus/new";
     }
 
     @GetMapping("{id}")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public String getUpdateSkuPage(@PathVariable Long id, Model model) {
         SkuReadDto skuReadDto = skuService.performFindByIdRequest(id);
         model.addAttribute("sku", mapper.map(skuReadDto));
@@ -62,7 +62,7 @@ public class SkuController {
     }
 
     @PutMapping("{id}")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public String updateSku(@PathVariable Long id,
                             @ModelAttribute("sku") SkuCreateDto sku,
                             Model model) {
@@ -78,7 +78,7 @@ public class SkuController {
     }
     
     @PostMapping
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public String createSku(@Valid @ModelAttribute("sku") SkuCreateDto sku, Model model) {
         try {
             skuService.performSaveSkuRequest(sku);
@@ -92,7 +92,7 @@ public class SkuController {
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public String delete(@PathVariable Long id) {
         skuService.performDeleteByIdRequest(id);
         return "redirect:/data/skus";
@@ -104,7 +104,7 @@ public class SkuController {
     }
 
     @PostMapping("/import")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public String importFromCsv(@RequestParam MultipartFile file, Model model) {
         try {
             skuService.performImportFromCsv(file.getInputStream());

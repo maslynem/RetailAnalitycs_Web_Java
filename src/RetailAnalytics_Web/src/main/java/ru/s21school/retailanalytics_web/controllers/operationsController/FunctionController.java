@@ -43,7 +43,7 @@ public class FunctionController {
     }
 
     @PostMapping("update")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public String updateDataAnalysis(Model model) {
         functionsService.updateDataAnalysis();
         model.addAttribute("updated", "SUCCESS");

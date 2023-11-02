@@ -47,14 +47,14 @@ public class StoreController {
     }
 
     @GetMapping("new")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public String getCreateStorePage(Model model) {
         model.addAttribute("store", new StoreCreateDto());
         return "tables/stores/new";
     }
 
     @PostMapping
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public String createStore(@Valid @ModelAttribute("store") StoreCreateDto store, Model model) {
         try {
             storeService.performSaveStoreRequest(store);
@@ -68,7 +68,7 @@ public class StoreController {
     }
 
     @GetMapping("{trStoreId}/{skuId}")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public String getUpdateCardPage(@PathVariable Long trStoreId,
                                     @PathVariable Long skuId,
                                     Model model) {
@@ -78,7 +78,7 @@ public class StoreController {
     }
 
     @PutMapping("{trStoreId}/{skuId}")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public String updateCard(@PathVariable Long trStoreId,
                              @PathVariable Long skuId,
                              @ModelAttribute("store") StoreCreateDto store,
@@ -95,7 +95,7 @@ public class StoreController {
     }
     
     @DeleteMapping("/{trStoreId}/{skuId}")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public String delete(@PathVariable Long trStoreId,
                          @PathVariable Long skuId) {
         storeService.performDeleteByIdRequest(trStoreId, skuId);
@@ -109,7 +109,7 @@ public class StoreController {
     }
 
     @PostMapping("/import")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public String importFromCsv(@RequestParam MultipartFile file, Model model) {
         try {
             storeService.performImportFromCsv(file.getInputStream());

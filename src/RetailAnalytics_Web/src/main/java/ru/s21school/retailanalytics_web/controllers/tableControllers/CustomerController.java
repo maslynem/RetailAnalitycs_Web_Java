@@ -44,14 +44,14 @@ public class CustomerController {
     }
 
     @GetMapping("new")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public String getCreateCustomerPage(Model model) {
         model.addAttribute("customer", new CustomerDto());
         return "tables/customers/new";
     }
 
     @PostMapping
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public String createCustomer(@Valid @ModelAttribute("customer") CustomerDto customer, Model model) {
         try {
             customerService.performSaveCustomerRequest(customer);
@@ -65,7 +65,7 @@ public class CustomerController {
     }
 
     @GetMapping("{id}")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public String getUpdateCustomerPage(@PathVariable Long id, Model model) {
         CustomerDto customer = customerService.performFindByIdRequest(id);
         model.addAttribute("customer", customer);
@@ -73,7 +73,7 @@ public class CustomerController {
     }
 
     @PutMapping("{id}")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public String updateCustomer(@PathVariable Long id,
                                  @ModelAttribute("customer") CustomerDto customer,
                                  Model model) {
@@ -89,7 +89,7 @@ public class CustomerController {
     }
     
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public String delete(@PathVariable Long id) {
         customerService.performDeleteByIdRequest(id);
         return "redirect:/data/customers";
@@ -101,7 +101,7 @@ public class CustomerController {
     }
 
     @PostMapping("/import")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public String importFromCsv(@RequestParam MultipartFile file, Model model) {
         try {
             customerService.performImportFromCsv(file.getInputStream());
