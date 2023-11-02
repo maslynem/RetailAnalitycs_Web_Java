@@ -15,5 +15,12 @@ spring:
         format_sql: false
         show_sql: false
     open-in-view: false
+  application:
+    name: retailAnalyticsApi
+
+eureka:
+  client:
+    service-url:
+      defaultZone: ${DISCOVERY_URL:http://localhost:8761/eureka}
 
 server.port: ${SERVER_PORT:8081}

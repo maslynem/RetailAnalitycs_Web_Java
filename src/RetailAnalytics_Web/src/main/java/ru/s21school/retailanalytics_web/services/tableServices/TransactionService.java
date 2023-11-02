@@ -23,7 +23,7 @@ import java.util.List;
 @Service
 @Slf4j
 public class TransactionService {
-    private static final String TRANSACTION_API_URL = "http://localhost:8081/api/v1/transactions";
+    private static final String TRANSACTION_API_URL = "http://retailAnalyticsApi/api/v1/transactions";
     private final RestTemplate restTemplate;
     private final String PAGE_URL_TEMPLATE;
     private final String ID_URL_TEMPLATE;

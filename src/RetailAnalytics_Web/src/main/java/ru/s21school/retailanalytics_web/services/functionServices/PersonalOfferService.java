@@ -26,7 +26,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Slf4j
 public class PersonalOfferService {
-    private static final String FUNCTIONS_API_URL = "http://localhost:8081/api/v1/functions/";
+    private static final String FUNCTIONS_API_URL = "http://retailAnalyticsApi/api/v1/functions/";
 
     private final RestTemplate restTemplate;
     private final PersonalOfferMapper personalOfferMapper;

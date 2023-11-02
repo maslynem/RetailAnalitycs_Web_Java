@@ -23,7 +23,7 @@ import java.util.List;
 @Service
 @Slf4j
 public class SkuService {
-    private static final String SKU_API_URL = "http://localhost:8081/api/v1/skus";
+    private static final String SKU_API_URL = "http://retailAnalyticsApi/api/v1/skus";
     private final RestTemplate restTemplate;
     private final String PAGE_URL_TEMPLATE;
     private final String ID_URL_TEMPLATE;

@@ -23,7 +23,7 @@ import java.util.List;
 @Service
 @Slf4j
 public class CheckService {
-    private static final String CHECKS_API_URL = "http://localhost:8081/api/v1/checks";
+    private static final String CHECKS_API_URL = "http://retailAnalyticsApi/api/v1/checks";
     private final RestTemplate restTemplate;
     private final String PAGE_URL_TEMPLATE;
     private final String ID_URL_TEMPLATE;

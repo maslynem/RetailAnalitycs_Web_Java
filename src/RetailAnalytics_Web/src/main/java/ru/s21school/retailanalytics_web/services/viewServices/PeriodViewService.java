@@ -21,7 +21,7 @@ import java.util.List;
 @Service
 @Slf4j
 public class PeriodViewService {
-    private static final String PERIOD_VIEW_API_URL = "http://localhost:8081/api/v1/views/periods";
+    private static final String PERIOD_VIEW_API_URL = "http://retailAnalyticsApi/api/v1/views/periods";
     private final String PAGE_URL_TEMPLATE;
 
     private final RestTemplate restTemplate;

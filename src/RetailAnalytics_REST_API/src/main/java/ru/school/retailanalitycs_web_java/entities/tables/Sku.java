@@ -30,10 +30,12 @@ public class Sku implements Serializable {
     private SkuGroup skuGroup;
 
     @OneToMany(mappedBy = "id.sku", orphanRemoval = true)
-    private Set<Store> stores = new LinkedHashSet<>();
+    @Builder.Default
+    private final Set<Store> stores = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "id.sku", orphanRemoval = true)
-    private Set<Check> checks = new LinkedHashSet<>();
+    @Builder.Default
+    private final Set<Check> checks = new LinkedHashSet<>();
 
     @Override
     public final boolean equals(Object object) {

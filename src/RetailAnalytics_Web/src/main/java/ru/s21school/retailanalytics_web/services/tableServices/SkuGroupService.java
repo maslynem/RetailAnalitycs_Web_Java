@@ -21,7 +21,7 @@ import java.util.List;
 @Service
 @Slf4j
 public class SkuGroupService {
-    private static final String SKU_GROUP_API_URL = "http://localhost:8081/api/v1/sku-groups";
+    private static final String SKU_GROUP_API_URL = "http://retailAnalyticsApi/api/v1/sku-groups";
     private final RestTemplate restTemplate;
     private final String PAGE_URL_TEMPLATE;
     private final String ID_URL_TEMPLATE;

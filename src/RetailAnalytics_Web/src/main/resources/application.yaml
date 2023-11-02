@@ -2,3 +2,10 @@ server.port: ${SERVER_PORT:8080}
 spring:
   main:
     allow-circular-references: true
+  application:
+    name: RetailAnalytics_Web
+
+eureka:
+  client:
+    service-url:
+      defaultZone: ${DISCOVERY_URL:http://localhost:8761/eureka}

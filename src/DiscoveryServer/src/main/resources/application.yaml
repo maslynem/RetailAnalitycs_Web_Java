@@ -1,0 +1,14 @@
+server.port: ${SERVER_PORT:8761}
+
+eureka:
+  server:
+    enable-self-preservation: false
+  client:
+    register-with-eureka: false
+    fetch-registry: false
+    service-url:
+      defaultZone: http://localhost:${SERVER_PORT:8761}/eureka
+
+logging:
+  level:
+    root: debug

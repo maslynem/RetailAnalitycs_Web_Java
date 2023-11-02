@@ -19,7 +19,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 @Slf4j
 public class SqlQueryService {
-    private static final String SQL_QUERY_API_URL = "http://localhost:8081/api/v1/query";
+    private static final String SQL_QUERY_API_URL = "http://retailAnalyticsApi/api/v1/query";
 
     private final RestTemplate restTemplate;
 
